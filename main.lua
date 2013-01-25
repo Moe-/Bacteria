@@ -17,7 +17,8 @@ function love.load ()
 	gfx_shotplayer	= loadgfx("data/shot-player.png")
 	gfx_shotweiss	= loadgfx("data/shot-weiss.png")
 	gfx_weissbk		= loadgfx("data/weissbk.png")
-
+	
+	love.graphics.setBackgroundColor( 40,0,0)
 end
 
 function love.draw ()
