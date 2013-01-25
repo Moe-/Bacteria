@@ -48,6 +48,9 @@ function love.load ()
 	gPlayer = cPlayer:New(w/2,h/2)
 	gLevel = cLevel:New()
 	
+	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
+	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
+	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
 end
 
 function love.update (dt)
