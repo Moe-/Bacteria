@@ -1,6 +1,11 @@
 sin = math.sin
 PI = math.pi
 
+
+love.filesystem.load("lib.oop.lua")()
+love.filesystem.load("lib.util.lua")()
+love.filesystem.load("obj.player.lua")()
+
 function loadgfx (path)
 	local img = love.graphics.newImage(path)
 	local w = img:getWidth()
@@ -19,6 +24,7 @@ function love.load ()
 	gfx_weissbk		= loadgfx("data/weissbk.png")
 	
 	love.graphics.setBackgroundColor( 40,0,0)
+	gPlayer = cPlayer:New()
 end
 
 function love.draw ()
