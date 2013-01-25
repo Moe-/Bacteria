@@ -1,9 +1,11 @@
 sin = math.sin
 PI = math.pi
 
-
+gMyTime = love.timer.getTime( )
+	
 love.filesystem.load("lib.oop.lua")()
 love.filesystem.load("lib.util.lua")()
+love.filesystem.load("obj.base.lua")()
 love.filesystem.load("obj.player.lua")()
 
 function loadgfx (path)
@@ -12,6 +14,7 @@ function loadgfx (path)
 	local h = img:getHeight()
 	return {img=img,ox=w/2,oy=h/2}
 end
+
 function love.load ()
 	
 	gfx_blutplatt	= loadgfx("data/blutplatt.png")
@@ -24,18 +27,20 @@ function love.load ()
 	gfx_weissbk		= loadgfx("data/weissbk.png")
 	
 	love.graphics.setBackgroundColor( 40,0,0)
-	gPlayer = cPlayer:New()
+	local w = love.graphics.getWidth()
+	local h = love.graphics.getHeight()
+	gPlayer = cPlayer:New(w/2,h/2)
+end
+
+function love.update (dt)
+	gMyTime = love.timer.getTime( )
 end
 
 function love.draw ()
-	local w = love.graphics.getWidth()
-	local h = love.graphics.getHeight()
-	local t = love.timer.getTime( )
+	gMyTime = love.timer.getTime( )
 	
-	local s = 1.0 + 0.2 * sin(t*PI)
-	local r = PI * 0.1 * sin(t*0.9*PI)
-	local gfx = gfx_player love.graphics.draw(gfx.img,w/2,h/2,r,s,s,gfx.ox,gfx.oy)
-
+	gPlayer:Draw()
+	
 	love.graphics.print("hello world",40,40)
 end
 
