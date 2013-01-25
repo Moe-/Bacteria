@@ -7,6 +7,7 @@ love.filesystem.load("lib.oop.lua")()
 love.filesystem.load("lib.util.lua")()
 love.filesystem.load("obj.base.lua")()
 love.filesystem.load("obj.player.lua")()
+love.filesystem.load("obj.shot.lua")()
 love.filesystem.load("obj.level.lua")()
 love.filesystem.load("obj.enemy-base.lua")()
 love.filesystem.load("obj.enemy-blutplatt.lua")()
@@ -46,6 +47,8 @@ function love.load ()
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight()
 	gPlayer = cPlayer:New(w/2,h/2)
+
+	gShots = {}
 	gLevel = cLevel:New()
 	
 	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
@@ -57,6 +60,17 @@ function love.update (dt)
 	gMyTime = love.timer.getTime( )
 	gLevel:Update(dt)
 	gPlayer:Update(dt)
+	
+	local shotsDelete = {}
+	for i, v in pairs(gShots) do 
+		if v:Update(dt) == false then
+			table.insert(shotsDelete, i)
+		end
+	end
+
+	for i, v in pairs(shotsDelete) do
+		table.remove(gShots, v)
+	end
 	Enemies_Update(dt)
 end
 
@@ -65,6 +79,8 @@ function love.draw ()
 	gLevel:Draw()
 	
 	gPlayer:Draw()
+
+	for i, v in pairs(gShots) do v:Draw() end
 	Enemies_Draw()
 	
 	love.graphics.print("hello world",40,40)
@@ -76,6 +92,7 @@ function love.keypressed (keyname)
 	elseif (keyname == "right") then gPlayer:SetSpeedX(2)
 	elseif (keyname == "up") then gPlayer:SetSpeedY(-2)
 	elseif (keyname == "down") then gPlayer:SetSpeedY(2)
+	elseif (keyname == " ") then gPlayer:Shoot()
 	else print("keypress",keyname)
 	end
 end
@@ -85,3 +102,8 @@ function love.keyreleased (keyname)
 	elseif (keyname == "up") or (keyname == "down") then gPlayer:SetSpeedY(0)
 	end
 end
+
+function love.mousereleased(x, y, button)
+	if (button == "l") then gPlayer:Shoot(x, y) end
+end
+

@@ -29,3 +29,13 @@ function cPlayer:SetSpeedY(val)
 	self.dy = val
 end
 
+function cPlayer:Shoot(cx, cy)
+	local x = self.x
+	local y = self.y
+	local dirX = cx - x
+	local dirY = cy - y
+	local norm = math.sqrt(dirX*dirX + dirY*dirY)
+	local lifetime = 5.0
+	table.insert(gShots, cShot:New(x, y, dirX/norm, dirY/norm, lifetime))
+end
+
