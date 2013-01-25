@@ -8,6 +8,11 @@ love.filesystem.load("lib.util.lua")()
 love.filesystem.load("obj.base.lua")()
 love.filesystem.load("obj.player.lua")()
 love.filesystem.load("obj.level.lua")()
+love.filesystem.load("obj.enemy-base.lua")()
+love.filesystem.load("obj.enemy-blutplatt.lua")()
+love.filesystem.load("obj.enemy-white.lua")()
+love.filesystem.load("obj.enemy-red.lua")()
+
 
 cGfx = CreateClass(cBase)
 function cGfx:Init (img)
@@ -42,12 +47,14 @@ function love.load ()
 	local h = love.graphics.getHeight()
 	gPlayer = cPlayer:New(w/2,h/2)
 	gLevel = cLevel:New()
+	
 end
 
 function love.update (dt)
 	gMyTime = love.timer.getTime( )
 	gLevel:Update(dt)
 	gPlayer:Update(dt)
+	Enemies_Update(dt)
 end
 
 function love.draw ()
@@ -55,6 +62,7 @@ function love.draw ()
 	gLevel:Draw()
 	
 	gPlayer:Draw()
+	Enemies_Draw()
 	
 	love.graphics.print("hello world",40,40)
 end
