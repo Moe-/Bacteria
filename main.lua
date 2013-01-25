@@ -16,6 +16,9 @@ function loadgfx (path)
 end
 
 function love.load ()
+	local arr = {1,2,3,4}
+	table.insert(arr,5)
+	for k,v in ipairs(arr) do print("arr",k,v) end
 	
 	gfx_blutplatt	= loadgfx("data/blutplatt.png")
 	gfx_dnabonus	= loadgfx("data/dnabonus.png")
