@@ -88,18 +88,18 @@ end
 
 function love.keypressed (keyname)
 	if (keyname == "escape") then love.event.quit( ) 
-	elseif (keyname == "left") then gPlayer:SetSpeedX(-2)
-	elseif (keyname == "right") then gPlayer:SetSpeedX(2)
-	elseif (keyname == "up") then gPlayer:SetSpeedY(-2)
-	elseif (keyname == "down") then gPlayer:SetSpeedY(2)
+	elseif (keyname == "left"	or keyname == "a") then gPlayer:SetSpeedX(-2)
+	elseif (keyname == "right"	or keyname == "d") then gPlayer:SetSpeedX(2)
+	elseif (keyname == "up"		or keyname == "w") then gPlayer:SetSpeedY(-2)
+	elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(2)
 	elseif (keyname == " ") then gPlayer:Shoot()
 	else print("keypress",keyname)
 	end
 end
 
 function love.keyreleased (keyname)
-	if (keyname == "left") or (keyname == "right") then gPlayer:SetSpeedX(0)
-	elseif (keyname == "up") or (keyname == "down") then gPlayer:SetSpeedY(0)
+	if (keyname == "left") or (keyname == "right") or (keyname == "a") or (keyname == "d") then gPlayer:SetSpeedX(0)
+	elseif (keyname == "up") or (keyname == "down") or (keyname == "w") or (keyname == "s") then gPlayer:SetSpeedY(0)
 	end
 end
 
