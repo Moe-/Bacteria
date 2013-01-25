@@ -8,13 +8,26 @@ love.filesystem.load("lib.util.lua")()
 love.filesystem.load("obj.base.lua")()
 love.filesystem.load("obj.player.lua")()
 love.filesystem.load("obj.shot.lua")()
+love.filesystem.load("obj.level.lua")()
+love.filesystem.load("obj.enemy-base.lua")()
+love.filesystem.load("obj.enemy-blutplatt.lua")()
+love.filesystem.load("obj.enemy-white.lua")()
+love.filesystem.load("obj.enemy-red.lua")()
 
-function loadgfx (path)
-	local img = love.graphics.newImage(path)
+
+cGfx = CreateClass(cBase)
+function cGfx:Init (img)
+	self.img = img
 	local w = img:getWidth()
 	local h = img:getHeight()
-	return {img=img,ox=w/2,oy=h/2}
+	self.ox = w/2
+	self.oy = h/2
 end
+function cGfx:Draw (x,y,r,sx,sy)
+	love.graphics.draw(self.img,x,y,r,sx,sy,self.ox,self.oy)
+end
+
+function loadgfx (path) return cGfx:New(love.graphics.newImage(path)) end
 
 function love.load ()
 	local arr = {1,2,3,4}
@@ -36,10 +49,16 @@ function love.load ()
 	gPlayer = cPlayer:New(w/2,h/2)
 
 	gShots = {}
+	gLevel = cLevel:New()
+	
+	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
+	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
+	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
 end
 
 function love.update (dt)
 	gMyTime = love.timer.getTime( )
+	gLevel:Update(dt)
 	gPlayer:Update(dt)
 	
 	local shotsDelete = {}
@@ -52,14 +71,17 @@ function love.update (dt)
 	for i, v in pairs(shotsDelete) do
 		table.remove(gShots, v)
 	end
+	Enemies_Update(dt)
 end
 
 function love.draw ()
 	gMyTime = love.timer.getTime( )
+	gLevel:Draw()
 	
 	gPlayer:Draw()
 
 	for i, v in pairs(gShots) do v:Draw() end
+	Enemies_Draw()
 	
 	love.graphics.print("hello world",40,40)
 end

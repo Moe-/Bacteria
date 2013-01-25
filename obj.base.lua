@@ -6,6 +6,17 @@ function cBase:Init()
 	self.y = 0
 end
 
+function cBase:DrawWobble(ws,wr) -- scale,rotate
+	local wrand = self.wobble_random
+	if (wrand == nil) then wrand = 0.9+0.2*randf() self.wobble_random = wrand end
+	
+	local t = gMyTime + 5
+	local s = 1.0 + ws * sin(t*wrand*PI)
+	local r = PI * wr * sin(t*wrand*0.9*PI)
+	self.gfx:Draw(self.x,self.y,r,s,s)
+end
+
+function cBase:Update(dt) end
 
 function cBase:DistToPos(x,y)
 	local dx = x-self.x
