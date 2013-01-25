@@ -12,5 +12,21 @@ function cPlayer:Init(x,y)
 	print("player init")
 	self.x = x
 	self.y = y
+	self.dx = 0
+	self.dy = 0
 	self.gfx = gfx_player
 end
+
+function cPlayer:Update(dt)
+	self.x = self.x + self.dx
+	self.y = self.y + self.dy
+end
+
+function cPlayer:SetSpeedX(val)
+	self.dx = val
+end
+
+function cPlayer:SetSpeedY(val)
+	self.dy = val
+end
+

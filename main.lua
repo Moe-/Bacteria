@@ -34,6 +34,7 @@ end
 
 function love.update (dt)
 	gMyTime = love.timer.getTime( )
+	gPlayer:Update(dt)
 end
 
 function love.draw ()
@@ -45,6 +46,17 @@ function love.draw ()
 end
 
 function love.keypressed (keyname)
-	if (keyname == "escape") then love.event.quit( ) end
-	print("keypress",keyname)
+	if (keyname == "escape") then love.event.quit( ) 
+	elseif (keyname == "left") then gPlayer:SetSpeedX(-2)
+	elseif (keyname == "right") then gPlayer:SetSpeedX(2)
+	elseif (keyname == "up") then gPlayer:SetSpeedY(-2)
+	elseif (keyname == "down") then gPlayer:SetSpeedY(2)
+	else print("keypress",keyname)
+	end
+end
+
+function love.keyreleased (keyname)
+	if (keyname == "left") or (keyname == "right") then gPlayer:SetSpeedX(0)
+	elseif (keyname == "up") or (keyname == "down") then gPlayer:SetSpeedY(0)
+	end
 end
