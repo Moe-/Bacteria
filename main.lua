@@ -7,13 +7,21 @@ love.filesystem.load("lib.oop.lua")()
 love.filesystem.load("lib.util.lua")()
 love.filesystem.load("obj.base.lua")()
 love.filesystem.load("obj.player.lua")()
+love.filesystem.load("obj.level.lua")()
 
-function loadgfx (path)
-	local img = love.graphics.newImage(path)
+cGfx = CreateClass(cBase)
+function cGfx:Init (img)
+	self.img = img
 	local w = img:getWidth()
 	local h = img:getHeight()
-	return {img=img,ox=w/2,oy=h/2}
+	self.ox = w/2
+	self.oy = h/2
 end
+function cGfx:Draw (x,y,r,sx,sy)
+	love.graphics.draw(self.img,x,y,r,sx,sy,self.ox,self.oy)
+end
+
+function loadgfx (path) return cGfx:New(love.graphics.newImage(path)) end
 
 function love.load ()
 	local arr = {1,2,3,4}
@@ -33,14 +41,17 @@ function love.load ()
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight()
 	gPlayer = cPlayer:New(w/2,h/2)
+	gLevel = cLevel:New()
 end
 
 function love.update (dt)
 	gMyTime = love.timer.getTime( )
+	gLevel:Update(dt)
 end
 
 function love.draw ()
 	gMyTime = love.timer.getTime( )
+	gLevel:Draw()
 	
 	gPlayer:Draw()
 	
