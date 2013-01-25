@@ -1,5 +1,7 @@
 --tests for diverse particlesystems
 
+love.filesystem.load("lib.oop.lua")()
+
 function love.load ()
 	sprite = love.graphics.newImage("particle.png")
 	partSystem = love.graphics.newParticleSystem(sprite, 100)
