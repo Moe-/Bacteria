@@ -9,11 +9,23 @@ function cEnemyBossBase:Init(x,y)
 	self.parts = {}
 	
 	local e = 60
-	self:MakePart( 0*e,-2*e, gfx_boss_spike)
+	self:MakePart( 0*e,-4*e, gfx_boss_spike)
+	self:MakePart( 0*e,-3*e, gfx_boss_mid)
+	self:MakePart( 0*e,-2*e, gfx_boss_mid)
 	self:MakePart( 0*e,-1*e, gfx_boss_mid)
 	self:MakePart( 0*e, 0*e, gfx_boss_core)
 	self:MakePart( 0*e, 1*e, gfx_boss_mid)
-	self:MakePart( 0*e, 2*e, gfx_boss_gun)
+	self:MakePart( 0*e, 2*e, gfx_boss_mid)
+	self:MakePart( 0*e, 3*e, gfx_boss_mid)
+	self:MakePart( 0*e, 4*e, gfx_boss_gun)
+	
+	
+	self:MakePart(-3*e, 0*e, gfx_boss_spike)
+	self:MakePart(-2*e, 0*e, gfx_boss_mid)
+	self:MakePart(-1*e, 0*e, gfx_boss_mid)
+	self:MakePart( 1*e, 0*e, gfx_boss_mid)
+	self:MakePart( 2*e, 0*e, gfx_boss_mid)
+	self:MakePart( 3*e, 0*e, gfx_boss_spike)
 end
 
 function cEnemyBossBase:MakePart(x,y,gfx)
