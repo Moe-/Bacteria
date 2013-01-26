@@ -36,8 +36,8 @@ function cBase:DistToObj(o) return self:DistToPos(o.x,o.y) end
 function cBase:Damage(dmg)
 	if self.kind == "player" then
 		cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
-		cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
-		cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
+		--cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
+		--cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
 	end
 	
 	if (self.bInvulnerable) then return end

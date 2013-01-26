@@ -22,6 +22,11 @@ function cPlayer:Init(x,y)
 	self:UpdateWeapon("white")
 	self.radius = self.gfx.radius * 0.5
 	self.points = 0
+	
+	
+	self.weaponPower = 2.0
+	self.decaytime = 10
+	self.dwp = self.weaponPower / self.decaytime
 end
 
 function cPlayer:Update(dt)
@@ -32,7 +37,7 @@ function cPlayer:Update(dt)
 	end
 
 	if self.weaponPower > 0 then
-		self.weaponPower = max(0, self.weaponPower - 0.5 * dt) -- 30 seconds until weapon suxx
+		self.weaponPower = max(0, self.weaponPower - self.dwp * dt) -- 30 seconds until weapon suxx
 	end
 
  	if self.bCollidingWithTop then
