@@ -1,12 +1,13 @@
 cShot = CreateClass(cBase)
 
-function cShot:Init(x, y, dirX, dirY, lifetime, sType)
+function cShot:Init(x, y, dirX, dirY, lifetime, sType, colour)
 	self.x = x
 	self.y = y
 	self.dirX = dirX
 	self.dirY = dirY
 	self.lifetime = lifetime
 	self.sType = sType
+	self.colour = colour
 	if(sType == "player") then
 		self.gfx = gfx_shotplayer
 	else
@@ -22,9 +23,19 @@ function cShot:Update(dt)
 	self.y = self.y + self.dirY * dt * 1000
 	
 	if self.sType == "player" then
-	effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+		if self.colour == "red" then
+			effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+		elseif self.colour == "green" then
+			effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+		elseif self.colour == "blue" then
+			effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+		elseif self.colour == "white" then
+			effects:CreateEffect("trail_white", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+		else -- colour type is weird
+			effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+		end
 	else
-	effects:CreateEffect("trail_white", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+		effects:CreateEffect("trail_white", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
 	end
 	
 	return true
