@@ -10,8 +10,8 @@ FINDCMD="$FINDCMD -o -wholename ./make_love.sh -prune"
 FINDCMD="$FINDCMD -o -print"
 
 rm -f build/${FILENAMEBASE}.love build/${FILENAMEBASE}.exe build/${FILENAMEBASE}-src.zip
-echo `$FINDCMD`
-echo "-------------"
+#~ echo `$FINDCMD`
+#~ echo "-------------"
 zip /tmp/${FILENAMEBASE}.zip `$FINDCMD`
 cp /tmp/${FILENAMEBASE}.zip build/${FILENAMEBASE}-src.zip
 mv /tmp/${FILENAMEBASE}.zip build/${FILENAMEBASE}.love

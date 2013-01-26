@@ -13,7 +13,7 @@ function cPlayer:Draw()
 end
 
 function cPlayer:Init(x,y) 
-	print("player init")
+	--~ print("player init")
 	self.bIsPlayer = true
 	self.kind = "player"
 	self.x = x
@@ -25,7 +25,7 @@ function cPlayer:Init(x,y)
 	self:UpdateWeapon("white")
 	self.radius = self.gfx.radius * 0.35
 	self.points = 0
-	print("player init r=",self.radius)
+	--~ print("player init r=",self.radius)
 	
 	
 	self.weaponPower = 2.0
