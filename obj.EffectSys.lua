@@ -65,6 +65,12 @@ function cEffectSys:CreateEffect(kind, x, y, direction, above)
 	elseif kind == "trail_blue" then
 		if above then table.insert(self.ef_above, cTrail:New(self.sprite, x, y, direction, 0, 0, 255))
 		else table.insert(self.ef_below, cTrail:New(self.sprite, x, y, direction, 0, 0, 255)) end
+	elseif kind == "trail_red" then
+		if above then table.insert(self.ef_above, cTrail:New(self.sprite, x, y, direction, 255, 0, 0))
+		else table.insert(self.ef_below, cTrail:New(self.sprite, x, y, direction, 255, 0, 0)) end
+	elseif kind == "trail_green" then
+		if above then table.insert(self.ef_above, cTrail:New(self.sprite, x, y, direction, 0, 255, 0))
+		else table.insert(self.ef_below, cTrail:New(self.sprite, x, y, direction, 0, 255, 0)) end
 	elseif kind == "trail_white" then
 		if above then table.insert(self.ef_above, cTrail:New(self.sprite, x, y, direction, 255, 255, 255))
 		else table.insert(self.ef_below, cTrail:New(self.sprite, x, y, direction, 255, 255, 255)) end
