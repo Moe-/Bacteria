@@ -121,21 +121,9 @@ function love.update (dt)
 	effects:Update(dt)
     gSpawner:Update(dt)
 
-    local shotsDelete = {}
-	for i, v in pairs(gShots) do 
-		if v:Update(dt) == false then
-			table.insert(shotsDelete, i)
-		end
-	end
+	Shots_Update(dt)
+	Shots_HitTest()
 
-	for i, v in pairs(shotsDelete) do
-		table.remove(gShots, v)
-	end
-
-	for i, v in pairs(gShots) do 
-		Enemies_ShotTest(v)
-		gPlayer:ShotTest(v, "white") 
-	end
 --	gBoss:Update(dt)
 	Enemies_Update(dt)
 	gLevel:Update(dt)
@@ -160,7 +148,7 @@ function love.draw ()
 	gPlayer:Draw()
 	effects:DrawAbove()
 
-	for i, v in pairs(gShots) do v:Draw() end
+	Shots_Draw()
 	Enemies_Draw()
 	
 	--~ love.graphics.print("hello world",40,40)

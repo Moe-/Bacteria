@@ -37,7 +37,7 @@ function cEnemyBossFinal:Init(x,y)
 	self:BossInitBase(x,y)
 	
 	local e = kBossUnit
-	local rx,ry = 2,3
+	local rx,ry = 2,2
 	for ix=-rx,rx do
 	for iy=-ry,ry do
 		if (abs(ix) == rx and abs(iy) == ry) then
@@ -145,7 +145,7 @@ function cEnemyBossBase:Update(dt)
 				local dirY = gPlayer.y - y + math.random(-250, 250)
 				local norm = math.sqrt(dirX*dirX + dirY*dirY)
 				local lifetime = 5.0
-				table.insert(gShots, cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "blue"))
+				cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "blue")
 			end
 		end
 	end
