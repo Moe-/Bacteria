@@ -39,7 +39,7 @@ function cEnemyWeapon:Update(dt)
 		self.y = self.y + self.dy * dt
 	end
 
-	if(self:DistToObj(gPlayer) < 25) then
+	if(self:DistToObj(gPlayer) < gPlayer.radius*1.5) then
 		self:Destroy()
 		gPlayer:AddPoints(125)
 		gPlayer:UpdateWeapon(self.wType)

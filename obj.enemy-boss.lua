@@ -2,7 +2,7 @@ cEnemyBossBase = CreateClass(cEnemyBase)
 
 kBossUnit = 60*gEnemyBossGfxScale
 kEnemyBossMidBlockShotRadius = 0.8*kBossUnit
-kTentacleRespawnInterval = 4.0
+kTentacleRespawnInterval = 3.0
 
 -- ***** ***** ***** ***** ***** boss variants
 
