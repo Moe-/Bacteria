@@ -71,6 +71,8 @@ function love.update (dt)
 	for i, v in pairs(shotsDelete) do
 		table.remove(gShots, v)
 	end
+
+	for i, v in pairs(gShots) do Enemies_ShotTest(v) end
 	Enemies_Update(dt)
 end
 
