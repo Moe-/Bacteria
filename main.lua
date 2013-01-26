@@ -43,6 +43,7 @@ love.filesystem.load("obj.enemy-boss.lua")()
 love.filesystem.load("obj.enemy-weapon.lua")()
 love.filesystem.load("obj.EffectSys.lua")()
 love.filesystem.load("obj.spawner.lua")()
+love.filesystem.load("obj.SpriteStretch.lua")()
 
 cGfx = CreateClass(cBase)
 function cGfx:Init (img)
@@ -129,6 +130,7 @@ function love.load ()
 end
 
 function love.update (dt)
+	UpdateStretches()
 	gMyTime = love.timer.getTime( )
 	gPlayer:Update(dt)
 	effects:Update(dt)
@@ -152,6 +154,7 @@ function love.update (dt)
 end
 
 function love.draw ()
+	DrawStretches()
 	gMyTime = love.timer.getTime( )
 	
 	gLevel:DrawBack()
@@ -167,6 +170,8 @@ function love.draw ()
 	--~ love.graphics.print("hello world",40,40)
 	
 	gLevel:Draw()
+	
+	DrawStretches()
 
 	if (gPlayer:IsDead() == true) then
 		love.graphics.print("DEAD",40,240)
