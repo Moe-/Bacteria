@@ -13,9 +13,9 @@ TODO liste code :
 * wand rand
 * boss teile schaden / sterben  
 * gegner formationen spawnen
-* waffe rot/grün/blau
+* waffe rot/grï¿½n/blau
 * waffen wechseln bei bonus gegner einsammeln
-* weisse blutkörperchen resistenz
+* weisse blutkï¿½rperchen resistenz
 * boss nach zeit x
 * final boss herz !
 * background tiled
@@ -99,15 +99,6 @@ function love.load ()
 	gShots = {}
 	gLevel = cLevel:New()
 
-	gBoss = cEnemyBossBase:New(0.6*w,0.5*h)
-	
-	for i=1,5 do cEnemyEgg:New(0.9*w,randf()*h) end
-	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
-	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
-	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
-	for i=1,5 do cEnemyWeapon:New(0.9*w,randf()*h, rand_in_arr({"red", "green", "blue", "white"})) end
-	
-	
    gSpawner = cSpawner:New()
 
 	gShootNext = -1
@@ -134,7 +125,7 @@ function love.update (dt)
 		Enemies_ShotTest(v)
 		gPlayer:ShotTest(v, "white") 
 	end
-	gBoss:Update(dt)
+--	gBoss:Update(dt)
 	Enemies_Update(dt)
 	gLevel:Update(dt)
 
@@ -153,7 +144,7 @@ function love.draw ()
 	
 	gLevel:DrawBack()
 	
-	gBoss:Draw()
+--	gBoss:Draw()
 	effects:DrawBelow()
 	gPlayer:Draw()
 	effects:DrawAbove()
@@ -177,6 +168,7 @@ function love.keypressed (keyname)
 	elseif (keyname == "right"	or keyname == "d") then gPlayer:SetSpeedX(gPlayerSpeed)
 	elseif (keyname == "up"		or keyname == "w") then gPlayer:SetSpeedY(-gPlayerSpeed)
 	elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(gPlayerSpeed)
+	elseif (keyname == " ") then gShootNext = 0
 	else print("keypress",keyname)
 	end
 end
@@ -198,7 +190,8 @@ function love.keyreleased (keyname)
 		gPlayer:SetSpeedY(gPlayerSpeed)
 	elseif (keyname == "down" or keyname == "s") and (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
 		gPlayer:SetSpeedY(-gPlayerSpeed)
-	end
+    elseif (keyname == " ") then gShootNext = -1
+    end
 	
 
 

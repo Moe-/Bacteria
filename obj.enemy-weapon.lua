@@ -12,7 +12,7 @@ end
 
 function cEnemyWeapon:Draw() self:DrawWobble(0.2,0.1,gEnemyGfxScale) end
 
-function cEnemyWeapon:Update(dt)
+function cEnemyWeapon:Update(dt)	
 	self.x = self.x - 300 * dt
 	if self.x < 0 then
 		self:Destroy()
@@ -20,6 +20,7 @@ function cEnemyWeapon:Update(dt)
 	if(self:DistToObj(gPlayer) < 25) then
 		self:Destroy()
 		gPlayer:UpdateWeapon(self.wType)
+		effects:CreateEffect("powerup", gPlayer.x, gPlayer.y, 0, true)
 	end
 end
 
