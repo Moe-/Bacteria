@@ -2,7 +2,49 @@ cEnemyBossBase = CreateClass(cEnemyBase)
 
 kBossUnit = 60*gEnemyBossGfxScale
 
+
+-- ***** ***** ***** ***** ***** boss variants
+
+cEnemyBoss01 = CreateClass(cEnemyBossBase)
+
+cEnemyBoss02 = CreateClass(cEnemyBossBase)
+
+function cEnemyBoss02:Init(x,y) 
+	self:BossInitBase(x,y)
+	
+	local e = kBossUnit
+	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
+	for i=1,2 do 
+		local o = self:MakePart( 0, i*e, gfx_boss_mid)
+		local o = self:MakePart( 0,-i*e, gfx_boss_mid)
+	end
+	
+	local o = self:MakeTentacle( 0,-2, 4,-1, -0.5, gfx_boss_spike)		self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,-2, 4, 1, -0.5, gfx_boss_gun)		self.tentacles[o] = true
+	local o = self:MakeTentacle( 0, 2, 4,-1,  0.5, gfx_boss_spike)		self.tentacles[o] = true
+	local o = self:MakeTentacle( 0, 2, 4, 1,  0.5, gfx_boss_gun)		self.tentacles[o] = true
+	
+	self:UpdatePartsStatus()
+end
+
+-- ***** ***** ***** ***** ***** boss variants
+
 function cEnemyBossBase:Init(x,y) 
+	self:BossInitBase(x,y)
+	
+	local e = kBossUnit
+	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
+	
+	local o = self:MakeTentacle( 0,0, 4,-1, 0, gfx_boss_spike)	self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0, 4, 1, 0, gfx_boss_spike)	self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0, 4, 0,-1, gfx_boss_gun)		self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0, 4, 0, 1, gfx_boss_gun)		self.tentacles[o] = true
+	
+	
+	self:UpdatePartsStatus()
+end
+
+function cEnemyBossBase:BossInitBase(x,y) 
 	self.enemy_kind = "bossbase"
 	self.x = x
 	self.y = y
@@ -16,28 +58,14 @@ function cEnemyBossBase:Init(x,y)
 	self.parts = {}
 	self.cores = {}
 	self.tentacles = {}
-	
-	local e = kBossUnit
-	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
-	
-	local o = self:MakeTentacle( 0,0, -4, 0, gfx_boss_spike)	self.tentacles[o] = true
-	local o = self:MakeTentacle( 0,0,  4, 0, gfx_boss_spike)	self.tentacles[o] = true
-	local o = self:MakeTentacle( 0,0,  0,-4, gfx_boss_gun)		self.tentacles[o] = true
-	local o = self:MakeTentacle( 0,0,  0, 4, gfx_boss_gun)		self.tentacles[o] = true
-	
-	
-	self:UpdatePartsStatus()
 end
 
-function cEnemyBossBase:MakeTentacle(x,y,dx,dy,gfx_head)
+function cEnemyBossBase:MakeTentacle(x,y,num,vx,vy,gfx_head)
 	local tentacle = cTentacle:New()
 	local e = kBossUnit
-	local imax = max(abs(dx),abs(dy))
-	local vx = dx / imax
-	local vy = dy / imax
-	for i = 0,imax do 
-		local gfx = (i == imax) and gfx_head or gfx_boss_mid
-		local o = self:MakePart( i*vx*e, i*vy*e, gfx, tentacle)
+	for i = 0,num do 
+		local gfx = (i == num) and gfx_head or gfx_boss_mid
+		local o = self:MakePart( (x+i*vx)*e, (y+i*vy)*e, gfx, tentacle)
 	end
 	return tentacle
 end
@@ -97,6 +125,7 @@ end
 function cEnemyBossBase:Draw()
 	--~ for o,_ in pairs(self.parts) do o:Draw() end
 end
+
 
 -- ***** ***** ***** ***** ***** cTentacle
 

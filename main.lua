@@ -179,9 +179,16 @@ function love.keypressed (keyname)
 	elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(gPlayerSpeed)
 	elseif (keyname == "1") then gLevel.gfx_wall = gfx_wallA
 	elseif (keyname == "2") then gLevel.gfx_wall = gfx_wallB
+	elseif (keyname == "5") then TestBossSpawn()
 	elseif (keyname == " ") then gShootNext = 0
 	else print("keypress",keyname)
 	end
+end
+
+function TestBossSpawn()
+	local w = love.graphics.getWidth()
+	local h = love.graphics.getHeight()
+	cEnemyBoss02:New(0.7*w,0.5*h)
 end
 
 function love.keyreleased (keyname)
