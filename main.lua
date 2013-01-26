@@ -1,7 +1,9 @@
 sin = math.sin
 PI = math.pi
 
-gEnemyGfxScale = 0.7
+gEnemyGfxScale = 0.5
+gEnemyBossGfxScale = 0.7
+--~ gEnemyGfxScale = 1
 
 --[[
 TODO liste code : 
