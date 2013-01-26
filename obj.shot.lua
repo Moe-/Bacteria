@@ -24,9 +24,9 @@ function cShot:Update(dt)
 	
 	if self.sType == "player" then
 		if self.colour == "red" then
-			effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+			effects:CreateEffect("trail_red", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
 		elseif self.colour == "green" then
-			effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+			effects:CreateEffect("trail_green", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
 		elseif self.colour == "blue" then
 			effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
 		elseif self.colour == "white" then

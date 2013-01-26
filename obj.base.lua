@@ -30,6 +30,7 @@ function cBase:DistToObj(o) return self:DistToPos(o.x,o.y) end
 
 
 function cBase:Damage(dmg)
+	if (self.bInvulnerable) then return end
 	self.energy = self.energy - dmg
 	
 	if (self.energy <= 0) then self:Die() else self:NotifyDamage() end
@@ -45,7 +46,9 @@ end
 
 function cBase:ShotTest(shot, stype)
 	local damage = 20
-	if (self ~= gPlayer) then damage = 5 + 15 * gPlayer:GetWeaponPower() end
+	if (self.enemy_kind ~= nil and self.enemy_kind == "white") then 
+		damage = 5 + 15 * gPlayer:GetWeaponPower() 
+	end
 	if shot.sType == stype and shot:DistToObj(self) < 25 then self:Damage(damage) end
 end
 

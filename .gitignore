@@ -1,1 +1,4 @@
 Thumbs.db
+*.lua~
+.gitignore~
+

@@ -1,7 +1,7 @@
 cEnemyBlutPlatt = CreateClass(cEnemyBase)
 
 function cEnemyBlutPlatt:Init(x,y) 
-	enemy_kind = "blutplatt"
+	self.enemy_kind = "blutplatt"
 	self.x = x
 	self.y = y
 	self.energy = 120

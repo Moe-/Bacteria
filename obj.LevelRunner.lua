@@ -13,7 +13,7 @@ function cLevelRunner:Update(dt)
 	self.t = self.t + dt
 	
 	if self.t >= self.maxt then
-		self:End() --end the level
+		self:End()
 	elseif self.t >= self.nextbig then
 		--spawn a big wave
 		self.nextbig = self.nextbig + self.dbw
@@ -21,5 +21,5 @@ function cLevelRunner:Update(dt)
 end
 
 function cLevelRunner:End()
-
+	--do something fancy to end the level
 end

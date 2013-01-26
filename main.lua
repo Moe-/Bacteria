@@ -38,6 +38,7 @@ love.filesystem.load("obj.enemy-boss.lua")()
 love.filesystem.load("obj.enemy-weapon.lua")()
 love.filesystem.load("obj.EffectSys.lua")()
 love.filesystem.load("obj.spawner.lua")()
+love.filesystem.load("obj.LevelRunner.lua")()
 
 cGfx = CreateClass(cBase)
 function cGfx:Init (img)
@@ -58,6 +59,8 @@ end
 function loadgfx (path) return cGfx:New(love.graphics.newImage(path)) end
 
 function love.load ()
+	currlvl = cLevelRunner:New(10, 2, 1337)
+
 	effects = cEffectSys:New()
 	
 	effects:CreateEffect("slowtrail", 500, 0, 0, false)
@@ -80,6 +83,7 @@ function love.load ()
 					loadgfx("data/border2.png"),
 					loadgfx("data/border3.png"),}
 	gfx_background1	= loadgfx("data/background1.png")
+	gfx_background2	= loadgfx("data/background2.png")
 	
     snd_background = love.audio.newSource("data/background.mp3")
     snd_background:setLooping(true)
@@ -104,10 +108,13 @@ function love.load ()
 --	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
 --	for i=1,5 do cEnemyWeapon:New(0.9*w,randf()*h, rand_in_arr({"red", "green", "blue", "white"})) end
 	
-    gSpawner = cSpawner:New()
+   gSpawner = cSpawner:New()
+
+	gShootNext = -1
 end
 
 function love.update (dt)
+	currlvl:Update(dt)
 	gMyTime = love.timer.getTime( )
 	gPlayer:Update(dt)
 	effects:Update(dt)
@@ -131,6 +138,15 @@ function love.update (dt)
 --	gBoss:Update(dt)
 	Enemies_Update(dt)
 	gLevel:Update(dt)
+
+	if(gShootNext > -1) then
+		gShootNext = gShootNext - dt
+		if (gShootNext < 0) then
+			local x, y = love.mouse.getPosition()
+			gPlayer:Shoot(x, y)
+			gShootNext = 0.15
+		end
+	end
 end
 
 function love.draw ()
@@ -194,4 +210,9 @@ end
 
 function love.mousereleased(x, y, button)
 	if (button == "l") then gPlayer:Shoot(x, y) end
+	if (button == "r") then gShootNext = -1 end
+end
+
+function love.mousepressed(x, y, button)
+	if (button == "r") then gShootNext = 0 end
 end
