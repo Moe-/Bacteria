@@ -16,7 +16,7 @@ end
 function cEnemyWhite:Draw() 
 	if gPlayer.weaponPower <= 0.1 then
 		if gPlayer.wType == "red" then
-			love.graphics.setColor(150 + 105 * math.sin(self.t * 2), 0, 0, 50)
+			love.graphics.setColor(150 + 105 * math.sin(self.t * 2), 0, 150 + 105 * math.sin(self.t * 2), 50)
 		elseif gPlayer.wType == "green" then
 			love.graphics.setColor(0, 150 + 105 * math.sin(self.t * 2), 0, 50)
 		elseif gPlayer.wType == "blue" then
@@ -24,7 +24,7 @@ function cEnemyWhite:Draw()
 		elseif gPlayer.wType == "white" then
 			love.graphics.setColor(150 + 105 * math.sin(self.t * 2), 150 + 105 * math.sin(self.t * 2), 150 + 105 * math.sin(self.t * 2), 50)
 		end
-		self:DrawWobble(0.2,0.1,gEnemyGfxScale + 0.1) 
+		self:DrawWobble(0.2,0.1,gEnemyGfxScale + 0.3) 
 		love.graphics.setColor(255, 255, 255, 255)
 	end
 	self:DrawWobble(0.2,0.1,gEnemyGfxScale) 
@@ -47,7 +47,7 @@ function cEnemyWhite:Update (dt)
 
 	self.dx = clamp(self.dx + math.random(-20, 20), -100, 100)
 	self.dy = clamp(self.dy + math.random(-20, 20), -100, 100)
-	self.x = self.x + dt * self.dx
+	self.x = min(self.x + dt * self.dx, love.graphics.getWidth())
 	self.y = self.y + dt * self.dy
 end
 

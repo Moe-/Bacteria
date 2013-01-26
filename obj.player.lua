@@ -14,7 +14,7 @@ function cPlayer:Init(x,y)
 	print("player init")
 	self.x = x
 	self.y = y
-	self.energy = 100*100
+	self.energy = 1000
 	self.dx = 0
 	self.dy = 0
 	self.alpha = 255
@@ -23,8 +23,8 @@ function cPlayer:Init(x,y)
 end
 
 function cPlayer:Update(dt)
-	self.x = self.x + self.dx
-	self.y = self.y + self.dy
+	self.x = clamp(self.x + self.dx, 0, love.graphics.getWidth())
+	self.y = clamp(self.y + self.dy, 0, love.graphics.getHeight())
 	if (self:IsDead() == true) and self.alpha > 0 then
 		self.alpha = self.alpha - 5
 	end
