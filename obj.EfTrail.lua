@@ -1,6 +1,6 @@
 cTrail = CreateClass(cEffectBasic)
 
-function cTrail:Init(sprite, x, y, direction)
+function cTrail:Init(sprite, x, y, direction, cr, cg, cb)
 	self.ps = cPartSys:New()
 	
 	self.partSystem = love.graphics.newParticleSystem(sprite, 100)
@@ -22,7 +22,7 @@ function cTrail:Init(sprite, x, y, direction)
 	self.partSystem:setRotation              (0)
 	self.partSystem:setSpin                  (0)
 	self.partSystem:setSpinVariation         (0)
-	self.partSystem:setColors                (0, 0, 255, 240, 0, 0, 255, 10)
+	self.partSystem:setColors                (cr, cg, cb, 240, cr, cg, cb, 10)
 	self.partSystem:stop();
 	self.ps:AddEmitter(self.partSystem, 0)
 	
