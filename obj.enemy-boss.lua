@@ -90,10 +90,12 @@ function cEnemyBossBase:BossInitBase(x,y)
 	
 	self.parts = {}
 	self.cores = {}
+	self.tentacles = {}
 end
 
 function cEnemyBossBase:MakeTentacle(x,y,num,vx,vy,core,gfx_head)
 	local tentacle = cTentacle:New()
+	core.tentacles[tentacle] = true
 	local e = kBossUnit
 	for i = 0,num do 
 		local gfx = (i == num) and gfx_head or gfx_boss_mid
@@ -114,22 +116,14 @@ function cEnemyBossBase:NotifyPartDie(o)
 	self:UpdatePartsStatus()
 end
 
-function cEnemyBossBase:UpdatePartsStatus()
-	local bCoresInvul = false
-	for o,_ in pairs(self.parts) do 
-		if (o.gfx == gfx_boss_gun or o.gfx == gfx_boss_spike) then bCoresInvul = true end
-	end
-	
+function cEnemyBossBase:UpdatePartsStatus()	
 	-- set cores invul if guns/spikes alive
 	local bCoresAlive = false
-	--~ print("boss:bCoresInvul",bCoresInvul)
-	for o,_ in pairs(self.cores) do bCoresAlive = true o.bInvulnerable = bCoresInvul end
+	for o,_ in pairs(self.cores) do bCoresAlive = true o:CoreCheckInvul() end
 	
 	-- death if no cores left
 	if (not bCoresAlive) then 
-		for o,_ in pairs(self.parts) do 
-			o:Die()
-		end
+		for o,_ in pairs(self.parts) do o:Die() end
 		self:Die()
 	end
 end
@@ -164,6 +158,12 @@ function cTentacle:Add (o)
 	self.parts[o] = true
 end
 
+function cTentacle:CoreCheckInvul ()
+	for o,_ in pairs(self.parts) do
+		if (o.gfx == gfx_boss_gun or o.gfx == gfx_boss_spike) then return true end
+	end
+end
+
 -- ***** ***** ***** ***** ***** cEnemyBossPartBase
 cEnemyBossPartBase = CreateClass(cEnemyBase)
 
@@ -175,6 +175,7 @@ function cEnemyBossPartBase:Init	(x,y,gfx,boss,tentacle)
 	self.gfx = gfx
 	self.energy = 100
 	self.boss = boss
+	self.tentacles = {}
 	self.tentacle = tentacle
 	if (tentacle) then tentacle:Add(self) end
 	self:Register()
@@ -211,6 +212,13 @@ function cEnemyBossPartBase:Update(dt)
 			local lifetime = 5.0
 			cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "blue")
 		end
+	end
+end
+
+function cEnemyBossPartBase:CoreCheckInvul()
+	self.bInvulnerable = false
+	for o,_ in pairs(self.tentacles) do 
+		if (o:CoreCheckInvul()) then self.bInvulnerable = true end
 	end
 end
 
