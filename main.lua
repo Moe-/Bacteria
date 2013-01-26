@@ -225,7 +225,7 @@ function draw_game ()
 		elseif gPlayer.wType == "green" then gfx = gfx_pill_green
 		elseif gPlayer.wType == "white" then gfx = gfx_pill_white
 		end
-		gfx:Draw(50 + i/2, love.graphics.getHeight() - 4 * gfx.oy,0,1,1)
+		gfx:Draw(250 + i/2, gfx.oy,0,1,1)
 	end
 
 	-- draw score
