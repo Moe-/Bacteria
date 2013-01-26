@@ -15,9 +15,7 @@ end
 
 function Shots_BlockPlayerShotsAtPos(x,y,r)
 	 for o,_ in pairs(gShots) do 
-		if (o.bIsPlayerShot) then
-			--~ o:Update(dt)
-		end
+		if (o.bIsPlayerShot and o:DistToPos(x,y) < r) then o:Destroy() end
 	end
 end  
 

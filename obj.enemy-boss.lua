@@ -1,6 +1,7 @@
 cEnemyBossBase = CreateClass(cEnemyBase)
 
 kBossUnit = 60*gEnemyBossGfxScale
+kEnemyBossMidBlockShotRadius = 0.8*kBossUnit
 
 
 -- ***** ***** ***** ***** ***** boss variants
@@ -209,6 +210,10 @@ function cEnemyBossPartBase:Update()
 	
 	self.x = self.boss.x + x + (bHorz and 0 or iOff)
 	self.y = self.boss.y + y + (bHorz and iOff or 0)
+	
+	if (self.gfx == gfx_boss_mid) then 
+		Shots_BlockPlayerShotsAtPos(self.x,self.y,kEnemyBossMidBlockShotRadius)
+	end
 end
 
 function cEnemyBossPartBase:Die()
