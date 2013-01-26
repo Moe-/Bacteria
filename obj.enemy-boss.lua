@@ -68,7 +68,7 @@ function cEnemyBossBase:Init(x,y)
 	local e = kBossUnit
 	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
 	
-	local core
+	local core = o
 	local o = self:MakeTentacle( 0,0, 4,-1, 0, core, gfx_boss_spike)
 	local o = self:MakeTentacle( 0,0, 4, 1, 0, core, gfx_boss_spike)
 	local o = self:MakeTentacle( 0,0, 4, 0,-1, core, gfx_boss_gun)
@@ -90,10 +90,12 @@ function cEnemyBossBase:BossInitBase(x,y)
 	
 	self.parts = {}
 	self.cores = {}
+	self.tentacles = {}
 end
 
 function cEnemyBossBase:MakeTentacle(x,y,num,vx,vy,core,gfx_head)
 	local tentacle = cTentacle:New()
+	if (core) then core.tentacles[tentacle] = true end
 	local e = kBossUnit
 	for i = 0,num do 
 		local gfx = (i == num) and gfx_head or gfx_boss_mid
@@ -114,48 +116,23 @@ function cEnemyBossBase:NotifyPartDie(o)
 	self:UpdatePartsStatus()
 end
 
-function cEnemyBossBase:UpdatePartsStatus()
-	local bCoresInvul = false
-	for o,_ in pairs(self.parts) do 
-		if (o.gfx == gfx_boss_gun or o.gfx == gfx_boss_spike) then bCoresInvul = true end
-	end
-	
+function cEnemyBossBase:UpdatePartsStatus()	
 	-- set cores invul if guns/spikes alive
 	local bCoresAlive = false
-	--~ print("boss:bCoresInvul",bCoresInvul)
-	for o,_ in pairs(self.cores) do bCoresAlive = true o.bInvulnerable = bCoresInvul end
+	for o,_ in pairs(self.cores) do bCoresAlive = true o:CoreCheckInvul() end
 	
 	-- death if no cores left
 	if (not bCoresAlive) then 
-		for o,_ in pairs(self.parts) do 
-			o:Die()
-		end
+		for o,_ in pairs(self.parts) do o:Die() end
 		self:Die()
 	end
 end
 
 function cEnemyBossBase:Update(dt)
 	self.y = self.y0 + 50 * sin(0.35*gMyTime*PI)
-	
-	for o,_ in pairs(self.parts) do
-		if (o.gfx == gfx_boss_gun) then
-			local rnd = math.random()
-			if(rnd * dt < 0.0025) then
-				local x = o.x
-				local y = o.y
-				local dirX = gPlayer.x - x
-				local dirY = gPlayer.y - y + math.random(-250, 250)
-				local norm = math.sqrt(dirX*dirX + dirY*dirY)
-				local lifetime = 5.0
-				cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "blue")
-			end
-		end
-	end
-	
 end
 
 function cEnemyBossBase:Draw()
-	--~ for o,_ in pairs(self.parts) do o:Draw() end
 end
 
 
@@ -181,24 +158,31 @@ function cTentacle:Add (o)
 	self.parts[o] = true
 end
 
+function cTentacle:CoreCheckInvul ()
+	for o,_ in pairs(self.parts) do
+		if (o.gfx == gfx_boss_gun or o.gfx == gfx_boss_spike) then return true end
+	end
+end
+
 -- ***** ***** ***** ***** ***** cEnemyBossPartBase
 cEnemyBossPartBase = CreateClass(cEnemyBase)
 
 function cEnemyBossPartBase:Init	(x,y,gfx,boss,tentacle)
 	self.x = boss.x+x
-	self.y = boss.x+y
+	self.y = boss.y+y
 	self.x0 = x
 	self.y0 = y
 	self.gfx = gfx
 	self.energy = 100
 	self.boss = boss
+	self.tentacles = {}
 	self.tentacle = tentacle
 	if (tentacle) then tentacle:Add(self) end
 	self:Register()
 	if (self.gfx == gfx_boss_mid) then self.bInvulnerable = true end
 end
 
-function cEnemyBossPartBase:Update()
+function cEnemyBossPartBase:Update(dt)
 	local x = self.x0
 	local y = self.y0
 	
@@ -214,6 +198,27 @@ function cEnemyBossPartBase:Update()
 	
 	if (self.gfx == gfx_boss_mid) then 
 		Shots_BlockPlayerShotsAtPos(self.x,self.y,kEnemyBossMidBlockShotRadius)
+	end
+	
+	-- shot if gun 
+	if (self.gfx == gfx_boss_gun) then
+		local rnd = math.random()
+		if(rnd * dt < 0.0025) then
+			local x = self.x
+			local y = self.y
+			local dirX = gPlayer.x - x
+			local dirY = gPlayer.y - y + math.random(-250, 250)
+			local norm = math.sqrt(dirX*dirX + dirY*dirY)
+			local lifetime = 5.0
+			cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "blue")
+		end
+	end
+end
+
+function cEnemyBossPartBase:CoreCheckInvul()
+	self.bInvulnerable = false
+	for o,_ in pairs(self.tentacles) do 
+		if (o:CoreCheckInvul()) then self.bInvulnerable = true end
 	end
 end
 

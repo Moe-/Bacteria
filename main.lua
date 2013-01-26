@@ -22,6 +22,10 @@ TODO liste code :
 * final boss herz !
 * background tiled
 * rotbk anim ?
+
+cam shake on player hit
+cam slimed (y-stretch)
+scroll speed + gegner extra speed = herzschlag.
 ]]--
 
 gMyTime = love.timer.getTime( )
@@ -40,6 +44,7 @@ love.filesystem.load("obj.enemy-boss.lua")()
 love.filesystem.load("obj.enemy-weapon.lua")()
 love.filesystem.load("obj.EffectSys.lua")()
 love.filesystem.load("obj.spawner.lua")()
+love.filesystem.load("obj.SpriteStretch.lua")()
 
 cGfx = CreateClass(cBase)
 function cGfx:Init (img)
@@ -104,7 +109,7 @@ function love.load ()
 	gfx_pill_blue			= loadgfx("data/pill_blue.png")
 	gfx_pill_green			= loadgfx("data/pill_green.png")
 	gfx_pill_red			= loadgfx("data/pill_red.png")
-	gfx_startscreen		= loadgfx("data/gameover.png")
+	gfx_startscreen		= loadgfx("data/screen.png")
 	gfx_gameover			= loadgfx("data/gameover.png")
 	
     snd_background = love.audio.newSource("data/background.mp3")
@@ -136,6 +141,7 @@ function love.update (dt)
 	if gGameState ~= "game" then 
 		gStateChangeTime = gStateChangeTime - dt
 	else
+		UpdateStretches()
 		gMyTime = love.timer.getTime( )
 		gPlayer:Update(dt)
 		effects:Update(dt)
@@ -165,7 +171,10 @@ function love.update (dt)
 	end
 end
 
+
 function draw_game ()
+	DrawStretches()
+
 	gMyTime = love.timer.getTime( )
 	
 	gLevel:DrawBack()
@@ -199,11 +208,11 @@ function draw_game ()
 end
 
 function draw_start_screen()
-	gfx_gameover:DrawX0Y0(0, 0)
+	gfx_startscreen:DrawX0Y0(0, 0)
 end
 
 function draw_gameover_screen()
-	gfx_startscreen:DrawX0Y0(0, 0)
+	gfx_gameover:DrawX0Y0(0, 0)
 end
 
 function love.draw ()
