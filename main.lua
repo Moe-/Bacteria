@@ -144,7 +144,7 @@ function love.update (dt)
 	if gGameState ~= "game" then 
 		gStateChangeTime = gStateChangeTime - dt
 	else
-		UpdateStretches()
+		UpdateStretches(dt)
 		gMyTime = love.timer.getTime( )
 		gPlayer:Update(dt)
 		effects:Update(dt)
