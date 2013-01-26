@@ -13,10 +13,14 @@ function cEnemyBoss02:Init(x,y)
 	self:BossInitBase(x,y)
 	
 	local e = kBossUnit
-	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
-	for i=1,2 do 
-		local o = self:MakePart( 0, i*e, gfx_boss_mid)
-		local o = self:MakePart( 0,-i*e, gfx_boss_mid)
+	
+	local ry = 2
+	for i=-ry,ry do 
+		if (abs(i) == ry) then
+			local o = self:MakePart( 0*e, i*e, gfx_boss_core) self.cores[o] = true
+		else
+			local o = self:MakePart( 0, i*e, gfx_boss_mid)
+		end
 	end
 	
 	local o = self:MakeTentacle( 0,-2, 4,-1, -0.5, gfx_boss_spike)		self.tentacles[o] = true
@@ -33,11 +37,15 @@ function cEnemyBossFinal:Init(x,y)
 	self:BossInitBase(x,y)
 	
 	local e = kBossUnit
-	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
 	local rx,ry = 2,3
 	for ix=-rx,rx do
 	for iy=-ry,ry do
-		if (ix ~= 0 or iy ~= 0) then local o = self:MakePart( ix*e, iy*e, gfx_boss_mid)  end
+		if (abs(ix) == rx and abs(iy) == ry) then
+			local o = self:MakePart( ix*e, iy*e, gfx_boss_core) self.cores[o] = true
+		else
+			local o = self:MakePart( ix*e, iy*e, gfx_boss_mid)
+		end
+		--~ if (ix ~= 0 or iy ~= 0) then local o = self:MakePart( ix*e, iy*e, gfx_boss_mid)  end
 	end
 	end
 	
