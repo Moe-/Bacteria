@@ -1,5 +1,7 @@
 cEnemyBossBase = CreateClass(cEnemyBase)
 
+kBossUnit = 60*gEnemyBossGfxScale
+
 function cEnemyBossBase:Init(x,y) 
 	self.enemy_kind = "bossbase"
 	self.x = x
@@ -13,27 +15,32 @@ function cEnemyBossBase:Init(x,y)
 	
 	self.parts = {}
 	self.cores = {}
+	self.tentacles = {}
 	
-	local e = 60 * gEnemyBossGfxScale
-	local o = self:MakePart( 0*e,-4*e, gfx_boss_gun)
-	local o = self:MakePart( 0*e,-3*e, gfx_boss_mid)
-	local o = self:MakePart( 0*e,-2*e, gfx_boss_mid)
-	local o = self:MakePart( 0*e,-1*e, gfx_boss_mid)
+	local e = kBossUnit
 	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
-	local o = self:MakePart( 0*e, 1*e, gfx_boss_mid)
-	local o = self:MakePart( 0*e, 2*e, gfx_boss_mid)
-	local o = self:MakePart( 0*e, 3*e, gfx_boss_mid)
-	local o = self:MakePart( 0*e, 4*e, gfx_boss_gun)
 	
+	local o = self:MakeTentacle( 0,0, -4, 0, gfx_boss_gun)   self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0,  4, 0, gfx_boss_gun)   self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0,  0,-4, gfx_boss_spike) self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0,  0, 4, gfx_boss_spike) self.tentacles[o] = true
 	
-	local o = self:MakePart(-3*e, 0*e, gfx_boss_spike)
-	local o = self:MakePart(-2*e, 0*e, gfx_boss_mid)
-	local o = self:MakePart(-1*e, 0*e, gfx_boss_mid)
-	local o = self:MakePart( 1*e, 0*e, gfx_boss_mid)
-	local o = self:MakePart( 2*e, 0*e, gfx_boss_mid)
-	local o = self:MakePart( 3*e, 0*e, gfx_boss_spike)
 	
 	self:UpdatePartsStatus()
+end
+
+function cEnemyBossBase:MakeTentacle(x,y,dx,dy,gfx_head)
+	local tentacle = cTentacle:New()
+	local e = kBossUnit
+	local imax = max(abs(dx),abs(dy))
+	local vx = dx / imax
+	local vy = dy / imax
+	for i = 0,imax do 
+		local gfx = (i == imax) and gfx_head or gfx_boss_mid
+		local o = self:MakePart( i*vx*e, i*vy*e, gfx)
+		tentacle:Add(o)
+	end
+	return tentacle
 end
 
 function cEnemyBossBase:MakePart(x,y,gfx)
@@ -90,6 +97,18 @@ end
 
 function cEnemyBossBase:Draw()
 	--~ for o,_ in pairs(self.parts) do o:Draw() end
+end
+
+-- ***** ***** ***** ***** ***** cTentacle
+
+cTentacle = CreateClass()
+
+function cTentacle:Init ()
+	self.parts = {}
+end
+
+function cTentacle:Add (o)
+	self.parts[o] = true
 end
 
 -- ***** ***** ***** ***** ***** cEnemyBossPartBase
