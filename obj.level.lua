@@ -125,10 +125,13 @@ function cWall:Collide (x,y,o,r)
 	local relx = o.x - x
 	if (relx >= -halfw and relx <= halfw) then 
 		local y2 = y + relx * self.dy_per_x
-		if (self.bTop) then 
+		local oldy = o.y
+		if (self.bTop) then
 			o.y = max(o.y,y2+kLevelCollOff+r)
+			if (oldy ~= o.y) then o.bCollidingWithTop = true end
 		else 
 			o.y = min(o.y,y2-kLevelCollOff-r)
+			if (oldy ~= o.y) then o.bCollidingWithBottom = true end
 		end
 	end
 end
