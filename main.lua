@@ -266,8 +266,9 @@ function love.keypressed (keyname)
 	elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(gPlayerSpeed)
 	elseif (keyname == "1") then gLevel.gfx_wall = gfx_wallA
 	elseif (keyname == "2") then gLevel.gfx_wall = gfx_wallB
-	elseif (keyname == "5") then TestBossSpawn()
-	elseif (keyname == "6") then TestBossSpawn(cEnemyBossFinal)
+	elseif (keyname == "5") then TestBossSpawn(cEnemyBoss01)
+	elseif (keyname == "6") then TestBossSpawn(cEnemyBoss02)
+	elseif (keyname == "7") then TestBossSpawn(cEnemyBossFinal)
 	elseif (keyname == "f3") then gPlayer:UpdateWeapon("red")
 	elseif (keyname == "f4") then gPlayer:UpdateWeapon("green")
 	elseif (keyname == "f5") then gPlayer:UpdateWeapon("blue")

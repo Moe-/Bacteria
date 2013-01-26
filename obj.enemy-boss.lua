@@ -46,7 +46,7 @@ function cEnemyBoss02:Init(x,y)
 	self:BossInitBase(x,y)
 	
 	local e = kBossUnit
-	local o = self:MakePart( 0*e,-1*e, gfx_boss_core) self.cores[o] = true
+	local o = self:MakePart( 0*e,0*e, gfx_boss_core) self.cores[o] = true
 	
 	local core = o
 	local o = self:MakeTentacle( 0,0, 4,-1, 0, core, gfx_boss_spike)
@@ -224,6 +224,7 @@ end
 cEnemyBossPartBase = CreateClass(cEnemyBase)
 
 function cEnemyBossPartBase:Init	(x,y,gfx,boss,tentacle)
+	self.bIsBossPart = true
 	self.x = boss.x+x
 	self.y = boss.y+y
 	self.x0 = x

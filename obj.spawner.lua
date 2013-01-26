@@ -124,12 +124,13 @@ function cSpawner:spawnFormation()
 end
 
 function cSpawner:spawnWeapons()
+	if (self:BossOnScreen()) then return end
     local rand = math.random(1,100)
     if (rand == 1) then
         local w = love.graphics.getWidth()
         local h = love.graphics.getHeight()
 
-        cEnemyWeapon:New(0.9*w,randf()*h, rand_in_arr({"red", "green", "blue", "white"}))
+        cEnemyWeapon:New(1.1*w,randf()*h, rand_in_arr({"red", "green", "blue", "white"}))
     end
 end
 
@@ -142,6 +143,12 @@ function cSpawner:EnemiesOnScreen()
         end
     end
     return found
+end
+
+function cSpawner:BossOnScreen()
+    for o,_ in pairs(gEnemies) do
+        if (o.bIsBossPart) then return true end
+    end
 end
 
 
