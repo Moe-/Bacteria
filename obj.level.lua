@@ -4,6 +4,8 @@
 cLevel = CreateClass()
 
 kLevelBorderBackOffset = 20
+kLevelStepX = 110
+kLevelCollOff = 40
 
 function cLevel:Init() 
 	self.walls = {}
@@ -11,7 +13,7 @@ function cLevel:Init()
 	self.scrollx = 0
 	self.scrolly = 0
 	self.spawned_i = 0
-	self.stepx = 110
+	self.stepx = kLevelStepX
 	
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight() 
@@ -117,8 +119,24 @@ end
 
 function cWall:Destroy () gLevel.walls[self] = nil end
 
-function cWall:Update (dt)
+function cWall:Collide (x,y,o)
+	if (o.x >= x and o.x <= x + kLevelStepX) then 
+		if (self.bTop) then 
+			o.y = max(o.y,y+kLevelCollOff)
+		else 
+			o.y = min(o.y,y-kLevelCollOff)
+		end
+	end
 end
+
+function cWall:Update (dt)
+	local x = self.x-gLevel.scrollx
+	local y = self.y-gLevel.scrolly
+	--~ print("wall",x,y)
+	for o,_ in pairs(gEnemies) do self:Collide(x,y,o) end
+end
+
+
 
 function cWall:DrawPre (xa,ya)
 	local gfx = gfx_border01
