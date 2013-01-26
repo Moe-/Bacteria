@@ -1,7 +1,6 @@
 cPlayer = CreateClass(cBase)
 
 function cPlayer:Draw() 
-	self.kind = "player"
 	local t = gMyTime
 	local s = 1.0 + 0.2 * sin(t*PI)
 	local r = PI * 0.1 * sin(t*0.9*PI)
@@ -14,6 +13,8 @@ function cPlayer:Draw()
 end
 
 function cPlayer:Init(x,y) 
+	print("player init")
+	self.kind = "player"
 	self.x = x
 	self.y = y
 	self.energy = cPlayerEnergyMax
@@ -24,6 +25,11 @@ function cPlayer:Init(x,y)
 	self.radius = self.gfx.radius * 0.35
 	self.points = 0
 	print("player init r=",self.radius)
+	
+	
+	self.weaponPower = 2.0
+	self.decaytime = 10
+	self.dwp = self.weaponPower / self.decaytime
 end
 
 function cPlayer:Update(dt)
@@ -34,7 +40,7 @@ function cPlayer:Update(dt)
 	end
 
 	if self.weaponPower > 0 then
-		self.weaponPower = max(0, self.weaponPower - 0.5 * dt) -- 30 seconds until weapon suxx
+		self.weaponPower = max(0, self.weaponPower - self.dwp * dt) -- 30 seconds until weapon suxx
 	end
 
  	if self.bCollidingWithTop then

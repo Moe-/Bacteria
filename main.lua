@@ -192,8 +192,6 @@ function resetgame()
 end
 
 function draw_game ()
-	DrawStretches()
-
 	gMyTime = love.timer.getTime( )
 	
 	gLevel:DrawBack()
@@ -210,6 +208,7 @@ function draw_game ()
 	
 	gLevel:Draw()
 	
+	DrawStretches()
 	-- draw life line
 	for i = 0, gPlayer.energy, 20 do
 		local percent = i/cPlayerEnergyMax
