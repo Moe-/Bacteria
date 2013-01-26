@@ -8,7 +8,7 @@ function cEnemyWhite:Init(x,y)
 	self:Register()
 end
 
-function cEnemyWhite:Draw() self:DrawWobble(0.2,0.1) end
+function cEnemyWhite:Draw() self:DrawWobble(0.2,0.1,gEnemyGfxScale) end
 
 function cEnemyWhite:Update (dt)
 	local rnd = math.random()

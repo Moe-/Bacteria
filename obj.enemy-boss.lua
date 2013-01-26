@@ -8,7 +8,7 @@ function cEnemyBossBase:Init(x,y)
 	
 	self.parts = {}
 	
-	local e = 60
+	local e = 60 * gEnemyGfxScale
 	self:MakePart( 0*e,-4*e, gfx_boss_gun)
 	self:MakePart( 0*e,-3*e, gfx_boss_mid)
 	self:MakePart( 0*e,-2*e, gfx_boss_mid)
@@ -46,5 +46,5 @@ function cEnemyBossPartBase:Init	(x,y,gfx)
 	self.gfx = gfx
 end
 
-function cEnemyBossPartBase:Draw() self:DrawWobble(0.1,0.1) end
+function cEnemyBossPartBase:Draw() self:DrawWobble(0.1,0.1,gEnemyGfxScale) end
 

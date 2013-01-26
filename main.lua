@@ -1,6 +1,8 @@
 sin = math.sin
 PI = math.pi
 
+gEnemyGfxScale = 0.7
+
 --[[
 TODO liste code : 
 * wand kollision

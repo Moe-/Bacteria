@@ -8,4 +8,4 @@ function cEnemyRed:Init(x,y)
 	self:Register()
 end
 
-function cEnemyRed:Draw() self:DrawWobble(0.2,0.1) end
+function cEnemyRed:Draw() self:DrawWobble(0.2,0.1,gEnemyGfxScale) end

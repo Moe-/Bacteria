@@ -8,4 +8,4 @@ function cEnemyBlutPlatt:Init(x,y)
 	self:Register()
 end
 
-function cEnemyBlutPlatt:Draw() self:DrawWobble(0.2,0.1) end
+function cEnemyBlutPlatt:Draw() self:DrawWobble(0.2,0.1,gEnemyGfxScale) end
