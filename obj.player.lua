@@ -20,7 +20,7 @@ function cPlayer:Init(x,y)
 	self.alpha = 255
 	self.gfx = gfx_player
 	self:UpdateWeapon("white")
-	self.radius = self.gfx.radius
+	self.radius = self.gfx.radius * 0.5
 end
 
 function cPlayer:Update(dt)

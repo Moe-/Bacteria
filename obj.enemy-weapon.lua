@@ -38,6 +38,8 @@ function cEnemyWeapon:Update(dt)
 		self:Destroy()
 		gPlayer:UpdateWeapon(self.wType)
 	end
+
+	effects:CreateEffect("powerup", gPlayer.x, gPlayer.y, 0, true)
 end
 
 function cEnemyWeapon:ShotTest(shot, stype)

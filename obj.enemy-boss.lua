@@ -9,6 +9,7 @@ function cEnemyBossBase:Init(x,y)
 	self.energy = 100
 	self:Register()
 	self.bInvulnerable = true
+	self.bIgnoreWalls = true
 	
 	self.parts = {}
 	self.cores = {}
@@ -55,7 +56,7 @@ function cEnemyBossBase:UpdatePartsStatus()
 	
 	-- set cores invul if guns/spikes alive
 	local bCoresAlive = false
-	print("boss:bCoresInvul",bCoresInvul)
+	--~ print("boss:bCoresInvul",bCoresInvul)
 	for o,_ in pairs(self.cores) do bCoresAlive = true o.bInvulnerable = bCoresInvul end
 	
 	-- death if no cores left
@@ -63,8 +64,8 @@ function cEnemyBossBase:UpdatePartsStatus()
 		for o,_ in pairs(self.parts) do 
 			o:Die()
 		end
+		self:Die()
 	end
-	
 end
 
 function cEnemyBossBase:Update(dt)

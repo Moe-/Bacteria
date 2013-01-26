@@ -123,6 +123,7 @@ end
 function cWall:Destroy () gLevel.walls[self] = nil end
 
 function cWall:Collide (x,y,o,r)
+	if (o.bIgnoreWalls) then return end
 	local halfw = 0.5*kLevelStepX
 	local relx = o.x - x
 	if (relx >= -halfw and relx <= halfw) then 
