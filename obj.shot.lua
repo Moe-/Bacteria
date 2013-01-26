@@ -26,6 +26,8 @@ function cShot:Init(x, y, dirX, dirY, lifetime, sType, colour)
 	self.y = y
 	self.dirX = dirX
 	self.dirY = dirY
+	self.dirX0 = dirX
+	self.dirY0 = dirY
 	self.lifetime = lifetime
 	self.sType = sType
 	if(sType == "player") then

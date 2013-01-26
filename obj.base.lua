@@ -70,6 +70,9 @@ function cBase:ShotTest(shot, stype)
 	local d = self.radius or 25
 	if shot.sType == stype and shot:DistToObj(self) < d then 
 		--~ if (not self.bIsPlayer) then print("shothit",damage,self.enemy_resist_colour,shot.colour) end
+		if (bResist) then 
+			shot.dirX = -0.5 * shot.dirX0 
+		end
 		self:Damage(damage,bResist) 
 	end
 end
