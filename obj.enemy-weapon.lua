@@ -37,9 +37,9 @@ function cEnemyWeapon:Update(dt)
 	if(self:DistToObj(gPlayer) < 25) then
 		self:Destroy()
 		gPlayer:UpdateWeapon(self.wType)
+		effects:CreateEffect("powerup", gPlayer.x, gPlayer.y, 0, true)
 	end
 
-	effects:CreateEffect("powerup", gPlayer.x, gPlayer.y, 0, true)
 end
 
 function cEnemyWeapon:ShotTest(shot, stype)

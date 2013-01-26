@@ -36,10 +36,10 @@ function cPlayer:Update(dt)
 
  	if self.bCollidingWithTop then
  		self.bCollidingWithTop = false
- 		effects:CreateEffect("bloodborder", self.x, self.y - 100, 90, false)
+ 		effects:CreateEffect("bloodborder", self.x, self.y - 50, 90, false)
  	elseif self.bCollidingWithBottom then
  		self.bCollidingWithBottom = false
- 		effects:CreateEffect("bloodborder", self.x, self.y + 100, 270, false)
+ 		effects:CreateEffect("bloodborder", self.x, self.y + 50, 270, false)
 	end
 end
 
