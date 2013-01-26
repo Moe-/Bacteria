@@ -20,6 +20,7 @@ function cPlayer:Init(x,y)
 	self.alpha = 255
 	self:UpdateWeapon("white")
 	self.radius = self.gfx.radius * 0.5
+	self.points = 0
 end
 
 function cPlayer:Update(dt)
@@ -80,4 +81,12 @@ end
 
 function cPlayer:GetWeaponPower()
 	return self.weaponPower
+end
+
+function cPlayer:AddPoints(points)
+	self.points = self.points + points
+end
+
+function cPlayer:GetPoints()
+	return self.points
 end
