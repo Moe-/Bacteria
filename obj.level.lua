@@ -21,6 +21,7 @@ function cLevel:Init()
 	self.tunnel_h = cValueSpline:New(h*0.7,h*0.2,10,5)
 	self.tunnel_y = cValueSpline:New(h*0.5,h*0.3,10,5)
 	
+	self.gfx_wall = gfx_wallA
 	self:SpawnWalls()
 	
 end
@@ -79,7 +80,7 @@ function cLevel:Draw()
 	--~ print("num walls",table_count(self.walls))
 end
 
-function cLevel:GetBorderGfxArr() return gfx_border end
+function cLevel:GetBorderGfxArr() return self.gfx_wall end
 
 -- ***** ***** ***** ***** ***** cValueSpline
 cValueSpline = CreateClass()
