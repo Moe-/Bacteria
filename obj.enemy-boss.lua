@@ -2,7 +2,7 @@ cEnemyBossBase = CreateClass(cEnemyBase)
 
 kBossUnit = 60*gEnemyBossGfxScale
 kEnemyBossMidBlockShotRadius = 0.8*kBossUnit
-
+kTentacleRespawnInterval = 2.0
 
 -- ***** ***** ***** ***** ***** boss variants
 
@@ -94,14 +94,7 @@ function cEnemyBossBase:BossInitBase(x,y)
 end
 
 function cEnemyBossBase:MakeTentacle(x,y,num,vx,vy,core,gfx_head)
-	local tentacle = cTentacle:New()
-	if (core) then core.tentacles[tentacle] = true end
-	local e = kBossUnit
-	for i = 0,num do 
-		local gfx = (i == num) and gfx_head or gfx_boss_mid
-		local o = self:MakePart( (x+i*vx)*e, (y+i*vy)*e, gfx, tentacle)
-	end
-	return tentacle
+	return cTentacle:New(x,y,num,vx,vy,gfx_head,core,self)
 end
 
 function cEnemyBossBase:MakePart(x,y,gfx,tentacle)
@@ -140,14 +133,51 @@ end
 
 cTentacle = CreateClass()
 
-function cTentacle:Init ()
+function cTentacle:Init (x,y,num,vx,vy,gfx_head,core,boss)
 	self.parts = {}
+	self.x = x
+	self.y = y
+	self.num = num
+	self.vx = vx
+	self.vy = vy
+	self.gfx_head = gfx_head
+	self.core = core
+	self.boss = boss
+	core.tentacles[self] = true
+	self:Respawn()
 end
 
+
+function cTentacle:TryRespawn ()
+	if (not self.respawn_t) then return end
+	if (self.respawn_t > gMyTime) then return end
+	self:Respawn()
+end
+
+function cTentacle:Respawn ()
+	self.respawn_t = nil
+	local e = kBossUnit
+	local boss = self.boss
+	local x = self.x
+	local y = self.y
+	local vx = self.vx
+	local vy = self.vy
+	local num = self.num
+	local gfx_head = self.gfx_head
+	
+	for i = 0,num do 
+		local gfx = (i == num) and gfx_head or gfx_boss_mid
+		local o = boss:MakePart( (x+i*vx)*e, (y+i*vy)*e, gfx, self)
+	end
+end
+	
 function cTentacle:NotifyPartDie (o)
 	--~ print("tentacle part die",o)
 	self.parts[o] = nil
-	if (o.gfx ~= gfx_boss_mid) then self:KillAll() end
+	if (o.gfx ~= gfx_boss_mid) then 
+		self.respawn_t = gMyTime + kTentacleRespawnInterval
+		self:KillAll() 
+	end
 end
 
 function cTentacle:KillAll ()
@@ -198,6 +228,11 @@ function cEnemyBossPartBase:Update(dt)
 	
 	if (self.gfx == gfx_boss_mid) then 
 		Shots_BlockPlayerShotsAtPos(self.x,self.y,kEnemyBossMidBlockShotRadius)
+	end
+	
+	-- respawn tentacles if core
+	if (self.gfx == gfx_boss_core) then
+		for o,_ in pairs(self.tentacles) do o:TryRespawn() end
 	end
 	
 	-- shot if gun 
