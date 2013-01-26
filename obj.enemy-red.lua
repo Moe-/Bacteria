@@ -9,3 +9,10 @@ function cEnemyRed:Init(x,y)
 end
 
 function cEnemyRed:Draw() self:DrawWobble(0.2,0.1,gEnemyGfxScale) end
+
+function cEnemyRed:Update(dt)
+	self.x = self.x - 300 * dt
+	if self.x < 0 then
+		self:Destroy()
+	end
+end
