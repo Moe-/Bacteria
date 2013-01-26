@@ -13,6 +13,7 @@ love.filesystem.load("obj.enemy-base.lua")()
 love.filesystem.load("obj.enemy-blutplatt.lua")()
 love.filesystem.load("obj.enemy-white.lua")()
 love.filesystem.load("obj.enemy-red.lua")()
+love.filesystem.load("obj.EffectSys.lua")()
 
 
 cGfx = CreateClass(cBase)
@@ -30,6 +31,7 @@ end
 function loadgfx (path) return cGfx:New(love.graphics.newImage(path)) end
 
 function love.load ()
+	effects = cEffectSys:New()
 	local arr = {1,2,3,4}
 	table.insert(arr,5)
 	for k,v in ipairs(arr) do print("arr",k,v) end
@@ -68,7 +70,7 @@ function love.update (dt)
 	gMyTime = love.timer.getTime( )
 	gLevel:Update(dt)
 	gPlayer:Update(dt)
-	
+	effects:Update(dt)
 	local shotsDelete = {}
 	for i, v in pairs(gShots) do 
 		if v:Update(dt) == false then
@@ -90,7 +92,7 @@ end
 function love.draw ()
 	gMyTime = love.timer.getTime( )
 	gLevel:Draw()
-	
+	effects:Draw()
 	gPlayer:Draw()
 
 	for i, v in pairs(gShots) do v:Draw() end

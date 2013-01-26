@@ -4,7 +4,7 @@ function cBloodBorder:Init(sprite, x, y, up)
 	self.ps = cPartSys:New()
 	
 	self.partSystem = love.graphics.newParticleSystem(sprite, 100)
-	self.partSystem:setEmissionRate          (50)
+	self.partSystem:setEmissionRate          (75)
 	self.partSystem:setLifetime              (0.1)
 	self.partSystem:setParticleLife          (1)
 	self.partSystem:setPosition              (0, 0)
@@ -22,7 +22,7 @@ function cBloodBorder:Init(sprite, x, y, up)
 	else
 		self.partSystem:setTangentialAcceleration(300, 500)
 	end
-	self.partSystem:setSizes                 (1, 0.5)
+	self.partSystem:setSizes                 (0.5, 0.1)
 	self.partSystem:setRotation              (0)
 	self.partSystem:setSpin                  (0)
 	self.partSystem:setSpinVariation         (0)
