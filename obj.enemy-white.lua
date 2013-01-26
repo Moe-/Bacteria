@@ -4,6 +4,7 @@ kShotInterval_Enemy = 1.5
 
 function cEnemyWhite:Init(x,y,colour) 
 	self.enemy_kind = "white"
+	self.enemy_resist_colour = colour
 	self.x = x
 	self.y = y
 	self.dx = math.random(-100, 100)

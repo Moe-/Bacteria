@@ -14,6 +14,7 @@ end
 
 function cPlayer:Init(x,y) 
 	print("player init")
+	self.bIsPlayer = true
 	self.kind = "player"
 	self.x = x
 	self.y = y

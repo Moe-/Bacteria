@@ -60,10 +60,15 @@ end
 
 function cBase:ShotTest(shot, stype)
 	local damage = 20
-	if (self.enemy_kind ~= nil and self.enemy_kind == "white") and shot.colour == self.colour then 
-		damage = 5
+	if self.bIsPlayer then damage = 10 end 
+	if (self.enemy_resist_colour == shot.colour) then -- player-shot hits enemy
+		damage = 2.5
 	end
+	
 	local d = self.radius or 25
-	if shot.sType == stype and shot:DistToObj(self) < d then self:Damage(damage) end
+	if shot.sType == stype and shot:DistToObj(self) < d then 
+		--~ if (not self.bIsPlayer) then print("shothit",damage,self.enemy_resist_colour,shot.colour) end
+		self:Damage(damage) 
+	end
 end
 
