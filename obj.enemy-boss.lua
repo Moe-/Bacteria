@@ -70,7 +70,20 @@ end
 function cEnemyBossBase:Update(dt)
 	self.y = self.y0 + 50 * sin(0.35*gMyTime*PI)
 	
-	
+	for o,_ in pairs(self.parts) do
+		if (o.gfx == gfx_boss_gun) then
+			local rnd = math.random()
+			if(rnd * dt < 0.0025) then
+				local x = o.x
+				local y = o.y
+				local dirX = gPlayer.x - x
+				local dirY = gPlayer.y - y + math.random(-250, 250)
+				local norm = math.sqrt(dirX*dirX + dirY*dirY)
+				local lifetime = 5.0
+				table.insert(gShots, cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "blue"))
+			end
+		end
+	end
 	
 end
 
