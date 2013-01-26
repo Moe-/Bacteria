@@ -9,6 +9,10 @@ function Enemies_ShotTest(shot) for i, v in pairs(gEnemies) do o:ShotTest(shot) 
 function Enemies_Draw () for o,_ in pairs(gEnemies) do o:Draw() end end
 
 
+function cEnemyBase:Destroy()
+	gEnemies[self] = nil
+end
+	
 function cEnemyBase:Register()
 	gEnemies[self] = true
 end
