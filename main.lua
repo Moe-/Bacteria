@@ -42,7 +42,15 @@ function love.load ()
 	gfx_shotplayer	= loadgfx("data/shot-player.png")
 	gfx_shotweiss	= loadgfx("data/shot-weiss.png")
 	gfx_weissbk		= loadgfx("data/weissbk.png")
-	
+
+    snd_background = love.audio.newSource("data/background.mp3")
+    snd_background:setLooping(true)
+    snd_background:setVolume(0.5)
+    love.audio.play(snd_background)
+
+    snd_shoot = love.audio.newSource("data/schuss.mp3", "static")
+    snd_explosion = love.audio.newSource("data/explosion.mp3")
+
 	love.graphics.setBackgroundColor( 40,0,0)
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight()
