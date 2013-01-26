@@ -1,6 +1,6 @@
 cPowerUp = CreateClass(cEffectBasic)
 
-function cPowerUp:Init(sprite, x, y, direction)
+function cPowerUp:Init(sprite, x, y, direction, cr, cg, cb)
 	self.ps = cPartSys:New()
 	
 	for angle = 0, 360, 20 do
@@ -19,7 +19,7 @@ function cPowerUp:Init(sprite, x, y, direction)
 		self.partSystem:setRotation              (0)
 		self.partSystem:setSpin                  (0)
 		self.partSystem:setSpinVariation         (0)
-		self.partSystem:setColors                (255, 0, 0, 240, 0, 0, 255, 10)
+		self.partSystem:setColors                (cr, cg, cb, 240, cr, cg, cb, 10)
 		self.partSystem:stop();
 		self.ps:AddEmitter(self.partSystem, 0)
 		
@@ -38,7 +38,7 @@ function cPowerUp:Init(sprite, x, y, direction)
 		self.partSystem:setRotation              (0)
 		self.partSystem:setSpin                  (0)
 		self.partSystem:setSpinVariation         (0)
-		self.partSystem:setColors                (255, 0, 0, 240, 0, 0, 255, 10)
+		self.partSystem:setColors                (cr, cg, cb, 240, cr, cg, cb, 10)
 		self.partSystem:stop();
 		self.ps:AddEmitter(self.partSystem, 0)
 	end
