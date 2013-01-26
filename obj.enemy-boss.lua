@@ -149,13 +149,13 @@ end
 
 
 function cTentacle:TryRespawn ()
-	if (not self.respawn_t) then return end
-	if (self.respawn_t > gMyTime) then return end
+	if (self.bIsAlive) then return end
 	self:Respawn()
+	return true
 end
 
 function cTentacle:Respawn ()
-	self.respawn_t = nil
+	self.bIsAlive = true
 	local e = kBossUnit
 	local boss = self.boss
 	local x = self.x
@@ -175,8 +175,9 @@ function cTentacle:NotifyPartDie (o)
 	--~ print("tentacle part die",o)
 	self.parts[o] = nil
 	if (o.gfx ~= gfx_boss_mid) then 
-		self.respawn_t = gMyTime + kTentacleRespawnInterval
+		self.bIsAlive = false
 		self:KillAll() 
+		self.core:UpdateCoreTentacleRespawnTimer()
 	end
 end
 
@@ -210,6 +211,12 @@ function cEnemyBossPartBase:Init	(x,y,gfx,boss,tentacle)
 	if (tentacle) then tentacle:Add(self) end
 	self:Register()
 	if (self.gfx == gfx_boss_mid) then self.bInvulnerable = true end
+	self.respawn_t = 0
+end
+
+
+function cEnemyBossPartBase:UpdateCoreTentacleRespawnTimer()
+	self.respawn_t = gMyTime + kTentacleRespawnInterval
 end
 
 function cEnemyBossPartBase:Update(dt)
@@ -231,8 +238,10 @@ function cEnemyBossPartBase:Update(dt)
 	end
 	
 	-- respawn tentacles if core
-	if (self.gfx == gfx_boss_core) then
-		for o,_ in pairs(self.tentacles) do o:TryRespawn() end
+	if (self.gfx == gfx_boss_core and gMyTime > self.respawn_t) then
+		for o,_ in pairs(self.tentacles) do 
+			if (o:TryRespawn()) then self:UpdateCoreTentacleRespawnTimer() break end
+		end
 	end
 	
 	-- shot if gun 
