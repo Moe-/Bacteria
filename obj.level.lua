@@ -21,8 +21,8 @@ function cLevel:Init()
 	self:SpawnWalls()
 end
 
-function cLevel:MakeWall(x,y,bTop)
-	local o = cWall:New(x,y,bTop)
+function cLevel:MakeWall(x,y,ang,bTop)
+	local o = cWall:New(x,y,ang,bTop)
 	self.walls[o] = true
 end
 
@@ -36,8 +36,12 @@ function cLevel:SpawnWalls()
 		local x = i * stepx
 		local h = self.tunnel_h:Get(i)
 		local y = self.tunnel_y:Get(i)
-		self:MakeWall(x,y-0.5*h,true)
-		self:MakeWall(x,y+0.5*h,false)
+		local y_top = y-0.5*h
+		local y_bot = y+0.5*h
+		self:MakeWall(x,y_top,(self.last_y_top and (atan2(y_top-self.last_y_top,stepx)) or 0)   ,true)
+		self:MakeWall(x,y_bot,(self.last_y_bot and (atan2(y_bot-self.last_y_bot,stepx)) or 0)+PI,false)
+		self.last_y_top = y_top
+		self.last_y_bot = y_bot
 		self.spawned_i = self.spawned_i + 1
 	end
 end
@@ -86,9 +90,10 @@ end
 
 cWall = CreateClass(cBase)
 
-function cWall:Init (x,y,bTop)
+function cWall:Init (x,y,ang,bTop)
 	self.x = x
 	self.y = y
+	self.ang = ang
 	self.bTop = bTop
 	self.gfx = gfx_levelpart01
 end
@@ -106,7 +111,6 @@ function cWall:DrawPre (xa,ya)
 end
 
 function cWall:Draw (xa,ya)
-	self.gfx:Draw(self.x+xa,self.y+ya)
-	
+	self.gfx:Draw(self.x+xa,self.y+ya,self.ang)
 end
 

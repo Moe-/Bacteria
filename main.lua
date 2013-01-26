@@ -10,7 +10,7 @@ TODO liste code :
 * wand kollision
 * wand teile drehen
 * wand rand
-* boss teile schaden / sterben 
+* boss teile schaden / sterben  
 * gegner formationen spawnen
 * waffe rot/grün/blau
 * waffen wechseln bei bonus gegner einsammeln
