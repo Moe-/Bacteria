@@ -82,9 +82,12 @@ function love.load ()
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
 	gfx_boss_spike	= loadgfx("data/boss-spike.png")
 	gfx_border01	= loadgfx("data/border01.png")
-	gfx_border	= {	loadgfx("data/border1.png"),
+	gfx_wallA	= {	loadgfx("data/border1.png"),
 					loadgfx("data/border2.png"),
 					loadgfx("data/border3.png"),}
+	gfx_wallB	= {	loadgfx("data/border_b_1.png"),
+					loadgfx("data/border_b_2.png"),
+					loadgfx("data/border_b_3.png"), bFlip=true}
 	gfx_background1	= loadgfx("data/background1.png")
 	gfx_background2	= loadgfx("data/background2.png")
 	gfx_egg			= loadgfx("data/egg.png")
@@ -174,6 +177,8 @@ function love.keypressed (keyname)
 	elseif (keyname == "right"	or keyname == "d") then gPlayer:SetSpeedX(gPlayerSpeed)
 	elseif (keyname == "up"		or keyname == "w") then gPlayer:SetSpeedY(-gPlayerSpeed)
 	elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(gPlayerSpeed)
+	elseif (keyname == "1") then gLevel.gfx_wall = gfx_wallA
+	elseif (keyname == "2") then gLevel.gfx_wall = gfx_wallB
 	elseif (keyname == " ") then gShootNext = 0
 	else print("keypress",keyname)
 	end

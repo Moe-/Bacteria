@@ -81,4 +81,3 @@ end
 function cPlayer:GetWeaponPower()
 	return self.weaponPower
 end
-

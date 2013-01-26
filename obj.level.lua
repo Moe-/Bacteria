@@ -21,6 +21,7 @@ function cLevel:Init()
 	self.tunnel_h = cValueSpline:New(h*0.7,h*0.2,10,5)
 	self.tunnel_y = cValueSpline:New(h*0.5,h*0.3,10,5)
 	
+	self.gfx_wall = gfx_wallA
 	self:SpawnWalls()
 	
 end
@@ -42,7 +43,7 @@ function cLevel:DrawBack()
 end
 
 function cLevel:MakeWall(x,y,ang,bTop)
-	local o = cWall:New(x,y,ang,bTop)
+	local o = cWall:New(x,y,ang,bTop,self)
 	self.walls[o] = true
 end
 
@@ -79,6 +80,7 @@ function cLevel:Draw()
 	--~ print("num walls",table_count(self.walls))
 end
 
+function cLevel:GetBorderGfxArr() return self.gfx_wall end
 
 -- ***** ***** ***** ***** ***** cValueSpline
 cValueSpline = CreateClass()
@@ -109,14 +111,18 @@ end
 
 -- ***** ***** ***** ***** ***** cWall
 
+
+
 cWall = CreateClass(cBase)
 
-function cWall:Init (x,y,ang,bTop)
+function cWall:Init (x,y,ang,bTop,level)
 	self.x = x
 	self.y = y
 	self.ang = ang
 	self.bTop = bTop
-	self.gfx = rand_in_arr(gfx_border)
+	local arr = level:GetBorderGfxArr()
+	self.gfx = rand_in_arr(arr)
+	if (arr.bFlip) then self.ang = self.ang + PI end
 	self.dy_per_x = sin(ang) / cos(ang)
 end
 
