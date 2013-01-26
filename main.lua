@@ -56,6 +56,7 @@ love.filesystem.load("obj.EffectSys.lua")()
 love.filesystem.load("obj.spawner.lua")()
 love.filesystem.load("obj.SpriteStretch.lua")()
 love.filesystem.load("obj.highscores.lua")()
+love.filesystem.load("obj.EffBloodTitle.lua")()
 
 cGfx = CreateClass(cBase)
 function cGfx:Init (img)
@@ -140,7 +141,7 @@ function love.load ()
     snd_shoot = love.audio.newSource("data/schuss.mp3", "static")
     snd_explosion = love.audio.newSource("data/explosion.mp3")
 	
-	
+	effTitle = cBloodTitle:New(love.graphics.newImage("data/particle.png"), 0, 0, 270)
 	
 	love.graphics.setBackgroundColor( 40,0,0)
 	local w = love.graphics.getWidth()
@@ -169,6 +170,7 @@ end
 
 
 function love.update (dt)
+	effTitle:Update(dt)
 	if gGameState ~= "game" then 
 		gStateChangeTime = gStateChangeTime - dt
 	else
@@ -253,10 +255,12 @@ end
 
 function draw_start_screen()
 	gfx_startscreen:DrawX0Y0(0, 0)
+	effTitle:Draw()
 end
 
 function draw_gameover_screen()
 	gfx_gameover:DrawX0Y0(0, 0)
+	effTitle:Draw()
     if (gHighscores:serverAvailable() == true) then
         love.graphics.setFont(gFontTitle)
         love.graphics.print("Enter initials: " .. gInitials, 10,20)
