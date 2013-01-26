@@ -10,6 +10,8 @@ function cEnemyBlutPlatt:Init(x,y)
 	
 	self.xdir = math.random(50, 150)
 	self.ydir = math.random(-50, 50)
+	self.bCanLeaveScreen = true
+	self.bDieLeftOfScreen = true
 end
 
 function cEnemyBlutPlatt:Draw() self:DrawWobble(0.2,0.1,gEnemyGfxScale) end

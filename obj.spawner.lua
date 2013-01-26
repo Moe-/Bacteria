@@ -10,7 +10,7 @@ function cSpawner:Init()
 
     formation:addEnemy("blutplatt", 0 * e, -2 * e)
     formation:addEnemy("blutplatt", 0 * e, -1 * e)
-    formation:addEnemy("red", 0 * e, 0 * e)
+    formation:addEnemy("blutkoerper", 0 * e, 0 * e)
     formation:addEnemy("blutplatt", 0 * e, 1 * e)
     formation:addEnemy("blutplatt", 0 * e, 2 * e)
 
@@ -94,7 +94,7 @@ function cSpawner:spawnFormation()
     for k,v in pairs(formation.enemies) do
         if (v.enemy == "blutplatt") then
             cEnemyBlutPlatt:New(startx + v.offsetX,center + v.offsetY)
-        elseif (v.enemy == "red") then
+        elseif (v.enemy == "blutkoerper") then
             cEnemyRed:New(startx + v.offsetX,center + v.offsetY)
         elseif (v.enemy == "red"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "red")
         elseif (v.enemy == "green"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "green")
