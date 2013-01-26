@@ -72,7 +72,7 @@ function cSpawner:spawnFormation()
         elseif (v.enemy == "red") then
             cEnemyRed:New(0.7*w + v.offsetX,center + v.offsetY)
         elseif (v.enemy == "white") then
-            cEnemyWhite:New(0.7*w + v.offsetX,center + v.offsetY)
+            cEnemyWhite:New(0.7*w + v.offsetX,center + v.offsetY, rand_in_arr({"red", "green", "blue", "white"}))
         elseif (v.enemy == "boss") then
             cEnemyBossBase:New(0.7*w + v.offsetX,center + v.offsetY)
         end
