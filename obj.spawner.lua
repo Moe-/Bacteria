@@ -18,6 +18,17 @@ function cSpawner:Init()
 
     local formation = cFormation:New()
 
+    formation:addEnemy("white", 0 * e, -2 * e)
+    formation:addEnemy("white", 0 * e, -1 * e)
+    formation:addEnemy("white", 0 * e, 0 * e)
+    formation:addEnemy("white", 0 * e, 1 * e)
+    formation:addEnemy("white", 0 * e, 2 * e)
+    formation:addEnemy("white", 0 * e, 3 * e)
+
+    table.insert(self.formations, formation)
+
+    local formation = cFormation:New()
+
     formation:addEnemy("boss", 0 , 0)
     formation:addConstraint(cFormationConstraintNumberSpawns:New(formation, 1))
     formation:addConstraint(cFormationConstraintSpawnOnce:New(formation))

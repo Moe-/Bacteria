@@ -27,6 +27,19 @@ end
 
 function cEnemyBase:Die()
 	effects:CreateEffect("explosion", self.x, self.y, 0, false)
+
+	if self.enemy_kind ~= nil then
+		if self.enemy_kind == "bossbase" then gPlayer:AddPoints(10000)
+		elseif self.enemy_kind == "blutplatt" then gPlayer:AddPoints(125)
+		elseif self.enemy_kind == "egg" then gPlayer:AddPoints(15)
+		elseif self.enemy_kind == "red" then gPlayer:AddPoints(150)
+		elseif self.enemy_kind == "weapon" then gPlayer:AddPoints(50)
+		elseif self.enemy_kind == "white" then gPlayer:AddPoints(225)
+		elseif self.enemy_kind == "base" then gPlayer:AddPoints(123)
+		else gPlayer:AddPoints(11)
+		end
+	end
+	
 	self:Destroy()
 end
 

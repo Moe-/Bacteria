@@ -182,6 +182,10 @@ function love.draw ()
 		end
 		gfx:Draw(50 + i/2, love.graphics.getHeight() - 4 * gfx.oy,0,1,1)
 	end
+
+	-- draw score
+	--love.graphics.setFont(48)
+	love.graphics.print(gPlayer:GetPoints(), 50, 50)
 end
 
 function love.keypressed (keyname)
