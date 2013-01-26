@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILENAMEBASE=Bacteria-v0.1
+FILENAMEBASE=Bacteria-v0.2
 
 FINDCMD="find . -false" # warning: quoted paths are escaped in a weird way by bash, breaking the find commandline
 FINDCMD="$FINDCMD -o -wholename ./.git -prune"
