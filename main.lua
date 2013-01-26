@@ -13,6 +13,7 @@ love.filesystem.load("obj.enemy-base.lua")()
 love.filesystem.load("obj.enemy-blutplatt.lua")()
 love.filesystem.load("obj.enemy-white.lua")()
 love.filesystem.load("obj.enemy-red.lua")()
+love.filesystem.load("obj.enemy-boss.lua")()
 love.filesystem.load("obj.EffectSys.lua")()
 
 
@@ -44,7 +45,11 @@ function love.load ()
 	gfx_shotplayer	= loadgfx("data/shot-player.png")
 	gfx_shotweiss	= loadgfx("data/shot-weiss.png")
 	gfx_weissbk		= loadgfx("data/weissbk.png")
-
+	gfx_boss_core	= loadgfx("data/boss-core.png")
+	gfx_boss_mid	= loadgfx("data/boss-mid.png")
+	gfx_boss_gun	= loadgfx("data/boss-gun.png")
+	gfx_boss_spike	= loadgfx("data/boss-spike.png")
+	
     snd_background = love.audio.newSource("data/background.mp3")
     snd_background:setLooping(true)
     snd_background:setVolume(0.5)
@@ -60,6 +65,7 @@ function love.load ()
 
 	gShots = {}
 	gLevel = cLevel:New()
+	gBoss = cEnemyBossBase:New(0.6*w,0.5*h)
 	
 	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
 	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
@@ -87,11 +93,13 @@ function love.update (dt)
 		gPlayer:ShotTest(v, "white") 
 	end
 	Enemies_Update(dt)
+	gBoss:Update(dt)
 end
 
 function love.draw ()
 	gMyTime = love.timer.getTime( )
 	gLevel:Draw()
+	gBoss:Draw()
 	effects:Draw()
 	gPlayer:Draw()
 
