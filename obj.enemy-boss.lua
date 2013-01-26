@@ -1,7 +1,7 @@
 cEnemyBossBase = CreateClass(cEnemyBase)
 
 function cEnemyBossBase:Init(x,y) 
-	enemy_kind = "bossbase"
+	self.enemy_kind = "bossbase"
 	self.x = x
 	self.y = y
 	self.x0 = x

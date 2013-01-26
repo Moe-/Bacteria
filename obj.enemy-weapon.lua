@@ -1,7 +1,7 @@
 cEnemyWeapon = CreateClass(cEnemyBase)
 
 function cEnemyWeapon:Init(x,y,wType) 
-	enemy_kind = "weapon"
+	self.enemy_kind = "weapon"
 	self.x = x
 	self.y = y
 	self.wType = wType
