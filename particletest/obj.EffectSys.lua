@@ -8,6 +8,7 @@ love.filesystem.load("obj.PowerUp.lua")()
 love.filesystem.load("obj.Trail.lua")()
 love.filesystem.load("obj.Sparkle.lua")()
 love.filesystem.load("obj.EfHit.lua")()
+love.filesystem.load("obj.EfSlowTrail.lua")()
 
 function cEffectSys:Init()
 	self.sprite = love.graphics.newImage("particle.png")
@@ -70,5 +71,8 @@ function cEffectSys:CreateEffect(kind, x, y, direction, above)
 	elseif kind == "hit" then
 		if above then table.insert(self.ef_above, cHit:New(self.sprite, x, y, direction))
 		else table.insert(self.ef_below, cHit:New(self.sprite, x, y, direction)) end
+	elseif kind == "slowtrail" then
+		if above then table.insert(self.ef_above, cSlowTrail:New(self.sprite, x, y, direction))
+		else table.insert(self.ef_below, cSlowTrail:New(self.sprite, x, y, direction)) end
 	end
 end

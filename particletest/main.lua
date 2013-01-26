@@ -24,7 +24,7 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == "l" then
-		ef:CreateEffect("hit", x, y, 0, true)
+		ef:CreateEffect("slowtrail", 100, 0, 0, true)
 	end
 end
 

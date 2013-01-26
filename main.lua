@@ -4,7 +4,7 @@ PI = math.pi
 gEnemyGfxScale = 0.5
 gEnemyBossGfxScale = 0.7
 --~ gEnemyGfxScale = 1
-gPlayerSpeed = 4
+gPlayerSpeed = 10
 
 --[[
 TODO liste code : 
@@ -57,6 +57,8 @@ function loadgfx (path) return cGfx:New(love.graphics.newImage(path)) end
 
 function love.load ()
 	effects = cEffectSys:New()
+	
+	effects:CreateEffect("slowtrail", 500, 0, 0, false)
 	
 	gfx_blutplatt	= loadgfx("data/blutplatt.png")
 	gfx_dnabonus	= loadgfx("data/dnabonus.png")
@@ -162,9 +164,29 @@ function love.keypressed (keyname)
 end
 
 function love.keyreleased (keyname)
-	if (keyname == "left") or (keyname == "right") or (keyname == "a") or (keyname == "d") then gPlayer:SetSpeedX(0)
-	elseif (keyname == "up") or (keyname == "down") or (keyname == "w") or (keyname == "s") then gPlayer:SetSpeedY(0)
+	if ((keyname == "left" or keyname == "a") and not (love.keyboard.isDown("right") or love.keyboard.isDown("d"))) 
+		or ((keyname == "right" or keyname == "d") and not (love.keyboard.isDown("left") or love.keyboard.isDown("a"))) then
+		gPlayer:SetSpeedX(0)
+	elseif (keyname == "left" or keyname == "a") and (love.keyboard.isDown("right") or love.keyboard.isDown("d")) then
+		gPlayer:SetSpeedX(gPlayerSpeed)
+	elseif (keyname == "right" or keyname == "d") and (love.keyboard.isDown("left") or love.keyboard.isDown("a")) then
+		gPlayer:SetSpeedX(-gPlayerSpeed)
 	end
+	
+	if ((keyname == "up" or keyname == "w") and not (love.keyboard.isDown("down") or love.keyboard.isDown("s"))) 
+		or ((keyname == "down" or keyname == "s") and not (love.keyboard.isDown("up") or love.keyboard.isDown("w"))) then
+		gPlayer:SetSpeedY(0)
+	elseif (keyname == "up" or keyname == "w") and (love.keyboard.isDown("down") or love.keyboard.isDown("s")) then
+		gPlayer:SetSpeedY(gPlayerSpeed)
+	elseif (keyname == "down" or keyname == "s") and (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
+		gPlayer:SetSpeedY(-gPlayerSpeed)
+	end
+	
+
+
+	--if (keyname == "left") or (keyname == "right") or (keyname == "a") or (keyname == "d") then gPlayer:SetSpeedX(0)
+	--elseif (keyname == "up") or (keyname == "down") or (keyname == "w") or (keyname == "s") then gPlayer:SetSpeedY(0)
+	--end
 end
 
 function love.mousereleased(x, y, button)
