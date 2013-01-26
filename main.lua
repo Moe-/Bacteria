@@ -76,7 +76,10 @@ function love.load ()
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
 	gfx_boss_spike	= loadgfx("data/boss-spike.png")
 	gfx_border01	= loadgfx("data/border01.png")
-	gfx_border	= {	loadgfx("data/border1.png"),
+	gfx_border	= {	loadgfx("data/border_b_1.png"),
+					loadgfx("data/border_b_2.png"),
+					loadgfx("data/border_b_3.png"), bFlip=true}
+	gfx_borderB	= {	loadgfx("data/border1.png"),
 					loadgfx("data/border2.png"),
 					loadgfx("data/border3.png"),}
 	gfx_background1	= loadgfx("data/background1.png")
