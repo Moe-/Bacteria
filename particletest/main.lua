@@ -13,7 +13,7 @@ end
 
 function love.draw ()
 	ef:DrawBelow()
-	love.graphics.draw(gfx_player, love.mouse.getX() - 128,love.mouse.getY() - 128)
+	--love.graphics.draw(gfx_player, love.mouse.getX() - 128,love.mouse.getY() - 128)
 	ef:DrawAbove()
 end
 
@@ -24,7 +24,7 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == "l" then
-		ef:CreateEffect("powerup", x, y, true)
+		ef:CreateEffect("trail", x, y, 0, true)
 	end
 end
 

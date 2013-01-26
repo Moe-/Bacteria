@@ -1,6 +1,6 @@
 cEffectBasic = CreateClass()
 
-function cEffectBasic:Init(sprite, x, y)
+function cEffectBasic:Init(sprite, x, y, direction)
 	self.ps = cPartSys:New()	
 	self.posx = x
 	self.posy = y

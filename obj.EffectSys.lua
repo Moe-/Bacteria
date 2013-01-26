@@ -5,6 +5,7 @@ love.filesystem.load("obj.EffectBasic.lua")()
 love.filesystem.load("obj.Explosion.lua")()
 love.filesystem.load("obj.BloodBorder.lua")()
 love.filesystem.load("obj.PowerUp.lua")()
+love.filesystem.load("obj.Trail.lua")()
 
 function cEffectSys:Init()
 	self.sprite = love.graphics.newImage("data/particle.png")
@@ -48,18 +49,18 @@ function cEffectSys:Update(dt)
 	end
 end
 
-function cEffectSys:CreateEffect(kind, x, y, above)
+function cEffectSys:CreateEffect(kind, x, y, direction, above)
 	if kind == "explosion" then
-		if above then table.insert(self.ef_above, cExplosion:New(self.sprite, x, y))
-		else table.insert(self.ef_below, cExplosion:New(self.sprite, x, y)) end
-	elseif kind == "bloodup" then
-		if above then table.insert(self.ef_above, cBloodBorder:New(self.sprite, x, y, true))
-		else table.insert(self.ef_below, cBloodBorder:New(self.sprite, x, y)) end
-	elseif kind == "blooddown" then
-		if above then table.insert(self.ef_above, cBloodBorder:New(self.sprite, x, y, false))
-		else table.insert(self.ef_below, cBloodBorder:New(self.sprite, x, y)) end
+		if above then table.insert(self.ef_above, cExplosion:New(self.sprite, x, y, direction))
+		else table.insert(self.ef_below, cExplosion:New(self.sprite, x, y, direction)) end
+	elseif kind == "bloodborder" then
+		if above then table.insert(self.ef_above, cBloodBorder:New(self.sprite, x, y, direction))
+		else table.insert(self.ef_below, cBloodBorder:New(self.sprite, x, y, direction)) end
 	elseif kind == "powerup" then
-		if above then table.insert(self.ef_above, cPowerUp:New(self.sprite, x, y))
-		else table.insert(self.ef_below, cPowerUp:New(self.sprite, x, y)) end
+		if above then table.insert(self.ef_above, cPowerUp:New(self.sprite, x, y, direction))
+		else table.insert(self.ef_below, cPowerUp:New(self.sprite, x, y, direction)) end
+	elseif kind == "trail" then
+		if above then table.insert(self.ef_above, cTrail:New(self.sprite, x, y, direction))
+		else table.insert(self.ef_below, cTrail:New(self.sprite, x, y, direction)) end
 	end
 end

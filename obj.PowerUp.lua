@@ -1,6 +1,6 @@
 cPowerUp = CreateClass(cEffectBasic)
 
-function cPowerUp:Init(sprite, x, y)
+function cPowerUp:Init(sprite, x, y, direction)
 	self.ps = cPartSys:New()
 	
 	for angle = 0, 360, 20 do

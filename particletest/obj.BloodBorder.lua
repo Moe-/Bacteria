@@ -1,6 +1,6 @@
 cBloodBorder = CreateClass(cEffectBasic)
 
-function cBloodBorder:Init(sprite, x, y, up)
+function cBloodBorder:Init(sprite, x, y, direction)
 	self.ps = cPartSys:New()
 	
 	self.partSystem = love.graphics.newParticleSystem(sprite, 100)
@@ -8,7 +8,7 @@ function cBloodBorder:Init(sprite, x, y, up)
 	self.partSystem:setLifetime              (0.1)
 	self.partSystem:setParticleLife          (1)
 	self.partSystem:setPosition              (0, 0)
-	if up then
+	if direction == 270 then
 		self.partSystem:setDirection             (270 * PI / 180)
 	else
 		self.partSystem:setDirection             (90 * PI / 180)
@@ -17,7 +17,7 @@ function cBloodBorder:Init(sprite, x, y, up)
 	self.partSystem:setSpeed                 (300, 300)
 	self.partSystem:setGravity               (0)
 	self.partSystem:setRadialAcceleration    (0)
-	if up then
+	if direction == 270 then
 		self.partSystem:setTangentialAcceleration(-300, -500)
 	else
 		self.partSystem:setTangentialAcceleration(300, 500)
