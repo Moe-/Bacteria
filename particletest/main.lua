@@ -9,12 +9,22 @@ function love.load ()
 	ef = cEffectSys:New()
 	
 	gfx_player = love.graphics.newImage("player.png")
+	white = love.graphics.newImage("weissbk.png")
+	
+	t = 0
 end
 
 function love.draw ()
 	ef:DrawBelow()
-	love.graphics.draw(gfx_player, love.mouse.getX() - 128,love.mouse.getY() - 128)
+	--love.graphics.draw(gfx_player, love.mouse.getX() - 128,love.mouse.getY() - 128)
 	ef:DrawAbove()
+	
+	love.graphics.setColor(150 + 105 * math.sin(t * 2), 0, 0, 50)
+	love.graphics.draw(white, love.mouse.getX() - 128 * 1.1, love.mouse.getY() - 128 * 1.1, 0, 1.2, 1.2)
+	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.draw(white, love.mouse.getX() - 128, love.mouse.getY() - 128)
+	
+	
 end
 
 function love.keypressed (keyname)
@@ -30,4 +40,5 @@ end
 
 function love.update(dt)
 	ef:Update(dt)
+	t = t + dt
 end

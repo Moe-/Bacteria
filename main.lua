@@ -65,20 +65,29 @@ function love.load ()
 	gfx_blutplatt	= loadgfx("data/blutplatt.png")
 	gfx_dnabonus	= loadgfx("data/dnabonus.png")
 	--~ gfx_levelpart01	= loadgfx("data/levelpart01.png")
-	gfx_player		= loadgfx("data/player.png")
+	gfx_player_blau		= loadgfx("data/player_blau.png")
+	gfx_player_gruen		= loadgfx("data/player_gruen.png")
+	gfx_player_rot		= loadgfx("data/player_rot.png")
+	gfx_player_weis		= loadgfx("data/player_weis.png")
 	gfx_rotbk		= loadgfx("data/rotbk.png")
 	gfx_shotplayer	= loadgfx("data/shot-player.png")
 	gfx_shotweiss	= loadgfx("data/shot-weiss.png")
 	gfx_weissbk		= loadgfx("data/weissbk.png")
-	gfx_dnabonus	= loadgfx("data/dnabonus.png")
+	gfx_dnabonus_blau	= loadgfx("data/dnabonus_blau.png")
+	gfx_dnabonus_gruen	= loadgfx("data/dnabonus_gruen.png")
+	gfx_dnabonus_rot	= loadgfx("data/dnabonus_rot.png")
+	gfx_dnabonus_weis	= loadgfx("data/dnabonus_weis.png")
 	gfx_boss_core	= loadgfx("data/boss-core.png")
 	gfx_boss_mid	= loadgfx("data/boss-mid.png")
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
 	gfx_boss_spike	= loadgfx("data/boss-spike.png")
 	gfx_border01	= loadgfx("data/border01.png")
-	gfx_border	= {	loadgfx("data/border1.png"),
+	gfx_wallA	= {	loadgfx("data/border1.png"),
 					loadgfx("data/border2.png"),
 					loadgfx("data/border3.png"),}
+	gfx_wallB	= {	loadgfx("data/border_b_1.png"),
+					loadgfx("data/border_b_2.png"),
+					loadgfx("data/border_b_3.png"), bFlip=true}
 	gfx_background1	= loadgfx("data/background1.png")
 	gfx_background2	= loadgfx("data/background2.png")
 	gfx_egg			= loadgfx("data/egg.png")
@@ -170,9 +179,18 @@ function love.keypressed (keyname)
 	elseif (keyname == "right"	or keyname == "d") then gPlayer:SetSpeedX(gPlayerSpeed)
 	elseif (keyname == "up"		or keyname == "w") then gPlayer:SetSpeedY(-gPlayerSpeed)
 	elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(gPlayerSpeed)
+	elseif (keyname == "1") then gLevel.gfx_wall = gfx_wallA
+	elseif (keyname == "2") then gLevel.gfx_wall = gfx_wallB
+	elseif (keyname == "5") then TestBossSpawn()
 	elseif (keyname == " ") then gShootNext = 0
 	else print("keypress",keyname)
 	end
+end
+
+function TestBossSpawn()
+	local w = love.graphics.getWidth()
+	local h = love.graphics.getHeight()
+	cEnemyBoss02:New(0.7*w,0.5*h)
 end
 
 function love.keyreleased (keyname)

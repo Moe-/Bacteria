@@ -14,18 +14,17 @@ function cPlayer:Init(x,y)
 	print("player init")
 	self.x = x
 	self.y = y
-	self.energy = 100*100
+	self.energy = 1000
 	self.dx = 0
 	self.dy = 0
 	self.alpha = 255
-	self.gfx = gfx_player
 	self:UpdateWeapon("white")
-	self.radius = self.gfx.radius
+	self.radius = self.gfx.radius * 0.5
 end
 
 function cPlayer:Update(dt)
-	self.x = self.x + self.dx
-	self.y = self.y + self.dy
+	self.x = clamp(self.x + self.dx, 0, love.graphics.getWidth())
+	self.y = clamp(self.y + self.dy, 0, love.graphics.getHeight())
 	if (self:IsDead() == true) and self.alpha > 0 then
 		self.alpha = self.alpha - 5
 	end
@@ -36,10 +35,10 @@ function cPlayer:Update(dt)
 
  	if self.bCollidingWithTop then
  		self.bCollidingWithTop = false
- 		effects:CreateEffect("bloodborder", self.x, self.y - 100, 90, false)
+ 		effects:CreateEffect("bloodborder", self.x, self.y - 50, 90, false)
  	elseif self.bCollidingWithBottom then
  		self.bCollidingWithBottom = false
- 		effects:CreateEffect("bloodborder", self.x, self.y + 100, 270, false)
+ 		effects:CreateEffect("bloodborder", self.x, self.y + 50, 270, false)
 	end
 end
 
@@ -70,10 +69,15 @@ function cPlayer:UpdateWeapon(wType)
 	if (self.wType ~= wType) then
 		self.weaponPower = 2.0
 		self.wType = wType
+		
+		if (wType == "red") then self.gfx = gfx_player_rot
+		elseif (wType == "green") then self.gfx = gfx_player_gruen
+		elseif (wType == "blue") then self.gfx = gfx_player_blau
+		elseif (wType == "white") then self.gfx = gfx_player_weis
+		end
 	end
 end
 
 function cPlayer:GetWeaponPower()
 	return self.weaponPower
 end
-
