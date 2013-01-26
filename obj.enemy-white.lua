@@ -42,7 +42,7 @@ function cEnemyWhite:Update (dt)
 		local dirY = gPlayer.y - y + math.random(-250, 250)
 		local norm = math.sqrt(dirX*dirX + dirY*dirY)
 		local lifetime = 5.0
-		table.insert(gShots, cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "white"))
+		cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "white")
 	end
 
 	self.dx = clamp(self.dx + math.random(-20, 20), -100, 100)

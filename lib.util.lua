@@ -11,6 +11,7 @@ max		= math.max
 min		= math.min
 abs		= math.abs
 fmod	= math.fmod
+function sgn (v) return (v > 0) and 1 or ((v < 0) and -1 or 0) end
 function round(x) return floor(x+0.5) end
 
 function randf () return math.random() end

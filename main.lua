@@ -77,7 +77,12 @@ function love.load ()
 	gfx_dnabonus_blau	= loadgfx("data/dnabonus_blau.png")
 	gfx_dnabonus_gruen	= loadgfx("data/dnabonus_gruen.png")
 	gfx_dnabonus_rot	= loadgfx("data/dnabonus_rot.png")
-	gfx_dnabonus_weis	= loadgfx("data/dnabonus_weis.png")
+	gfx_dnabonus_weis	= {
+		loadgfx("data/dnabonus_weis/dnabonus_weis_01.png"),
+		loadgfx("data/dnabonus_weis/dnabonus_weis_02.png"),
+		loadgfx("data/dnabonus_weis/dnabonus_weis_03.png"),
+		loadgfx("data/dnabonus_weis/dnabonus_weis_04.png"),bIsAnim = true
+	}
 	gfx_boss_core	= loadgfx("data/boss-core.png")
 	gfx_boss_mid	= loadgfx("data/boss-mid.png")
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
@@ -125,21 +130,9 @@ function love.update (dt)
 	effects:Update(dt)
     gSpawner:Update(dt)
 
-    local shotsDelete = {}
-	for i, v in pairs(gShots) do 
-		if v:Update(dt) == false then
-			table.insert(shotsDelete, i)
-		end
-	end
+	Shots_Update(dt)
+	Shots_HitTest()
 
-	for i, v in pairs(shotsDelete) do
-		table.remove(gShots, v)
-	end
-
-	for i, v in pairs(gShots) do 
-		Enemies_ShotTest(v)
-		gPlayer:ShotTest(v, "white") 
-	end
 --	gBoss:Update(dt)
 	Enemies_Update(dt)
 	gLevel:Update(dt)
@@ -164,7 +157,7 @@ function love.draw ()
 	gPlayer:Draw()
 	effects:DrawAbove()
 
-	for i, v in pairs(gShots) do v:Draw() end
+	Shots_Draw()
 	Enemies_Draw()
 	
 	--~ love.graphics.print("hello world",40,40)
