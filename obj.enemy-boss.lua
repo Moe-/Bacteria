@@ -9,6 +9,7 @@ function cEnemyBossBase:Init(x,y)
 	self.energy = 100
 	self:Register()
 	self.bInvulnerable = true
+	self.bIgnoreWalls = true
 	
 	self.parts = {}
 	self.cores = {}
