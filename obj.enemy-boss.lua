@@ -240,7 +240,11 @@ function cEnemyBossPartBase:Update(dt)
 	-- respawn tentacles if core
 	if (self.gfx == gfx_boss_core and gMyTime > self.respawn_t) then
 		for o,_ in pairs(self.tentacles) do 
-			if (o:TryRespawn()) then self:UpdateCoreTentacleRespawnTimer() break end
+			if (o:TryRespawn()) then 
+				self:UpdateCoreTentacleRespawnTimer() 
+				self:CoreCheckInvul() 
+				break 
+			end
 		end
 	end
 	

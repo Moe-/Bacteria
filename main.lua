@@ -265,7 +265,7 @@ function love.keypressed (keyname)
 	elseif (keyname == "f3") then gPlayer:UpdateWeapon("red")
 	elseif (keyname == "f4") then gPlayer:UpdateWeapon("green")
 	elseif (keyname == "f5") then gPlayer:UpdateWeapon("blue")
-	elseif (keyname == "p") then SHOW_DEBUG_CIRCLE = not SHOW_DEBUG_CIRCLE 
+	elseif (keyname == "o") then SHOW_DEBUG_CIRCLE = not SHOW_DEBUG_CIRCLE 
 	elseif (keyname == " ") then gShootNext = 0
 	else print("keypress",keyname)
 	end
