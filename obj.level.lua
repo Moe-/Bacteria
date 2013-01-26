@@ -71,6 +71,7 @@ function cLevel:Draw()
 	-- scroll 
 	for o,_ in pairs(self.walls) do o:DrawPre(-self.scrollx,-self.scrolly) end
 	for o,_ in pairs(self.walls) do o:Draw(-self.scrollx,-self.scrolly) end
+	--~ print("num walls",table_count(self.walls))
 end
 
 

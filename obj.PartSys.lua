@@ -33,7 +33,7 @@ function cPartSys:Update(dt)
 		end
 		for k,v in ipairs(self.ps) do	
 			if self.ts[k] <= self.t and not self.act[k] then
-				print("starting emitter", k)
+				--~ print("starting emitter", k)
 				v:start()
 				self.act[k] = true
 			end
