@@ -1,32 +1,23 @@
 --tests for diverse particlesystems
 
+PI = math.pi
+
 love.filesystem.load("lib.oop.lua")()
+love.filesystem.load("obj.PartSys.lua")()
+love.filesystem.load("obj.EffectBasic.lua")()
+love.filesystem.load("obj.Explosion.lua")()
+love.filesystem.load("obj.BloodBorder.lua")()
 
 function love.load ()
 	sprite = love.graphics.newImage("particle.png")
-	partSystem = love.graphics.newParticleSystem(sprite, 100)
-	partSystem:setEmissionRate          (1000  )
-	partSystem:setLifetime              (0.1)
-	partSystem:setParticleLife          (0.5)
-	partSystem:setPosition              (0, 0)
-	partSystem:setDirection             (0)
-	partSystem:setSpread                (180)
-	partSystem:setSpeed                 (200, 200)
-	partSystem:setGravity               (0)
-	partSystem:setRadialAcceleration    (30)
-	partSystem:setTangentialAcceleration(0)
-	partSystem:setSizes                 (1, 0.5)
-	partSystem:setRotation              (0)
-	partSystem:setSpin                  (0)
-	partSystem:setSpinVariation         (0)
-	partSystem:setColors                (200, 200, 255, 240, 255, 255, 255, 10)
-	partSystem:stop();	
-	px = 0
-	py = 0
+	effects = {}
+	tr = 0
 end
 
 function love.draw ()
-	love.graphics.draw(partSystem, px, py)
+	for k,v in ipairs(effects) do
+		v:Draw()
+	end
 end
 
 function love.keypressed (keyname)
@@ -36,13 +27,27 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == "l" then
-		px = x
-		py = y
-		partSystem:reset()
-		partSystem:start()
+		e = cExplosion:New(x, y)
+		table.insert(effects, e)
 	end
 end
 
 function love.update(dt)
-	partSystem:update(dt);
+	tr = tr + dt
+	if tr > 0.05 then
+		table.insert(effects, cBloodBorder:New(love.mouse.getX(), love.mouse.getY(), true))
+		tr = 0
+	end
+		
+	for k,v in ipairs(effects) do
+		v:Update(dt)
+	end
+	
+	for k,v in ipairs(effects) do
+		if v:isDone() then
+			--print("effect",k,"isdone")
+			v:Free()
+			table.remove(effects, k)
+		end
+	end
 end
