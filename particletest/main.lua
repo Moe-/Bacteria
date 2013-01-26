@@ -7,7 +7,6 @@ love.filesystem.load("obj.EffectSys.lua")()
 
 function love.load ()
 	ef = cEffectSys:New()
-	tr = 0
 end
 
 function love.draw ()
@@ -21,14 +20,10 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == "l" then
+		ef:CreateEffect("bloodup", x, y)
 	end
 end
 
 function love.update(dt)
-	tr = tr + dt
-	if tr > 0.05 then
-		tr = 0
-		ef:CreateEffect("bloodup", love.mouse.getX(), love.mouse.getY())
-	end
 	ef:Update(dt)
 end
