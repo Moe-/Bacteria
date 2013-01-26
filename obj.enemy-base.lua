@@ -7,7 +7,7 @@ function Enemies_Update (dt) for o,_ in pairs(gEnemies) do o:Update(dt) end end
 function Enemies_ShotTest(shot) 
 	for o,_ in pairs(gEnemies) do 
 		if (o:ShotTest(shot, "player") == false) then
-			effects:CreateEffect("explosion", o.x, o.y)
+			effects:CreateEffect("explosion", o.x, o.y, false)
 			o:Destroy()
 		end 
 	end 

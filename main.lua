@@ -125,8 +125,9 @@ end
 function love.draw ()
 	gMyTime = love.timer.getTime( )
 	gBoss:Draw()
-	effects:Draw()
+	effects:DrawBelow()
 	gPlayer:Draw()
+	effects:DrawAbove()
 
 	for i, v in pairs(gShots) do v:Draw() end
 	Enemies_Draw()
