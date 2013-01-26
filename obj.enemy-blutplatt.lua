@@ -3,6 +3,7 @@ cEnemyBlutPlatt = CreateClass(cEnemyBase)
 function cEnemyBlutPlatt:Init(x,y) 
 	self.x = x
 	self.y = y
+	self.energy = 120
 	self.gfx = gfx_blutplatt
 	self:Register()
 end

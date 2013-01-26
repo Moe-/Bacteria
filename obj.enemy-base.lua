@@ -4,6 +4,14 @@ gEnemies = {}
 
 function Enemies_Update (dt) for o,_ in pairs(gEnemies) do o:Update(dt) end end
 
+function Enemies_ShotTest(shot) 
+	for o,_ in pairs(gEnemies) do 
+		if (o:ShotTest(shot, "player") == false) then
+			o:Destroy()
+		end 
+	end 
+end
+
 function Enemies_Draw () for o,_ in pairs(gEnemies) do o:Draw() end end
 
 

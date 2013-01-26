@@ -42,7 +42,15 @@ function love.load ()
 	gfx_shotplayer	= loadgfx("data/shot-player.png")
 	gfx_shotweiss	= loadgfx("data/shot-weiss.png")
 	gfx_weissbk		= loadgfx("data/weissbk.png")
-	
+
+    snd_background = love.audio.newSource("data/background.mp3")
+    snd_background:setLooping(true)
+    snd_background:setVolume(0.5)
+    love.audio.play(snd_background)
+
+    snd_shoot = love.audio.newSource("data/schuss.mp3", "static")
+    snd_explosion = love.audio.newSource("data/explosion.mp3")
+
 	love.graphics.setBackgroundColor( 40,0,0)
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight()
@@ -71,6 +79,11 @@ function love.update (dt)
 	for i, v in pairs(shotsDelete) do
 		table.remove(gShots, v)
 	end
+
+	for i, v in pairs(gShots) do 
+		Enemies_ShotTest(v)
+		gPlayer:ShotTest(v, "white") 
+	end
 	Enemies_Update(dt)
 end
 
@@ -84,6 +97,10 @@ function love.draw ()
 	Enemies_Draw()
 	
 	love.graphics.print("hello world",40,40)
+
+	if (gPlayer:IsDead() == true) then
+		love.graphics.print("DEAD",40,240)
+	end
 end
 
 function love.keypressed (keyname)

@@ -11,7 +11,8 @@ function cShot:Init(x, y, dirX, dirY, lifetime, sType)
 		self.gfx = gfx_shotplayer
 	else
 		self.gfx = gfx_shotweiss
-	end
+    end
+    love.audio.play(snd_shoot)
 end
 
 function cShot:Update(dt)
