@@ -63,7 +63,7 @@ function love.load ()
 	
 	gfx_blutplatt	= loadgfx("data/blutplatt.png")
 	gfx_dnabonus	= loadgfx("data/dnabonus.png")
-	gfx_levelpart01	= loadgfx("data/levelpart01.png")
+	--~ gfx_levelpart01	= loadgfx("data/levelpart01.png")
 	gfx_player		= loadgfx("data/player.png")
 	gfx_rotbk		= loadgfx("data/rotbk.png")
 	gfx_shotplayer	= loadgfx("data/shot-player.png")
@@ -74,6 +74,9 @@ function love.load ()
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
 	gfx_boss_spike	= loadgfx("data/boss-spike.png")
 	gfx_border01	= loadgfx("data/border01.png")
+	gfx_border	= {	loadgfx("data/border1.png"),
+					loadgfx("data/border2.png"),
+					loadgfx("data/border3.png"),}
 	gfx_background1	= loadgfx("data/background1.png")
 	
     snd_background = love.audio.newSource("data/background.mp3")

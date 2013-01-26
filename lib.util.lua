@@ -15,6 +15,7 @@ function round(x) return floor(x+0.5) end
 
 function randf () return math.random() end
 function rand_in_range (vmin,vmax) return vmin+(vmax-vmin)* math.random() end
+function rand_in_arr (arr) return arr[math.random(#arr)] end
 
 function SetCol (col) love.graphics.setColor( col[1], col[2], col[3], col[4] ) end
 function MkCol (rgb,a) return { floor(rgb/0x10000), fmod(floor(rgb/0x100),256), fmod(rgb,256), a or 255 } end

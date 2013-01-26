@@ -111,7 +111,7 @@ function cWall:Init (x,y,ang,bTop)
 	self.y = y
 	self.ang = ang
 	self.bTop = bTop
-	self.gfx = gfx_levelpart01
+	self.gfx = rand_in_arr(gfx_border)
 end
 
 function cWall:Destroy () gLevel.walls[self] = nil end
