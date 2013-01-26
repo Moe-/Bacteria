@@ -63,8 +63,8 @@ function cEnemyBossBase:UpdatePartsStatus()
 		for o,_ in pairs(self.parts) do 
 			o:Die()
 		end
+		self:Die()
 	end
-	
 end
 
 function cEnemyBossBase:Update(dt)
