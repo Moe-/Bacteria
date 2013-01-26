@@ -98,7 +98,7 @@ function love.draw ()
 	
 	love.graphics.print("hello world",40,40)
 
-	if (gPlayer:isDead() == true) then
+	if (gPlayer:IsDead() == true) then
 		love.graphics.print("DEAD",40,240)
 	end
 end
