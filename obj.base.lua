@@ -27,11 +27,23 @@ end
 
 function cBase:DistToObj(o) return self:DistToPos(o.x,o.y) end
 
+
+
+function cBase:Damage(dmg)
+	self.energy = self.energy - dmg
+	
+	if (self.energy <= 0) then self:Die() else self:NotifyDamage() end
+end
+
+function cBase:NotifyDamage()
+	-- todo: overload me
+end
+
+function cBase:Die()
+	-- todo: overload me
+end
+
 function cBase:ShotTest(shot, stype)
-	if shot.sType == stype and shot:DistToPos(self.x, self.y) < 25 then
-		self.energy = self.energy - 20
-		if (self.energy <= 0) then return false end
-	end
-	return true
+	if shot.sType == stype and shot:DistToObj(self) < 25 then self:Damage(20) end
 end
 
