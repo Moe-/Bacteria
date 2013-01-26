@@ -137,10 +137,10 @@ function love.load ()
     snd_background = love.audio.newSource("data/background.mp3")
     snd_background:setLooping(true)
     snd_background:setVolume(0.5)
-    love.audio.play(snd_background)
 
     snd_shoot = love.audio.newSource("data/schuss.mp3", "static")
     snd_explosion = love.audio.newSource("data/explosion.mp3")
+    snd_youlose = love.audio.newSource("data/youlose.mp3")
 	
 	effTitle = cBloodTitle:New(love.graphics.newImage("data/particle.png"), 0, 0, 270)
 	
@@ -200,6 +200,9 @@ function love.update (dt)
 
 		if (gPlayer:IsDead() == true) then
 			gGameState = "gameover"
+            love.audio.stop(snd_background)
+            love.audio.play(snd_youlose)
+
 			gStateChangeTime = cTStateChange
 		end
 
@@ -360,7 +363,8 @@ function TestBossSpawn(bossclass)
 end
 
 function love.keyreleased (keyname)
-	if gGameState == "titlescreen" and gStateChangeTime < 0 then 
+	if gGameState == "titlescreen" and gStateChangeTime < 0 then
+        love.audio.play(snd_background)
 		gGameState = "startscreen"
 		gStateChangeTime = cTStateChange
 	elseif gGameState == "startscreen" and gStateChangeTime < 0 then 
@@ -374,10 +378,12 @@ function love.keyreleased (keyname)
             gGameState = "highscores"
             gStateChangeTime = cTStateChange
         elseif gHighscores:serverAvailable() == false then
+            love.audio.play(snd_background)
             gGameState = "startscreen"
             gStateChangeTime = cTStateChange
         end
 	elseif gGameState == "highscores" and gStateChangeTime < 0  then
+        love.audio.play(snd_background)
         gGameState = "startscreen"
         gStateChangeTime = cTStateChange
 	elseif gGameState == "pause" and gStateChangeTime < 0 then
