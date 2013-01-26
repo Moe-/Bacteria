@@ -1,6 +1,8 @@
 cSpawner = CreateClass()
 love.filesystem.load("obj.formation.lua")()
-kBossWaveCount = 7
+kBossSpawn_MinTotal		= 6
+kBossSpawn_MinSinceLast	= 4
+kWhiteSpawn_MinTotal 	= kBossSpawn_MinTotal/2
 
 function cSpawner:Init()
 	
@@ -30,7 +32,7 @@ function cSpawner:Init()
 	
     local formation = cFormation:New() table.insert(self.formations, formation)
 
-    formation.min_total_spawned = 5
+    formation.min_total_spawned = kWhiteSpawn_MinTotal
     formation:addEnemy("blue", 0 * e, 0 * e)
     formation:addEnemy("blue", 1 * e, 0 * e)
     formation:addEnemy("yellow", 0 * e, 1 * e)
@@ -38,7 +40,7 @@ function cSpawner:Init()
 	
     local formation = cFormation:New() table.insert(self.formations, formation)
 
-    formation.min_total_spawned = 5
+    formation.min_total_spawned = kWhiteSpawn_MinTotal
     formation:addEnemy("blue", 0 * e, 0 * e)
     formation:addEnemy("blue", 1 * e, 0 * e)
     formation:addEnemy("green", 0 * e, 1 * e)
@@ -46,7 +48,7 @@ function cSpawner:Init()
 	
     local formation = cFormation:New() table.insert(self.formations, formation)
 
-    formation.min_total_spawned = 5
+    formation.min_total_spawned = kWhiteSpawn_MinTotal
     formation:addEnemy("red", 0 * e, 0 * e)
     formation:addEnemy("red", 0 * e, 1 * e)
     formation:addEnemy("yellow", 1 * e, 0 * e)
@@ -54,7 +56,7 @@ function cSpawner:Init()
 	
     local formation = cFormation:New() table.insert(self.formations, formation)
 
-    formation.min_total_spawned = kBossWaveCount
+    formation.min_total_spawned = kBossSpawn_MinTotal
     formation:addEnemy("yellow", 2 * e,-1 * e)
     formation:addEnemy("green", 1 * e,-1 * e)
     formation:addEnemy("green", 0 * e, 0 * e)
@@ -65,11 +67,11 @@ function cSpawner:Init()
 	
     local formation = cFormation:New() table.insert(self.formations, formation)
 
-    formation.min_total_spawned = kBossWaveCount
-    formation.min_spawned_since_boss = 5
+    formation.min_total_spawned = kBossSpawn_MinTotal
+    formation.min_spawned_since_boss = kBossSpawn_MinSinceLast
     formation:addEnemy("boss", 0 , 0)
-    formation:addConstraint(cFormationConstraintNumberSpawns:New(formation, 1))
-    formation:addConstraint(cFormationConstraintSpawnOnce:New(formation))
+    --~ formation:addConstraint(cFormationConstraintNumberSpawns:New(formation, 1))
+    --~ formation:addConstraint(cFormationConstraintSpawnOnce:New(formation))
 
 end
 
@@ -78,6 +80,9 @@ function cSpawner:spawnFormation()
     local maySpawn = false
     local formation = nil
     local index = 0
+	
+	print("gFormationsSpawnedTotal",gFormationsSpawnedTotal)
+	print("gFormationsSpawnedSinceBoss",gFormationsSpawnedSinceBoss)
     repeat
         counter = counter + 1
         index = math.random(1,#self.formations)
