@@ -20,10 +20,10 @@ function cEnemyBossBase:Init(x,y)
 	local e = kBossUnit
 	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
 	
-	local o = self:MakeTentacle( 0,0, -4, 0, gfx_boss_gun)   self.tentacles[o] = true
-	local o = self:MakeTentacle( 0,0,  4, 0, gfx_boss_gun)   self.tentacles[o] = true
-	local o = self:MakeTentacle( 0,0,  0,-4, gfx_boss_spike) self.tentacles[o] = true
-	local o = self:MakeTentacle( 0,0,  0, 4, gfx_boss_spike) self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0, -4, 0, gfx_boss_spike)   self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0,  4, 0, gfx_boss_spike)   self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0,  0,-4, gfx_boss_gun) self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0,  0, 4, gfx_boss_gun) self.tentacles[o] = true
 	
 	
 	self:UpdatePartsStatus()
@@ -37,14 +37,13 @@ function cEnemyBossBase:MakeTentacle(x,y,dx,dy,gfx_head)
 	local vy = dy / imax
 	for i = 0,imax do 
 		local gfx = (i == imax) and gfx_head or gfx_boss_mid
-		local o = self:MakePart( i*vx*e, i*vy*e, gfx)
-		tentacle:Add(o)
+		local o = self:MakePart( i*vx*e, i*vy*e, gfx, tentacle)
 	end
 	return tentacle
 end
 
-function cEnemyBossBase:MakePart(x,y,gfx)
-	local o = cEnemyBossPartBase:New(x,y,gfx,self)
+function cEnemyBossBase:MakePart(x,y,gfx,tentacle)
+	local o = cEnemyBossPartBase:New(x,y,gfx,self,tentacle)
 	self.parts[o] = true
 	return o
 end
@@ -107,6 +106,10 @@ function cTentacle:Init ()
 	self.parts = {}
 end
 
+function cTentacle:NotifyPartDie (o)
+	print("tentacle part die",o)
+end
+
 function cTentacle:Add (o)
 	self.parts[o] = true
 end
@@ -114,7 +117,7 @@ end
 -- ***** ***** ***** ***** ***** cEnemyBossPartBase
 cEnemyBossPartBase = CreateClass(cEnemyBase)
 
-function cEnemyBossPartBase:Init	(x,y,gfx,boss)
+function cEnemyBossPartBase:Init	(x,y,gfx,boss,tentacle)
 	self.x = boss.x+x
 	self.y = boss.x+y
 	self.x0 = x
@@ -122,6 +125,8 @@ function cEnemyBossPartBase:Init	(x,y,gfx,boss)
 	self.gfx = gfx
 	self.energy = 100
 	self.boss = boss
+	self.tentacle = tentacle
+	if (tentacle) then tentacle:Add(self) end
 	self:Register()
 	if (self.gfx == gfx_boss_mid) then self.bInvulnerable = true end
 end
@@ -141,9 +146,10 @@ function cEnemyBossPartBase:Update()
 	self.y = self.boss.y + y + (bHorz and iOff or 0)
 end
 
-function cEnemyBossPartBase:Die() 
+function cEnemyBossPartBase:Die()
 	cEnemyBase.Die(self)
-	self.boss:NotifyPartDie(self) 
+	self.boss:NotifyPartDie(self)
+	if (self.tentacle) then self.tentacle:NotifyPartDie(self) end
 end
 
 function cEnemyBossPartBase:Draw() self:DrawWobble(0.1,0.1,gEnemyBossGfxScale) end
