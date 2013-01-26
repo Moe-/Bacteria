@@ -30,8 +30,8 @@ cam slimed (y-stretch)
 scroll speed + gegner extra speed = herzschlag.
 
 schleim sieht nicht aus wie auf cam.
-particel trails zu intensiv -> alpha
-boss 1 schiesst nicht ? ok.   seltsame 2te kernzelle ??
+particel trails zu intensiv -> alpha : done
+boss 1 schiesst nicht ? ok. 
 
 ]]--
 

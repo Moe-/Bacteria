@@ -7,6 +7,8 @@ kTentacleRespawnInterval = 3.0
 
 kShotInterval_BossPart = 1.2
 
+kBossWallEvadeSpeed = 40
+
 -- ***** ***** ***** ***** ***** boss variants
 
 cEnemyBoss01 = CreateClass(cEnemyBossBase)
@@ -135,6 +137,17 @@ end
 
 function cEnemyBossBase:Update(dt)
 	self.y = self.y0 + 50 * sin(0.35*gMyTime*PI)
+	
+	local bCollidingWithTop		= false
+	local bCollidingWithBottom	= false
+	for o,_ in pairs(self.parts) do 
+		if (o.bCollidingWithTop		) then bCollidingWithTop = true		o.bCollidingWithTop = false end
+		if (o.bCollidingWithBottom	) then bCollidingWithBottom = true	o.bCollidingWithBottom = false end
+	end
+	
+	if (bCollidingWithTop   ) then  self.y0 = self.y0 + kBossWallEvadeSpeed * dt end
+	if (bCollidingWithBottom) then  self.y0 = self.y0 - kBossWallEvadeSpeed * dt end
+	
 end
 
 function cEnemyBossBase:Draw()
