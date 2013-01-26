@@ -94,13 +94,8 @@ function cEnemyBossBase:BossInitBase(x,y)
 end
 
 function cEnemyBossBase:MakeTentacle(x,y,num,vx,vy,core,gfx_head)
-	local tentacle = cTentacle:New()
+	local tentacle = cTentacle:New(x,y,num,vx,vy,gfx_head,self)
 	if (core) then core.tentacles[tentacle] = true end
-	local e = kBossUnit
-	for i = 0,num do 
-		local gfx = (i == num) and gfx_head or gfx_boss_mid
-		local o = self:MakePart( (x+i*vx)*e, (y+i*vy)*e, gfx, tentacle)
-	end
 	return tentacle
 end
 
@@ -140,10 +135,34 @@ end
 
 cTentacle = CreateClass()
 
-function cTentacle:Init ()
+function cTentacle:Init (x,y,num,vx,vy,gfx_head,boss)
 	self.parts = {}
+	self.x = x
+	self.y = y
+	self.num = num
+	self.vx = vx
+	self.vy = vy
+	self.gfx_head = gfx_head
+	self.boss = boss
+	self:Respawn()
 end
 
+function cTentacle:Respawn ()
+	local e = kBossUnit
+	local boss = self.boss
+	local x = self.x
+	local y = self.y
+	local vx = self.vx
+	local vy = self.vy
+	local num = self.num
+	local gfx_head = self.gfx_head
+	
+	for i = 0,num do 
+		local gfx = (i == num) and gfx_head or gfx_boss_mid
+		local o = boss:MakePart( (x+i*vx)*e, (y+i*vy)*e, gfx, self)
+	end
+end
+	
 function cTentacle:NotifyPartDie (o)
 	--~ print("tentacle part die",o)
 	self.parts[o] = nil
