@@ -20,10 +20,10 @@ function cEnemyBossBase:Init(x,y)
 	local e = kBossUnit
 	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
 	
-	local o = self:MakeTentacle( 0,0, -4, 0, gfx_boss_spike)   self.tentacles[o] = true
-	local o = self:MakeTentacle( 0,0,  4, 0, gfx_boss_spike)   self.tentacles[o] = true
-	local o = self:MakeTentacle( 0,0,  0,-4, gfx_boss_gun) self.tentacles[o] = true
-	local o = self:MakeTentacle( 0,0,  0, 4, gfx_boss_gun) self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0, -4, 0, gfx_boss_spike)	self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0,  4, 0, gfx_boss_spike)	self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0,  0,-4, gfx_boss_gun)		self.tentacles[o] = true
+	local o = self:MakeTentacle( 0,0,  0, 4, gfx_boss_gun)		self.tentacles[o] = true
 	
 	
 	self:UpdatePartsStatus()
@@ -107,7 +107,13 @@ function cTentacle:Init ()
 end
 
 function cTentacle:NotifyPartDie (o)
-	print("tentacle part die",o)
+	--~ print("tentacle part die",o)
+	self.parts[o] = nil
+	if (o.gfx ~= gfx_boss_mid) then self:KillAll() end
+end
+
+function cTentacle:KillAll ()
+	for o,_ in pairs(self.parts) do o:Die() end
 end
 
 function cTentacle:Add (o)
