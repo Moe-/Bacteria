@@ -11,6 +11,7 @@ function cPlayer:Init(x,y)
 	print("player init")
 	self.x = x
 	self.y = y
+	self.energy = 100
 	self.dx = 0
 	self.dy = 0
 	self.gfx = gfx_player
@@ -38,4 +39,10 @@ function cPlayer:Shoot(cx, cy)
 	local lifetime = 5.0
 	table.insert(gShots, cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "player"))
 end
+
+function cPlayer:isDead()
+	if (self.energy <= 0) then return true end
+	return false
+end
+
 

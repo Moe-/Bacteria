@@ -80,7 +80,10 @@ function love.update (dt)
 		table.remove(gShots, v)
 	end
 
-	for i, v in pairs(gShots) do Enemies_ShotTest(v) end
+	for i, v in pairs(gShots) do 
+		Enemies_ShotTest(v)
+		gPlayer:ShotTest(v, "white") 
+	end
 	Enemies_Update(dt)
 end
 
@@ -94,6 +97,10 @@ function love.draw ()
 	Enemies_Draw()
 	
 	love.graphics.print("hello world",40,40)
+
+	if (gPlayer:isDead() == true) then
+		love.graphics.print("DEAD",40,240)
+	end
 end
 
 function love.keypressed (keyname)
