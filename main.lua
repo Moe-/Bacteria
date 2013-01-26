@@ -84,6 +84,7 @@ function love.load ()
 					loadgfx("data/border3.png"),}
 	gfx_background1	= loadgfx("data/background1.png")
 	gfx_background2	= loadgfx("data/background2.png")
+	gfx_egg			= loadgfx("data/egg.png")
 	
     snd_background = love.audio.newSource("data/background.mp3")
     snd_background:setLooping(true)
@@ -103,10 +104,12 @@ function love.load ()
 
 	gBoss = cEnemyBossBase:New(0.6*w,0.5*h)
 	
+	for i=1,5 do cEnemyEgg:New(0.9*w,randf()*h) end
 	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
 	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
 	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
 	for i=1,5 do cEnemyWeapon:New(0.9*w,randf()*h, rand_in_arr({"red", "green", "blue", "white"})) end
+	
 	
    gSpawner = cSpawner:New()
 

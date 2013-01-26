@@ -115,3 +115,18 @@ end
 
 function cEnemyBossPartBase:Draw() self:DrawWobble(0.1,0.1,gEnemyBossGfxScale) end
 
+-- ***** ***** ***** ***** ***** *****
+
+cEnemyEgg = CreateClass(cEnemyBase)
+
+function cEnemyEgg:Init(x,y) 
+	self.enemy_kind = "egg"
+	self.x = x
+	self.y = y
+	self.energy = 100
+	self.gfx = gfx_egg
+	self:Register()
+end
+
+function cEnemyEgg:Draw() self:DrawWobble(0.1,0.1,gEnemyGfxScale) end
+
