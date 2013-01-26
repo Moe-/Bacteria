@@ -57,9 +57,6 @@ function loadgfx (path) return cGfx:New(love.graphics.newImage(path)) end
 
 function love.load ()
 	effects = cEffectSys:New()
-	local arr = {1,2,3,4}
-	table.insert(arr,5)
-	for k,v in ipairs(arr) do print("arr",k,v) end
 	
 	gfx_blutplatt	= loadgfx("data/blutplatt.png")
 	gfx_dnabonus	= loadgfx("data/dnabonus.png")
