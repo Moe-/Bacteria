@@ -24,7 +24,7 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == "l" then
-		ef:CreateEffect("trail", x, y, 0, true)
+		ef:CreateEffect("sparkle", x, y, 0, true)
 	end
 end
 
