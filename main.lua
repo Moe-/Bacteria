@@ -52,6 +52,7 @@ love.filesystem.load("obj.enemy-weapon.lua")()
 love.filesystem.load("obj.EffectSys.lua")()
 love.filesystem.load("obj.spawner.lua")()
 love.filesystem.load("obj.SpriteStretch.lua")()
+love.filesystem.load("obj.highscores.lua")()
 
 cGfx = CreateClass(cBase)
 function cGfx:Init (img)
@@ -150,10 +151,19 @@ function love.load ()
 
     gFormationsHistory = {}
 
+    gHighscores = cHighscores:New()
+
 	gShootNext = -1
-	gGameState = "startscreen"
-	gStateChangeTime = cTStateChange
+    gGameState = "startscreen"
+    gStateChangeTime = cTStateChange
+
+    gFontTitle = love.graphics.newFont(30)
+    gFontNormal = love.graphics.newFont(15)
+    gInitials = ""
+
 end
+
+
 
 function love.update (dt)
 	if gGameState ~= "game" then 
@@ -234,7 +244,7 @@ function draw_game ()
 	end
 
 	-- draw score
-	--love.graphics.setFont(48)
+	love.graphics.setFont(gFontNormal)
 	love.graphics.print(gPlayer:GetPoints(), 50, 50)
 end
 
@@ -244,6 +254,12 @@ end
 
 function draw_gameover_screen()
 	gfx_gameover:DrawX0Y0(0, 0)
+    if (gHighscores:serverAvailable() == true) then
+        love.graphics.setFont(gFontTitle)
+        love.graphics.print("Enter initials: " .. gInitials, 10,20)
+    end
+
+
 end
 
 function draw_pause_screen()
@@ -255,7 +271,8 @@ function love.draw ()
 	if gGameState == "startscreen" then draw_start_screen()
 	elseif gGameState == "gameover" then draw_gameover_screen()
 	elseif gGameState == "game" then draw_game() 
-	elseif gGameState == "pause" then draw_pause_screen() 
+	elseif gGameState == "pause" then draw_pause_screen()
+    elseif gGameState == "highscores" then gHighscores:draw()
 	end
 	
 	if (gGameFinished) then 
@@ -275,25 +292,37 @@ function love.draw ()
 	end
 end
 
-function love.keypressed (keyname)
-	if (keyname == "escape") then love.event.quit( ) 
-	elseif (keyname == "left"	or keyname == "a") then gPlayer:SetSpeedX(-gPlayerSpeed)
-	elseif (keyname == "right"	or keyname == "d") then gPlayer:SetSpeedX(gPlayerSpeed)
-	elseif (keyname == "up"		or keyname == "w") then gPlayer:SetSpeedY(-gPlayerSpeed)
-	elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(gPlayerSpeed)
-	elseif (keyname == "1") then gLevel.gfx_wall = gfx_wallA
-	elseif (keyname == "2") then gLevel.gfx_wall = gfx_wallB
-	elseif (keyname == "5") then TestBossSpawn(cEnemyBoss01)
-	elseif (keyname == "6") then TestBossSpawn(cEnemyBoss02)
-	elseif (keyname == "7") then TestBossSpawn(cEnemyBossFinal)
-	elseif (keyname == "f3") then gPlayer:UpdateWeapon("red")
-	elseif (keyname == "f4") then gPlayer:UpdateWeapon("green")
-	elseif (keyname == "f5") then gPlayer:UpdateWeapon("blue")
-	elseif (keyname == "f6") then gPlayer:UpdateWeapon("white")
-	elseif (keyname == "o") then SHOW_DEBUG_CIRCLE = not SHOW_DEBUG_CIRCLE 
-	elseif (keyname == " ") then gShootNext = 0
-	else print("keypress",keyname)
-	end
+function love.keypressed (keyname, unicode)
+	if (keyname == "escape") then love.event.quit( ) end
+	if gGameState == "game" then
+        if (keyname == "left"	or keyname == "a") then gPlayer:SetSpeedX(-gPlayerSpeed)
+		elseif (keyname == "left"	or keyname == "a") then gPlayer:SetSpeedX(-gPlayerSpeed)
+		elseif (keyname == "right"	or keyname == "d") then gPlayer:SetSpeedX(gPlayerSpeed)
+		elseif (keyname == "up"		or keyname == "w") then gPlayer:SetSpeedY(-gPlayerSpeed)
+		elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(gPlayerSpeed)
+		elseif (keyname == "1") then gLevel.gfx_wall = gfx_wallA
+		elseif (keyname == "2") then gLevel.gfx_wall = gfx_wallB
+		elseif (keyname == "5") then TestBossSpawn(cEnemyBoss01)
+		elseif (keyname == "6") then TestBossSpawn(cEnemyBoss02)
+		elseif (keyname == "7") then TestBossSpawn(cEnemyBossFinal)
+		elseif (keyname == "f3") then gPlayer:UpdateWeapon("red")
+		elseif (keyname == "f4") then gPlayer:UpdateWeapon("green")
+		elseif (keyname == "f5") then gPlayer:UpdateWeapon("blue")
+		elseif (keyname == "f6") then gPlayer:UpdateWeapon("white")
+		elseif (keyname == "o") then SHOW_DEBUG_CIRCLE = not SHOW_DEBUG_CIRCLE 	elseif (keyname == " ") then gShootNext = 0
+	        elseif (keyname == " ") then gShootNext = 0
+		else print("keypress",keyname)
+		end
+	elseif gGameState == "gameover" and gHighscores:serverAvailable() then
+        	if (unicode > 31 and unicode < 127) then
+            	if (gInitials:len() < 3) then
+                	gInitials = gInitials .. string.char(unicode)
+            	end
+            	if (gInitials:len() >= 3) then
+                	gHighscores:sendScore(gInitials, gPlayer:GetPoints())
+            	end
+        end
+   	 end
 end
 
 function TestBossSpawn(bossclass)
@@ -308,10 +337,20 @@ function love.keyreleased (keyname)
 		gGameState = "game"
 		gStateChangeTime = cTStateChange
 		resetgame()
-	elseif gGameState == "gameover" and gStateChangeTime < 0  then 
-		gGameState = "startscreen"
-		gStateChangeTime = cTStateChange
-	elseif gGameState == "pause" and gStateChangeTime < 0 then 
+	elseif gGameState == "gameover" and gStateChangeTime < 0  then
+        if gInitials:len() >= 3 then
+            gInitials = ""
+            gHighscores = cHighscores:New()
+            gGameState = "highscores"
+            gStateChangeTime = cTStateChange
+        elseif gHighscores:serverAvailable() == false then
+            gGameState = "startscreen"
+            gStateChangeTime = cTStateChange
+        end
+	elseif gGameState == "highscores" and gStateChangeTime < 0  then
+        gGameState = "startscreen"
+        gStateChangeTime = cTStateChange
+	elseif gGameState == "pause" and gStateChangeTime < 0 then
 		gGameState = "game"
 		gStateChangeTime = cTStateChange
 	elseif gGameState == "game" then
