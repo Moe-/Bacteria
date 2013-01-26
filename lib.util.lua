@@ -23,6 +23,10 @@ function ColDark (col) return { col[1]/2, col[2]/2, col[3]/2, col[4] or 255 } en
 local function RotX (x,y,ang) return x*cos(ang)-y*sin(ang) end
 local function RotY (x,y,ang) return x*sin(ang)+y*cos(ang) end
 
+function table_count (t) local c = 0 for k,v in pairs(t) do c = c + 1 end return c end
+function table_empty (t) return next(t) == nil end
+
+
 function TranslatePolyPoints (ox,oy,ang, x,y, ...)
 	if (not x) then return end
 	return RotX(x,y,ang)+ox,RotY(x,y,ang)+oy,TranslatePolyPoints(ox,oy,ang,...)

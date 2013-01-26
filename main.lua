@@ -13,9 +13,8 @@ love.filesystem.load("obj.enemy-base.lua")()
 love.filesystem.load("obj.enemy-blutplatt.lua")()
 love.filesystem.load("obj.enemy-white.lua")()
 love.filesystem.load("obj.enemy-red.lua")()
+love.filesystem.load("obj.EffectSys.lua")()
 love.filesystem.load("obj.spawner.lua")()
-
-
 
 cGfx = CreateClass(cBase)
 function cGfx:Init (img)
@@ -32,6 +31,7 @@ end
 function loadgfx (path) return cGfx:New(love.graphics.newImage(path)) end
 
 function love.load ()
+	effects = cEffectSys:New()
 	local arr = {1,2,3,4}
 	table.insert(arr,5)
 	for k,v in ipairs(arr) do print("arr",k,v) end
@@ -60,10 +60,6 @@ function love.load ()
 
 	gShots = {}
 	gLevel = cLevel:New()
-	
---	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
---	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
---	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
 
     gSpawner = cSpawner:New()
 end
@@ -72,9 +68,10 @@ function love.update (dt)
 	gMyTime = love.timer.getTime( )
 	gLevel:Update(dt)
 	gPlayer:Update(dt)
+	effects:Update(dt)
     gSpawner:Update(dt)
-	
-	local shotsDelete = {}
+
+    local shotsDelete = {}
 	for i, v in pairs(gShots) do 
 		if v:Update(dt) == false then
 			table.insert(shotsDelete, i)
@@ -84,19 +81,28 @@ function love.update (dt)
 	for i, v in pairs(shotsDelete) do
 		table.remove(gShots, v)
 	end
+
+	for i, v in pairs(gShots) do 
+		Enemies_ShotTest(v)
+		gPlayer:ShotTest(v, "white") 
+	end
 	Enemies_Update(dt)
 end
 
 function love.draw ()
 	gMyTime = love.timer.getTime( )
 	gLevel:Draw()
-	
+	effects:Draw()
 	gPlayer:Draw()
 
 	for i, v in pairs(gShots) do v:Draw() end
 	Enemies_Draw()
 	
 	love.graphics.print("hello world",40,40)
+
+	if (gPlayer:IsDead() == true) then
+		love.graphics.print("DEAD",40,240)
+	end
 end
 
 function love.keypressed (keyname)
@@ -119,3 +125,4 @@ function love.mousereleased(x, y, button)
 	if (button == "l") then gPlayer:Shoot(x, y) end
 end
 
+>>>>>>> 767d0674947ba13bbf900b1dd89617c1a1fae22b
