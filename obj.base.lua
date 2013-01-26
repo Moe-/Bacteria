@@ -30,6 +30,7 @@ function cBase:DistToObj(o) return self:DistToPos(o.x,o.y) end
 
 
 function cBase:Damage(dmg)
+	if (self.bInvulnerable) then return end
 	self.energy = self.energy - dmg
 	
 	if (self.energy <= 0) then self:Die() else self:NotifyDamage() end
