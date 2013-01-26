@@ -6,7 +6,6 @@ import re
 class HighScoreServer(SocketServer.BaseRequestHandler):
 
     def processScore(self, params):
-        print "Processing Score"
         print params
         match = re.search('^"([^"]*)",(\d*)$', params)
         if match:
@@ -16,10 +15,20 @@ class HighScoreServer(SocketServer.BaseRequestHandler):
             c = db.cursor()
             c.execute("Insert INTO highscores values (?, ?)", (user, score))
             db.commit()
-        print self.socket
+
 
     def processGetList(self, params):
-        print "Get List"
+        print "GetList"
+        global db
+        c = db.cursor()
+        count = 0
+        answer = ""
+        for row in c.execute("SELECT name, score from highscores order by score DESC LIMIT 10"):
+            count = count + 1
+            answer = "{}{}|{}|{}&".format(answer, count, row[0], row[1])
+
+        self.socket.sendto(answer, self.client_address)
+
 
     def handle(self):
 
@@ -29,21 +38,19 @@ class HighScoreServer(SocketServer.BaseRequestHandler):
         if match:
             if match.group(1) == 'sendScore':
                 self.processScore(match.group(2))
-            if match.group(2) == 'getList':
-                self.processScore(match.group(2))
+            elif match.group(1) == 'getScores':
+                self.processGetList(match.group(2))
 
 
 if __name__ == "__main__":
 
     db = sqlite3.connect('database.db')
     c = db.cursor()
-    if c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='highscores'").fetchone() != None:
-        print "Ja"
-    else:
+    if c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='highscores'").fetchone() == None:
         c.execute("CREATE TABLE highscores (name CHAR(20) NOT NULL, score INT NOT NULL)")
     db.commit()
 
-    HOST, PORT = "localhost", 9999
+    HOST, PORT = "localhost", 80
 
     server = SocketServer.UDPServer((HOST, PORT), HighScoreServer)
     server.serve_forever()
