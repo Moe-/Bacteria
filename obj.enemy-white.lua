@@ -1,13 +1,20 @@
 cEnemyWhite = CreateClass(cEnemyBase)
 
-function cEnemyWhite:Init(x,y) 
+function cEnemyWhite:Init(x,y,colour) 
 	self.enemy_kind = "white"
 	self.x = x
 	self.y = y
 	self.dx = math.random(-100, 100)
 	self.dy = math.random(-100, 100)
 	self.energy = 100
-	self.gfx = gfx_weissbk
+	self.colour = colour
+
+	if (colour == "blue") then self.gfx = gfx_weissbk_blau
+	elseif (colour == "green") then self.gfx = gfx_weissbk_gruen
+	elseif (colour == "red") then self.gfx = gfx_weissbk_rot
+	elseif (colour == "white") then self.gfx = gfx_weissbk_weis
+	end
+
 	self:Register()
 	
 	self.t = 0

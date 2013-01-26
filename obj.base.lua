@@ -60,8 +60,8 @@ end
 
 function cBase:ShotTest(shot, stype)
 	local damage = 20
-	if (self.enemy_kind ~= nil and self.enemy_kind == "white") then 
-		damage = 5 + 15 * gPlayer:GetWeaponPower()
+	if (self.enemy_kind ~= nil and self.enemy_kind == "white") and shot.colour == self.colour then 
+		damage = 5
 	end
 	local d = self.radius or 25
 	if shot.sType == stype and shot:DistToObj(self) < d then self:Damage(damage) end
