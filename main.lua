@@ -111,6 +111,7 @@ function love.load ()
 	gfx_pill_red			= loadgfx("data/pill_red.png")
 	gfx_startscreen		= loadgfx("data/screen.png")
 	gfx_gameover			= loadgfx("data/gameover.png")
+	gfx_pause				= loadgfx("data/pause.png")
 	
     snd_background = love.audio.newSource("data/background.mp3")
     snd_background:setLooping(true)
@@ -228,10 +229,15 @@ function draw_gameover_screen()
 	gfx_gameover:DrawX0Y0(0, 0)
 end
 
+function draw_pause_screen()
+	gfx_pause:DrawX0Y0(0, 0)
+end
+
 function love.draw ()
 	if gGameState == "startscreen" then draw_start_screen()
 	elseif gGameState == "gameover" then draw_gameover_screen()
 	elseif gGameState == "game" then draw_game() 
+	elseif gGameState == "pause" then draw_pause_screen() 
 	end
 end
 
@@ -265,6 +271,9 @@ function love.keyreleased (keyname)
 	elseif gGameState == "gameover" and gStateChangeTime < 0  then 
 		gGameState = "startscreen"
 		gStateChangeTime = cTStateChange
+	elseif gGameState == "pause" and gStateChangeTime < 0 then 
+		gGameState = "game"
+		gStateChangeTime = cTStateChange
 	elseif gGameState == "game" then
 		if ((keyname == "left" or keyname == "a") and not (love.keyboard.isDown("right") or love.keyboard.isDown("d"))) 
 			or ((keyname == "right" or keyname == "d") and not (love.keyboard.isDown("left") or love.keyboard.isDown("a"))) then
@@ -283,6 +292,9 @@ function love.keyreleased (keyname)
 		elseif (keyname == "down" or keyname == "s") and (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
 			gPlayer:SetSpeedY(-gPlayerSpeed)
 		 elseif (keyname == " ") then gShootNext = -1
+		elseif (keyname == "p" or keyname == "P") then 
+			gGameState = "pause"
+			gStateChangeTime = cTStateChange
 		 end
 	end
 
@@ -299,6 +311,9 @@ function love.mousereleased(x, y, button)
 		resetgame()
 	elseif gGameState == "gameover" and gStateChangeTime < 0 then 
 		gGameState = "startscreen"
+		gStateChangeTime = cTStateChange
+	elseif gGameState == "pause" and gStateChangeTime < 0 then 
+		gGameState = "game"
 		gStateChangeTime = cTStateChange
 	elseif gGameState == "game" then
 		if (button == "l") then gPlayer:Shoot(x, y) end
