@@ -107,7 +107,9 @@ function love.load ()
 	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
 	for i=1,5 do cEnemyWeapon:New(0.9*w,randf()*h, rand_in_arr({"red", "green", "blue", "white"})) end
 	
-    gSpawner = cSpawner:New()
+   gSpawner = cSpawner:New()
+
+	gShootNext = -1
 end
 
 function love.update (dt)
@@ -135,6 +137,15 @@ function love.update (dt)
 	gBoss:Update(dt)
 	Enemies_Update(dt)
 	gLevel:Update(dt)
+
+	if(gShootNext > -1) then
+		gShootNext = gShootNext - dt
+		if (gShootNext < 0) then
+			local x, y = love.mouse.getPosition()
+			gPlayer:Shoot(x, y)
+			gShootNext = 0.15
+		end
+	end
 end
 
 function love.draw ()
@@ -198,4 +209,9 @@ end
 
 function love.mousereleased(x, y, button)
 	if (button == "l") then gPlayer:Shoot(x, y) end
+	if (button == "r") then gShootNext = -1 end
+end
+
+function love.mousepressed(x, y, button)
+	if (button == "r") then gShootNext = 0 end
 end
