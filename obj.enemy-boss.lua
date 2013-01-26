@@ -136,26 +136,9 @@ end
 
 function cEnemyBossBase:Update(dt)
 	self.y = self.y0 + 50 * sin(0.35*gMyTime*PI)
-	
-	for o,_ in pairs(self.parts) do
-		if (o.gfx == gfx_boss_gun) then
-			local rnd = math.random()
-			if(rnd * dt < 0.0025) then
-				local x = o.x
-				local y = o.y
-				local dirX = gPlayer.x - x
-				local dirY = gPlayer.y - y + math.random(-250, 250)
-				local norm = math.sqrt(dirX*dirX + dirY*dirY)
-				local lifetime = 5.0
-				cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "blue")
-			end
-		end
-	end
-	
 end
 
 function cEnemyBossBase:Draw()
-	--~ for o,_ in pairs(self.parts) do o:Draw() end
 end
 
 
@@ -186,7 +169,7 @@ cEnemyBossPartBase = CreateClass(cEnemyBase)
 
 function cEnemyBossPartBase:Init	(x,y,gfx,boss,tentacle)
 	self.x = boss.x+x
-	self.y = boss.x+y
+	self.y = boss.y+y
 	self.x0 = x
 	self.y0 = y
 	self.gfx = gfx
@@ -198,7 +181,7 @@ function cEnemyBossPartBase:Init	(x,y,gfx,boss,tentacle)
 	if (self.gfx == gfx_boss_mid) then self.bInvulnerable = true end
 end
 
-function cEnemyBossPartBase:Update()
+function cEnemyBossPartBase:Update(dt)
 	local x = self.x0
 	local y = self.y0
 	
@@ -214,6 +197,20 @@ function cEnemyBossPartBase:Update()
 	
 	if (self.gfx == gfx_boss_mid) then 
 		Shots_BlockPlayerShotsAtPos(self.x,self.y,kEnemyBossMidBlockShotRadius)
+	end
+	
+	-- shot if gun 
+	if (self.gfx == gfx_boss_gun) then
+		local rnd = math.random()
+		if(rnd * dt < 0.0025) then
+			local x = self.x
+			local y = self.y
+			local dirX = gPlayer.x - x
+			local dirY = gPlayer.y - y + math.random(-250, 250)
+			local norm = math.sqrt(dirX*dirX + dirY*dirY)
+			local lifetime = 5.0
+			cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "blue")
+		end
 	end
 end
 

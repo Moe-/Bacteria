@@ -21,6 +21,10 @@ TODO liste code :
 * final boss herz !
 * background tiled
 * rotbk anim ?
+
+cam shake on player hit
+cam slimed (y-stretch)
+scroll speed + gegner extra speed = herzschlag.
 ]]--
 
 gMyTime = love.timer.getTime( )
