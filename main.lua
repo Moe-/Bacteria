@@ -1,6 +1,22 @@
 sin = math.sin
 PI = math.pi
 
+--[[
+TODO liste code : 
+* wand kollision
+* wand teile drehen
+* wand rand
+* boss teile schaden / sterben 
+* gegner formationen spawnen
+* waffe rot/grün/blau
+* waffen wechseln bei bonus gegner einsammeln
+* weisse blutkörperchen resistenz
+* boss nach zeit x
+* final boss herz !
+* background tiled
+* rotbk anim ?
+]]--
+
 gMyTime = love.timer.getTime( )
 	
 love.filesystem.load("lib.oop.lua")()
