@@ -4,6 +4,7 @@ PI = math.pi
 gEnemyGfxScale = 0.5
 gEnemyBossGfxScale = 0.7
 --~ gEnemyGfxScale = 1
+gPlayerSpeed = 4
 
 --[[
 TODO liste code : 
@@ -152,10 +153,10 @@ end
 
 function love.keypressed (keyname)
 	if (keyname == "escape") then love.event.quit( ) 
-	elseif (keyname == "left"	or keyname == "a") then gPlayer:SetSpeedX(-2)
-	elseif (keyname == "right"	or keyname == "d") then gPlayer:SetSpeedX(2)
-	elseif (keyname == "up"		or keyname == "w") then gPlayer:SetSpeedY(-2)
-	elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(2)
+	elseif (keyname == "left"	or keyname == "a") then gPlayer:SetSpeedX(-gPlayerSpeed)
+	elseif (keyname == "right"	or keyname == "d") then gPlayer:SetSpeedX(gPlayerSpeed)
+	elseif (keyname == "up"		or keyname == "w") then gPlayer:SetSpeedY(-gPlayerSpeed)
+	elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(gPlayerSpeed)
 	else print("keypress",keyname)
 	end
 end
