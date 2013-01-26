@@ -8,6 +8,9 @@ gPlayerSpeed = 10
 cPlayerEnergyMax = 1000
 cTStateChange = 1.0
 
+-- music gen : http://www.inudge.net/
+-- sound gen : http://www.drpetter.se/project_sfxr.html
+
 --~ SHOW_DEBUG_CIRCLE = true
 
 --[[
