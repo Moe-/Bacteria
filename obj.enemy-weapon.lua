@@ -16,6 +16,7 @@ function cEnemyWeapon:Init(x,y,wType)
 	self:Register()
 	self.time_per_frame = 0.1
 	self.radius = gPlayer.radius*1.5
+	self.bCanLeaveScreen = true
 end
 
 function cEnemyWeapon:Draw() self:DrawWobble(0.2,0.1,gEnemyGfxScale) end

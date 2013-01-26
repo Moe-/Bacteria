@@ -7,8 +7,11 @@ function Enemies_Update (dt)
 	local h = love.graphics.getHeight()
 	
 	for o,_ in pairs(gEnemies) do 
-		o.x = max(0,min(w,o.x))
-		o.y = max(0,min(h,o.y))
+		if (not o.bCanLeaveScreen) then 
+			local r = o.radius or 10
+			o.x = max(r,min(w-r,o.x))
+			o.y = max(r,min(h-r,o.y))
+		end
 		o:Update(dt)
 		o:CheckCollisionWithPlayer(dt)
 	end 

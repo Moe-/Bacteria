@@ -207,10 +207,10 @@ function draw_game ()
 --	gBoss:Draw()
 	effects:DrawBelow()
 	gPlayer:Draw()
-	effects:DrawAbove()
 
 	Shots_Draw()
 	Enemies_Draw()
+	effects:DrawAbove()
 	
 	--~ love.graphics.print("hello world",40,40)
 	
