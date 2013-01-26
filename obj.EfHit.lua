@@ -4,7 +4,7 @@ function cHit:Init(sprite, x, y, direction)
 	self.ps = cPartSys:New()
 	
 	self.partSystem = love.graphics.newParticleSystem(sprite, 800)
-	self.partSystem:setEmissionRate          (400)
+	self.partSystem:setEmissionRate          (200)
 	self.partSystem:setLifetime              (0.1)
 	self.partSystem:setParticleLife          (1)
 	self.partSystem:setPosition              (0, 0)

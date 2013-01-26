@@ -1,7 +1,7 @@
 cEnemyRed = CreateClass(cEnemyBase)
 
 function cEnemyRed:Init(x,y) 
-	enemy_kind = "red"
+	self.enemy_kind = "red"
 	self.x = x
 	self.y = y
 	self.energy = 100
