@@ -4,6 +4,8 @@ function cEnemyWhite:Init(x,y)
 	self.enemy_kind = "white"
 	self.x = x
 	self.y = y
+	self.dx = math.random(-100, 100)
+	self.dy = math.random(-100, 100)
 	self.energy = 100
 	self.gfx = gfx_weissbk
 	self:Register()
@@ -22,5 +24,10 @@ function cEnemyWhite:Update (dt)
 		local lifetime = 5.0
 		table.insert(gShots, cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "white"))
 	end
+
+	self.dx = clamp(self.dx + math.random(-20, 20), -100, 100)
+	self.dy = clamp(self.dy + math.random(-20, 20), -100, 100)
+	self.x = self.x + dt * self.dx
+	self.y = self.y + dt * self.dy
 end
 
