@@ -34,5 +34,6 @@ function cEnemyBase:Register()
 end
 
 function cEnemyBase:Init() 
+	enemy_kind = "base"
 end
 
