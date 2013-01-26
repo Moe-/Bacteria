@@ -77,6 +77,9 @@ function love.load ()
 	gfx_blutplatt	= loadgfx("data/blutplatt.png")
 	gfx_dnabonus	= loadgfx("data/dnabonus.png")
 	--~ gfx_levelpart01	= loadgfx("data/levelpart01.png")
+	gfx_deco		= { loadgfx("data/bg1.png"),
+						loadgfx("data/bg2.png"),
+						loadgfx("data/egg.png")}
 	gfx_player_blau		= loadgfx("data/player_blau.png")
 	gfx_player_gruen		= loadgfx("data/player_gruen.png")
 	gfx_player_rot		= loadgfx("data/player_rot.png")

@@ -6,9 +6,11 @@ cLevel = CreateClass()
 kLevelBorderBackOffset = 20
 kLevelStepX = 110
 kLevelCollOff = 0
+kLevelDecoChancePerStep = 0.3
 
 function cLevel:Init() 
 	self.walls = {}
+	self.deco = {}
 	self.speed = 300
 	self.scrollx = 0
 	self.scrolly = 0
@@ -36,11 +38,6 @@ function DrawPattern (gfx,e,xoff)
 	end
 end
 
-function cLevel:DrawBack()
-	local e = 256
-	DrawPattern(gfx_background1,e,math.mod(self.scrollx*0.8,e))
-	DrawPattern(gfx_background2,e,math.mod(self.scrollx*0.7,e))
-end
 
 function cLevel:MakeWall(x,y,ang,bTop)
 	local o = cWall:New(x,y,ang,bTop,self)
@@ -64,6 +61,11 @@ function cLevel:SpawnWalls()
 		self.last_y_top = y_top
 		self.last_y_bot = y_bot
 		self.spawned_i = self.spawned_i + 1
+		
+		if (randf() < kLevelDecoChancePerStep) then
+			local o = cLevelDeco:New(x,randf()*h)
+			self.deco[o] = true
+		end
 	end
 end
 
@@ -71,6 +73,17 @@ function cLevel:Update(dt)
 	self.scrollx = self.scrollx + dt * self.speed
 	self:SpawnWalls()
 	for o,_ in pairs(self.walls) do o:Update(dt,self) end
+end
+
+function cLevel:DrawBack()
+	local e = 256
+	DrawPattern(gfx_background1,e,math.mod(self.scrollx*0.8,e))
+	
+	love.graphics.setColor(255, 255, 255, 255*0.5)
+	for o,_ in pairs(self.deco) do o:Draw(-self.scrollx*0.7,-self.scrolly) end
+	love.graphics.setColor(255, 255, 255, 255)
+	
+	DrawPattern(gfx_background2,e,math.mod(self.scrollx*0.6,e))
 end
 
 function cLevel:Draw()
@@ -108,6 +121,26 @@ function cValueSpline:Get (t)
 	local f = (t - self.t0) / self.dt
 	return self.v0 + (self.v1 - self.v0) * f
 end
+
+-- ***** ***** ***** ***** ***** cWall
+
+cLevelDeco = CreateClass(cBase)
+
+function cLevelDeco:Init (x,y)
+	self.x = x
+	self.y = y
+	self.ang = PI*2*randf()
+	self.gfx = rand_in_arr(gfx_deco)
+end
+
+function cLevelDeco:Destroy () gLevel.deco[self] = nil end
+
+function cLevelDeco:Draw (xa,ya)
+	local x,y = self.x+xa,self.y+ya
+	if (x < -100) then self:Destroy() end
+	self.gfx:Draw(x,y,self.ang)
+end
+
 
 -- ***** ***** ***** ***** ***** cWall
 
