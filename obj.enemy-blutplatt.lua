@@ -34,5 +34,12 @@ function cEnemyBlutPlatt:Update(dt)
 		self.ydir = -self.ydir
 	end
 	
+	local dist = 50 * 50
 	
+	for o,_ in pairs(gEnemies) do 
+		if ((self.x - o.x) * (self.x - o.x) + (self.y - o.y) * (self.y - o.y)) < dist then
+			o.xdir = self.xdir
+			o.ydir = self.ydir
+		end
+	end
 end
