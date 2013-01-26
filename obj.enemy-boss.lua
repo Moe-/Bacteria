@@ -31,6 +31,8 @@ function cEnemyBossBase:Init(x,y)
 	local o = self:MakePart( 1*e, 0*e, gfx_boss_mid)
 	local o = self:MakePart( 2*e, 0*e, gfx_boss_mid)
 	local o = self:MakePart( 3*e, 0*e, gfx_boss_spike)
+	
+	self:UpdatePartsStatus()
 end
 
 function cEnemyBossBase:MakePart(x,y,gfx)
@@ -40,15 +42,20 @@ function cEnemyBossBase:MakePart(x,y,gfx)
 end
 
 function cEnemyBossBase:NotifyPartDie(o)
-	local bCoresInvul = false
 	self.parts[o] = nil
 	self.cores[o] = nil
+	self:UpdatePartsStatus()
+end
+
+function cEnemyBossBase:UpdatePartsStatus()
+	local bCoresInvul = false
 	for o,_ in pairs(self.parts) do 
 		if (o.gfx == gfx_boss_gun or o.gfx == gfx_boss_spike) then bCoresInvul = true end
 	end
 	
 	-- set cores invul if guns/spikes alive
 	local bCoresAlive = false
+	print("boss:bCoresInvul",bCoresInvul)
 	for o,_ in pairs(self.cores) do bCoresAlive = true o.bInvulnerable = bCoresInvul end
 	
 	-- death if no cores left
