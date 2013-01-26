@@ -159,10 +159,10 @@ function cWall:Draw (xa,ya)
 	local x,y = self.x+xa,self.y+ya
 	if (x < -100) then self:Destroy() end
 	self.gfx:Draw(x,y,self.ang)
-	love.graphics.circle( "line", x, y, 5, 11 )
-	local h = 0.5*kLevelStepX
-	local y2 = y + self.dy_per_x * h
-	love.graphics.circle( "line", x+h, y2, 3, 11 )
+	--~ love.graphics.circle( "line", x, y, 5, 11 )
+	--~ local h = 0.5*kLevelStepX
+	--~ local y2 = y + self.dy_per_x * h
+	--~ love.graphics.circle( "line", x+h, y2, 3, 11 )
 	
 end
 

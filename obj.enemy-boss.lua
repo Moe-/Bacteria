@@ -30,21 +30,34 @@ function cEnemyBossBase:Init(x,y)
 end
 
 function cEnemyBossBase:MakePart(x,y,gfx)
-	local o = cEnemyBossPartBase:New(self.x+x,self.y+y,gfx)
+	local o = cEnemyBossPartBase:New(x,y,gfx,self)
 	self.parts[o] = true
 end
 
+function cEnemyBossBase:Update(dt)
+end
+
 function cEnemyBossBase:Draw()
-	for o,_ in pairs(self.parts) do o:Draw() end
+	--~ for o,_ in pairs(self.parts) do o:Draw() end
 end
 
 -- ***** ***** ***** ***** ***** cEnemyBossPartBase
-cEnemyBossPartBase = CreateClass(cBase)
+cEnemyBossPartBase = CreateClass(cEnemyBase)
 
-function cEnemyBossPartBase:Init	(x,y,gfx)
-	self.x = x
-	self.y = y
+function cEnemyBossPartBase:Init	(x,y,gfx,boss)
+	self.x = boss.x+x
+	self.y = boss.x+y
+	self.x0 = x
+	self.y0 = y
 	self.gfx = gfx
+	self.energy = 100
+	self.boss = boss
+	self:Register()
+end
+
+function cEnemyBossPartBase:Update() 
+	self.x = self.boss.x + self.x0
+	self.y = self.boss.y + self.y0
 end
 
 function cEnemyBossPartBase:Draw() self:DrawWobble(0.1,0.1,gEnemyBossGfxScale) end

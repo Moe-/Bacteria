@@ -107,7 +107,6 @@ end
 
 function love.update (dt)
 	gMyTime = love.timer.getTime( )
-	gLevel:Update(dt)
 	gPlayer:Update(dt)
 	effects:Update(dt)
     gSpawner:Update(dt)
@@ -127,8 +126,9 @@ function love.update (dt)
 		Enemies_ShotTest(v)
 		gPlayer:ShotTest(v, "white") 
 	end
-	Enemies_Update(dt)
 	gBoss:Update(dt)
+	Enemies_Update(dt)
+	gLevel:Update(dt)
 end
 
 function love.draw ()
