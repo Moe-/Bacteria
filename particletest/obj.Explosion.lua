@@ -1,6 +1,6 @@
 cExplosion = CreateClass(cEffectBasic)
 
-function cExplosion:Init(sprite, x, y)
+function cExplosion:Init(sprite, x, y, direction)
 	self.ps = cPartSys:New()
 	--slower particles
 	self.partSystem = love.graphics.newParticleSystem(sprite, 100)
