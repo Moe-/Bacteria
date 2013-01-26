@@ -86,6 +86,7 @@ function love.load ()
 	
 	slime = love.graphics.newImage("data/slime1.png")
 	
+	gfx_titlescreen	= loadgfx("data/Wall.jpg")
 	gfx_blutplatt	= loadgfx("data/blutplatt.png")
 	gfx_dnabonus	= loadgfx("data/dnabonus.png")
 	--~ gfx_levelpart01	= loadgfx("data/levelpart01.png")
@@ -158,7 +159,7 @@ function love.load ()
     gHighscores = cHighscores:New()
 
 	gShootNext = -1
-    gGameState = "startscreen"
+    gGameState = "titlescreen"
     gStateChangeTime = cTStateChange
 
     gFontTitle = love.graphics.newFont(30)
@@ -253,6 +254,16 @@ function draw_game ()
 	love.graphics.print(gPlayer:GetPoints(), 50, 50)
 end
 
+function draw_title_screen()
+	local img = gfx_titlescreen.img
+	local iw = img:getWidth()
+	local ih = img:getHeight()
+	local w = love.graphics.getWidth()
+	local h = love.graphics.getHeight()
+	local s = min(w / iw,h / ih)
+	gfx_titlescreen:DrawX0Y0(0, h/2-ih*s/2, 0, s,s)
+end
+
 function draw_start_screen()
 	gfx_startscreen:DrawX0Y0(0, 0)
 	effTitle:Draw()
@@ -275,7 +286,8 @@ end
 
 --~ gGameFinished = true
 function love.draw ()
-	if gGameState == "startscreen" then draw_start_screen()
+	if gGameState == "titlescreen" then draw_title_screen()
+	elseif gGameState == "startscreen" then draw_start_screen()
 	elseif gGameState == "gameover" then draw_gameover_screen()
 	elseif gGameState == "game" then draw_game() 
 	elseif gGameState == "pause" then draw_pause_screen()
@@ -340,7 +352,10 @@ function TestBossSpawn(bossclass)
 end
 
 function love.keyreleased (keyname)
-	if gGameState == "startscreen" and gStateChangeTime < 0 then 
+	if gGameState == "titlescreen" and gStateChangeTime < 0 then 
+		gGameState = "startscreen"
+		gStateChangeTime = cTStateChange
+	elseif gGameState == "startscreen" and gStateChangeTime < 0 then 
 		gGameState = "game"
 		gStateChangeTime = cTStateChange
 		resetgame()
@@ -391,7 +406,10 @@ function love.keyreleased (keyname)
 end
 
 function love.mousereleased(x, y, button)
-	if gGameState == "startscreen" and gStateChangeTime < 0 then 
+	if gGameState == "titlescreen" and gStateChangeTime < 0 then 
+		gGameState = "startscreen"
+		gStateChangeTime = cTStateChange
+	elseif gGameState == "startscreen" and gStateChangeTime < 0 then 
 		gGameState = "game"
 		gStateChangeTime = cTStateChange
 		resetgame()
