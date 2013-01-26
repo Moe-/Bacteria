@@ -113,6 +113,8 @@ function cWall:Init (x,y,ang,bTop)
 	self.gfx = gfx_levelpart01
 end
 
+function cWall:Destroy () gLevel.walls[self] = nil end
+
 function cWall:Update (dt)
 end
 
@@ -126,6 +128,8 @@ function cWall:DrawPre (xa,ya)
 end
 
 function cWall:Draw (xa,ya)
-	self.gfx:Draw(self.x+xa,self.y+ya,self.ang)
+	local x,y = self.x+xa,self.y+ya
+	if (x < -100) then self:Destroy() end
+	self.gfx:Draw(x,y,self.ang)
 end
 
