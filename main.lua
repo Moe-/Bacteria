@@ -275,7 +275,7 @@ function love.draw ()
 	end
 end
 
-function love.keypressed (keyname)
+function love.keypressed (keyname, unicode)
 	if (keyname == "escape") then love.event.quit( ) end
 	if gGameState == "game" then
         if (keyname == "left"	or keyname == "a") then gPlayer:SetSpeedX(-gPlayerSpeed)
