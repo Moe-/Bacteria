@@ -63,15 +63,18 @@ function cShot:Update(dt)
 		elseif self.colour == "blue" then
 			effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
 		elseif self.colour == "white" then
-			effects:CreateEffect("trail_white", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+			effects:CreateEffect("trail_yellow", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+		elseif self.colour == "yellow" then
+			effects:CreateEffect("trail_yellow", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
 		else -- colour type is weird
+			print("warning, unexpected player colour",self.colour)
 			effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
 		end
 	else
 		if self.colour == "blue" then
 			effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
 		else
-			effects:CreateEffect("trail_white", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+			effects:CreateEffect("trail_yellow", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
 		end
 	end
 	
