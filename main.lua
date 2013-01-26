@@ -124,5 +124,3 @@ end
 function love.mousereleased(x, y, button)
 	if (button == "l") then gPlayer:Shoot(x, y) end
 end
-
->>>>>>> 767d0674947ba13bbf900b1dd89617c1a1fae22b
