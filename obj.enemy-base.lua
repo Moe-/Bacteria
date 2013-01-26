@@ -16,7 +16,8 @@ function Enemies_Draw () for o,_ in pairs(gEnemies) do o:Draw() end end
 
 
 function cEnemyBase:NotifyDamage()
-	-- todo: effect
+	local dx, dy = 1, 0
+	effects:CreateEffect("hit", self.x, self.y, math.atan(dy/dx)*180/PI, true)
 end
 
 function cEnemyBase:Die()
