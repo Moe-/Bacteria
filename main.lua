@@ -178,6 +178,7 @@ function love.keypressed (keyname)
 	elseif (keyname == "right"	or keyname == "d") then gPlayer:SetSpeedX(gPlayerSpeed)
 	elseif (keyname == "up"		or keyname == "w") then gPlayer:SetSpeedY(-gPlayerSpeed)
 	elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(gPlayerSpeed)
+	elseif (keyname == " ") then gShootNext = 0
 	else print("keypress",keyname)
 	end
 end
@@ -199,7 +200,8 @@ function love.keyreleased (keyname)
 		gPlayer:SetSpeedY(gPlayerSpeed)
 	elseif (keyname == "down" or keyname == "s") and (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
 		gPlayer:SetSpeedY(-gPlayerSpeed)
-	end
+    elseif (keyname == " ") then gShootNext = -1
+    end
 	
 
 
