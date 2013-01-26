@@ -108,7 +108,9 @@ function love.load ()
 	gShots = {}
 	gLevel = cLevel:New()
 
-   gSpawner = cSpawner:New()
+    gSpawner = cSpawner:New()
+
+    gFormationsHistory = {}
 
 	gShootNext = -1
 end
