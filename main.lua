@@ -8,6 +8,8 @@ gPlayerSpeed = 10
 cPlayerEnergyMax = 1000
 cTStateChange = 1.0
 
+--~ SHOW_DEBUG_CIRCLE = true
+
 --[[
 TODO liste code : 
 * wand kollision
@@ -94,15 +96,11 @@ function love.load ()
 	gfx_weissbk_rot		= loadgfx("data/bk_rot.png")
 	gfx_weissbk_gruen		= loadgfx("data/bk_gruen.png")
 	gfx_weissbk_weis		= loadgfx("data/bk_weis.png")
-	gfx_dnabonus_blau	= loadgfx("data/dnabonus_blau.png")
-	gfx_dnabonus_gruen	= loadgfx("data/dnabonus_gruen.png")
-	gfx_dnabonus_rot	= loadgfx("data/dnabonus_rot.png")
-	gfx_dnabonus_weis	= {
-		loadgfx("data/dnabonus_weis/dnabonus_weis_01.png"),
-		loadgfx("data/dnabonus_weis/dnabonus_weis_02.png"),
-		loadgfx("data/dnabonus_weis/dnabonus_weis_03.png"),
-		loadgfx("data/dnabonus_weis/dnabonus_weis_04.png"),bIsAnim = true
-	}
+	gfx_dnabonus_blau	= loadgfx("data/pickup_blue.png")
+	gfx_dnabonus_gruen	= loadgfx("data/pickup_green.png")
+	gfx_dnabonus_rot	= loadgfx("data/pickup_red.png")
+	gfx_dnabonus_weis	= loadgfx("data/pickup_yellow.png")
+	
 	gfx_boss_core	= loadgfx("data/boss-core.png")
 	gfx_boss_mid	= loadgfx("data/boss-mid.png")
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
@@ -265,6 +263,10 @@ function love.keypressed (keyname)
 	elseif (keyname == "2") then gLevel.gfx_wall = gfx_wallB
 	elseif (keyname == "5") then TestBossSpawn()
 	elseif (keyname == "6") then TestBossSpawn(cEnemyBossFinal)
+	elseif (keyname == "f3") then gPlayer:UpdateWeapon("red")
+	elseif (keyname == "f4") then gPlayer:UpdateWeapon("green")
+	elseif (keyname == "f5") then gPlayer:UpdateWeapon("blue")
+	elseif (keyname == "p") then SHOW_DEBUG_CIRCLE = not SHOW_DEBUG_CIRCLE 
 	elseif (keyname == " ") then gShootNext = 0
 	else print("keypress",keyname)
 	end

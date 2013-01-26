@@ -21,8 +21,7 @@ function cBase:DrawWobble(ws,wr,scalefactor) -- scale,rotate
 	gfx:Draw(self.x,self.y,r,s,s)
 	
 	local d = self.radius or 25
-	love.graphics.circle("line",self.x,self.y,d,11)
-	
+	if (SHOW_DEBUG_CIRCLE) then love.graphics.circle("line",self.x,self.y,d,11) end
 end
 
 function cBase:Update(dt) end

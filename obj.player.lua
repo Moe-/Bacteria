@@ -9,7 +9,7 @@ function cPlayer:Draw()
 	self.gfx:Draw(self.x,self.y,r,s,s)
 	love.graphics.setColor(255, 255, 255, 255)
 	
-	love.graphics.circle("line",self.x,self.y,self.radius,11)
+	if (SHOW_DEBUG_CIRCLE) then love.graphics.circle("line",self.x,self.y,self.radius,11) end
 end
 
 function cPlayer:Init(x,y) 
