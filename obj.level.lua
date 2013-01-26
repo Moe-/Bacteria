@@ -25,18 +25,20 @@ function cLevel:Init()
 	
 end
 
-
-function cLevel:DrawBack()
-	local gfx = gfx_background1
+function DrawPattern (gfx,e,xoff)
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight() 
-	local e = 256
-	local xoff = math.mod(self.scrollx*0.8,e)
 	for x = -xoff,w+e,e do
 	for y = 0,h+e,e do
 		gfx:Draw(x,y)
 	end
 	end
+end
+
+function cLevel:DrawBack()
+	local e = 256
+	DrawPattern(gfx_background1,e,math.mod(self.scrollx*0.8,e))
+	DrawPattern(gfx_background2,e,math.mod(self.scrollx*0.7,e))
 end
 
 function cLevel:MakeWall(x,y,ang,bTop)
