@@ -3,3 +3,4 @@ Thumbs.db
 .gitignore~
 *.iml
 highscoreserver/database.db
+/build/
