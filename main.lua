@@ -171,6 +171,19 @@ function love.update (dt)
 	end
 end
 
+function resetgame()
+	local w = love.graphics.getWidth()
+	local h = love.graphics.getHeight()
+	gPlayer = cPlayer:New(w/2,h/2)
+
+	gShots = {}
+	gLevel = cLevel:New()
+
+   gSpawner = cSpawner:New()
+
+   gFormationsHistory = {}
+	gEnemies = {}
+end
 
 function draw_game ()
 	DrawStretches()
@@ -248,6 +261,7 @@ function love.keyreleased (keyname)
 	if gGameState == "startscreen" and gStateChangeTime < 0 then 
 		gGameState = "game"
 		gStateChangeTime = cTStateChange
+		resetgame()
 	elseif gGameState == "gameover" and gStateChangeTime < 0  then 
 		gGameState = "startscreen"
 		gStateChangeTime = cTStateChange
@@ -282,6 +296,7 @@ function love.mousereleased(x, y, button)
 	if gGameState == "startscreen" and gStateChangeTime < 0 then 
 		gGameState = "game"
 		gStateChangeTime = cTStateChange
+		resetgame()
 	elseif gGameState == "gameover" and gStateChangeTime < 0 then 
 		gGameState = "startscreen"
 		gStateChangeTime = cTStateChange
