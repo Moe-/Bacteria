@@ -14,7 +14,11 @@ function cBase:DrawWobble(ws,wr,scalefactor) -- scale,rotate
 	local t = gMyTime + 5
 	local s = scalefactor * (1.0 + ws * sin(t*wrand*PI))
 	local r = PI * wr * sin(t*wrand*0.9*PI)
-	self.gfx:Draw(self.x,self.y,r,s,s)
+	local gfx = self.gfx
+	if (gfx.bIsAnim) then
+		gfx = gfx[1+math.mod(floor(gMyTime / self.time_per_frame),#gfx)]
+	end
+	gfx:Draw(self.x,self.y,r,s,s)
 end
 
 function cBase:Update(dt) end

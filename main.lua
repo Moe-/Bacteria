@@ -77,7 +77,12 @@ function love.load ()
 	gfx_dnabonus_blau	= loadgfx("data/dnabonus_blau.png")
 	gfx_dnabonus_gruen	= loadgfx("data/dnabonus_gruen.png")
 	gfx_dnabonus_rot	= loadgfx("data/dnabonus_rot.png")
-	gfx_dnabonus_weis	= loadgfx("data/dnabonus_weis.png")
+	gfx_dnabonus_weis	= {
+		loadgfx("data/dnabonus_weis/dnabonus_weis_01.png"),
+		loadgfx("data/dnabonus_weis/dnabonus_weis_02.png"),
+		loadgfx("data/dnabonus_weis/dnabonus_weis_03.png"),
+		loadgfx("data/dnabonus_weis/dnabonus_weis_04.png"),bIsAnim = true
+	}
 	gfx_boss_core	= loadgfx("data/boss-core.png")
 	gfx_boss_mid	= loadgfx("data/boss-mid.png")
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
