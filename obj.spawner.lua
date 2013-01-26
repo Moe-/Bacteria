@@ -1,8 +1,14 @@
 cSpawner = CreateClass()
 love.filesystem.load("obj.formation.lua")()
+kBossWaveCount = 7
 
 function cSpawner:Init()
 
+	gFormationsSpawnedTotal = 0
+	gFormationsSpawnedSinceBoss = 0
+	gBossIndex = 1
+	gBossArr = {cEnemyBoss01,cEnemyBoss02,cEnemyBossFinal}
+	
     self.formations = {}
     local e = 80
 
@@ -16,12 +22,14 @@ function cSpawner:Init()
 
     local formation = cFormation:New() table.insert(self.formations, formation)
 
+    formation.min_total_spawned = 2
     formation:addEnemy("red" , 1 * e, -1 * e)
     formation:addEnemy("blue", 0 * e, 0 * e)
     formation:addEnemy("red" , 1 * e, 1 * e)
 	
     local formation = cFormation:New() table.insert(self.formations, formation)
 
+    formation.min_total_spawned = 5
     formation:addEnemy("blue", 0 * e, 0 * e)
     formation:addEnemy("blue", 1 * e, 0 * e)
     formation:addEnemy("yellow", 0 * e, 1 * e)
@@ -29,13 +37,15 @@ function cSpawner:Init()
 	
     local formation = cFormation:New() table.insert(self.formations, formation)
 
+    formation.min_total_spawned = 5
     formation:addEnemy("blue", 0 * e, 0 * e)
     formation:addEnemy("blue", 1 * e, 0 * e)
-    formation:addEnemy("yellow", 0 * e, 1 * e)
-    formation:addEnemy("yellow", 1 * e, 1 * e)
+    formation:addEnemy("green", 0 * e, 1 * e)
+    formation:addEnemy("green", 1 * e, 1 * e)
 	
     local formation = cFormation:New() table.insert(self.formations, formation)
 
+    formation.min_total_spawned = 5
     formation:addEnemy("red", 0 * e, 0 * e)
     formation:addEnemy("red", 0 * e, 1 * e)
     formation:addEnemy("yellow", 1 * e, 0 * e)
@@ -43,6 +53,7 @@ function cSpawner:Init()
 	
     local formation = cFormation:New() table.insert(self.formations, formation)
 
+    formation.min_total_spawned = kBossWaveCount
     formation:addEnemy("yellow", 2 * e,-1 * e)
     formation:addEnemy("green", 1 * e,-1 * e)
     formation:addEnemy("green", 0 * e, 0 * e)
@@ -53,6 +64,8 @@ function cSpawner:Init()
 	
     local formation = cFormation:New() table.insert(self.formations, formation)
 
+    formation.min_total_spawned = kBossWaveCount
+    formation.min_spawned_since_boss = 5
     formation:addEnemy("boss", 0 , 0)
     formation:addConstraint(cFormationConstraintNumberSpawns:New(formation, 1))
     formation:addConstraint(cFormationConstraintSpawnOnce:New(formation))
@@ -101,7 +114,11 @@ function cSpawner:spawnFormation()
         elseif (v.enemy == "blue"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "blue")
         elseif (v.enemy == "yellow"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "yellow")
         elseif (v.enemy == "boss") then
-            cEnemyBossBase:New(startxboss + v.offsetX,center + v.offsetY)
+			local bossclass = gBossArr[gBossIndex] or gBossArr[#gBossArr]
+			gBossIndex = gBossIndex + 1
+			
+            bossclass:New(startxboss + v.offsetX,center + v.offsetY)
+			gFormationsSpawnedSinceBoss = 0 -- reset for next boss
         end
     end
 end
@@ -133,6 +150,8 @@ function cSpawner:Update()
 
     if (self:EnemiesOnScreen() == false) then
         self:spawnFormation()
+		gFormationsSpawnedTotal = gFormationsSpawnedTotal + 1
+		gFormationsSpawnedSinceBoss = gFormationsSpawnedSinceBoss + 1
     end
 end
 

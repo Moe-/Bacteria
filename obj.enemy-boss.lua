@@ -4,15 +4,16 @@ kBossUnit = 60*gEnemyBossGfxScale
 kEnemyBossMidBlockShotRadius = 0.8*kBossUnit
 kTentacleRespawnInterval = 3.0
 
+
+kShotInterval_BossPart = 1.2
+
 -- ***** ***** ***** ***** ***** boss variants
 
 cEnemyBoss01 = CreateClass(cEnemyBossBase)
 
-cEnemyBoss02 = CreateClass(cEnemyBossBase)
-
-function cEnemyBoss02:Init(x,y) 
+function cEnemyBoss01:Init(x,y) 
 	self:BossInitBase(x,y)
-	
+
 	local e = kBossUnit
 	
 	local ry = 2
@@ -22,16 +23,34 @@ function cEnemyBoss02:Init(x,y)
 			local core = o
 			if (i < 0) then 
 				local o = self:MakeTentacle( 0,-2, 4,-1, -0.5, core, gfx_boss_spike)
-				local o = self:MakeTentacle( 0,-2, 4, 1, -0.5, core, gfx_boss_gun)
+				local o = self:MakeTentacle( 0,-2, 4, 1, -0.5, core, gfx_boss_spike)
 			else 
 				local o = self:MakeTentacle( 0, 2, 4,-1,  0.5, core, gfx_boss_spike)
-				local o = self:MakeTentacle( 0, 2, 4, 1,  0.5, core, gfx_boss_gun)
+				local o = self:MakeTentacle( 0, 2, 4, 1,  0.5, core, gfx_boss_spike)
 			end
 		else
 			local o = self:MakePart( 0, i*e, gfx_boss_mid)
 		end
 	end
 	
+	self:UpdatePartsStatus()
+end
+
+
+cEnemyBoss02 = CreateClass(cEnemyBossBase)
+
+	
+function cEnemyBoss02:Init(x,y) 
+	self:BossInitBase(x,y)
+	
+	local e = kBossUnit
+	local o = self:MakePart( 0*e,-1*e, gfx_boss_core) self.cores[o] = true
+	
+	local core = o
+	local o = self:MakeTentacle( 0,0, 4,-1, 0, core, gfx_boss_spike)
+	local o = self:MakeTentacle( 0,0, 4, 1, 0, core, gfx_boss_spike)
+	local o = self:MakeTentacle( 0,0, 4, 0,-1, core, gfx_boss_gun)
+	local o = self:MakeTentacle( 0,0, 4, 0, 1, core, gfx_boss_gun)
 	
 	self:UpdatePartsStatus()
 end
@@ -48,7 +67,8 @@ function cEnemyBossFinal:Init(x,y)
 		if (abs(ix) == rx and abs(iy) == ry) then
 			local o = self:MakePart( ix*e, iy*e, gfx_boss_core) self.cores[o] = true
 			local core = o 
-			local o = self:MakeTentacle(ix,iy,   4,sgn(ix), sgn(iy)*0.5, core, gfx_boss_gun)
+			local o = self:MakeTentacle(ix,iy,   4,sgn(ix),       0, core, gfx_boss_spike)
+			local o = self:MakeTentacle(ix,iy,   4,      0, sgn(iy), core, gfx_boss_gun)
 		else
 			local o = self:MakePart( ix*e, iy*e, gfx_boss_mid)
 		end
@@ -64,16 +84,8 @@ end
 
 function cEnemyBossBase:Init(x,y) 
 	self:BossInitBase(x,y)
-	
 	local e = kBossUnit
 	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
-	
-	local core = o
-	local o = self:MakeTentacle( 0,0, 4,-1, 0, core, gfx_boss_spike)
-	local o = self:MakeTentacle( 0,0, 4, 1, 0, core, gfx_boss_spike)
-	local o = self:MakeTentacle( 0,0, 4, 0,-1, core, gfx_boss_gun)
-	local o = self:MakeTentacle( 0,0, 4, 0, 1, core, gfx_boss_gun)
-	
 	self:UpdatePartsStatus()
 end
 
@@ -212,6 +224,7 @@ function cEnemyBossPartBase:Init	(x,y,gfx,boss,tentacle)
 	self:Register()
 	if (self.gfx == gfx_boss_mid) then self.bInvulnerable = true end
 	self.respawn_t = 0
+	self.next_shot_t = 0
 end
 
 
@@ -250,8 +263,9 @@ function cEnemyBossPartBase:Update(dt)
 	
 	-- shot if gun 
 	if (self.gfx == gfx_boss_gun) then
-		local rnd = math.random()
-		if(rnd * dt < 0.0025) then
+		if (gMyTime > self.next_shot_t) then
+			self.next_shot_t = gMyTime + (0.8 + 0.4*randf()) * kShotInterval_BossPart
+			
 			local x = self.x
 			local y = self.y
 			local dirX = gPlayer.x - x
