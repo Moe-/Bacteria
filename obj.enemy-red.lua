@@ -3,6 +3,7 @@ cEnemyRed = CreateClass(cEnemyBase)
 function cEnemyRed:Init(x,y) 
 	self.x = x
 	self.y = y
+	self.energy = 100
 	self.gfx = gfx_rotbk
 	self:Register()
 end

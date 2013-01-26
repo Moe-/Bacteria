@@ -3,6 +3,7 @@ cEnemyWhite = CreateClass(cEnemyBase)
 function cEnemyWhite:Init(x,y) 
 	self.x = x
 	self.y = y
+	self.energy = 100
 	self.gfx = gfx_weissbk
 	self:Register()
 end
