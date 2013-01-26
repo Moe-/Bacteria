@@ -61,6 +61,9 @@ function clamp(a, b, c)
 	end		
 end
 
+function sign(val)
+	return val/abs(val)
+end
 -- ***** ***** ***** ***** ***** tausender
 
 
