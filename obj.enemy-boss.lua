@@ -4,6 +4,8 @@ function cEnemyBossBase:Init(x,y)
 	enemy_kind = "bossbase"
 	self.x = x
 	self.y = y
+	self.x0 = x
+	self.y0 = y
 	self.energy = 100
 	self:Register()
 	
@@ -35,6 +37,7 @@ function cEnemyBossBase:MakePart(x,y,gfx)
 end
 
 function cEnemyBossBase:Update(dt)
+	self.y = self.y0 + 50 * sin(0.35*gMyTime*PI)
 end
 
 function cEnemyBossBase:Draw()
