@@ -8,7 +8,11 @@ function cEnemyWeapon:Init(x,y,wType)
 	self.dy = 0
 	self.wType = wType
 	self.energy = 100
-	self.gfx = gfx_dnabonus
+	if (wType == "blue") then self.gfx = gfx_dnabonus_blau
+	elseif (wType == "green") then self.gfx = gfx_dnabonus_gruen
+	elseif (wType == "red") then self.gfx = gfx_dnabonus_rot
+	elseif (wType == "white") then self.gfx = gfx_dnabonus_weis
+	end
 	self:Register()
 end
 

@@ -18,7 +18,6 @@ function cPlayer:Init(x,y)
 	self.dx = 0
 	self.dy = 0
 	self.alpha = 255
-	self.gfx = gfx_player
 	self:UpdateWeapon("white")
 	self.radius = self.gfx.radius * 0.5
 end
@@ -70,10 +69,15 @@ function cPlayer:UpdateWeapon(wType)
 	if (self.wType ~= wType) then
 		self.weaponPower = 2.0
 		self.wType = wType
+		
+		if (wType == "red") then self.gfx = gfx_player_rot
+		elseif (wType == "green") then self.gfx = gfx_player_gruen
+		elseif (wType == "blue") then self.gfx = gfx_player_blau
+		elseif (wType == "white") then self.gfx = gfx_player_weis
+		end
 	end
 end
 
 function cPlayer:GetWeaponPower()
 	return self.weaponPower
 end
-
