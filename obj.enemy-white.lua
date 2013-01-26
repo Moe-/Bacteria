@@ -13,6 +13,7 @@ function cEnemyWhite:Init(x,y,colour)
 	elseif (colour == "green") then self.gfx = gfx_weissbk_gruen
 	elseif (colour == "red") then self.gfx = gfx_weissbk_rot
 	elseif (colour == "white") then self.gfx = gfx_weissbk_weis
+	elseif (colour == "yellow") then self.gfx = gfx_weissbk_weis
 	end
 
 	self:Register()

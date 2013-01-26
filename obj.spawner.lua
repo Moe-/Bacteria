@@ -6,7 +6,7 @@ function cSpawner:Init()
     self.formations = {}
     local e = 80
 
-    local formation = cFormation:New()
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
     formation:addEnemy("blutplatt", 0 * e, -2 * e)
     formation:addEnemy("blutplatt", 0 * e, -1 * e)
@@ -14,25 +14,48 @@ function cSpawner:Init()
     formation:addEnemy("blutplatt", 0 * e, 1 * e)
     formation:addEnemy("blutplatt", 0 * e, 2 * e)
 
-    table.insert(self.formations, formation)
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
-    local formation = cFormation:New()
+    formation:addEnemy("red" , 1 * e, -1 * e)
+    formation:addEnemy("blue", 0 * e, 0 * e)
+    formation:addEnemy("red" , 1 * e, 1 * e)
+	
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
-    formation:addEnemy("white", 0 * e, -2 * e)
-    formation:addEnemy("white", 0 * e, -1 * e)
-    formation:addEnemy("white", 0 * e, 0 * e)
-    formation:addEnemy("white", 0 * e, 1 * e)
-    formation:addEnemy("white", 0 * e, 2 * e)
-    formation:addEnemy("white", 0 * e, 3 * e)
+    formation:addEnemy("blue", 0 * e, 0 * e)
+    formation:addEnemy("blue", 1 * e, 0 * e)
+    formation:addEnemy("yellow", 0 * e, 1 * e)
+    formation:addEnemy("yellow", 1 * e, 1 * e)
+	
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
-    table.insert(self.formations, formation)
+    formation:addEnemy("blue", 0 * e, 0 * e)
+    formation:addEnemy("blue", 1 * e, 0 * e)
+    formation:addEnemy("yellow", 0 * e, 1 * e)
+    formation:addEnemy("yellow", 1 * e, 1 * e)
+	
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
-    local formation = cFormation:New()
+    formation:addEnemy("red", 0 * e, 0 * e)
+    formation:addEnemy("red", 0 * e, 1 * e)
+    formation:addEnemy("yellow", 1 * e, 0 * e)
+    formation:addEnemy("yellow", 1 * e, 1 * e)
+	
+    local formation = cFormation:New() table.insert(self.formations, formation)
+
+    formation:addEnemy("yellow", 2 * e,-1 * e)
+    formation:addEnemy("green", 1 * e,-1 * e)
+    formation:addEnemy("green", 0 * e, 0 * e)
+    formation:addEnemy("green", 1 * e, 1 * e)
+    formation:addEnemy("yellow", 2 * e, 1 * e)
+	
+	-- red,green,blue,yellow
+	
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
     formation:addEnemy("boss", 0 , 0)
     formation:addConstraint(cFormationConstraintNumberSpawns:New(formation, 1))
     formation:addConstraint(cFormationConstraintSpawnOnce:New(formation))
-    table.insert(self.formations, formation)
 
 end
 
@@ -66,15 +89,19 @@ function cSpawner:spawnFormation()
     local h = love.graphics.getHeight()
     local center = randf() * h
 
+	local startx = 1.1*w
+	local startxboss = 0.7*w
     for k,v in pairs(formation.enemies) do
         if (v.enemy == "blutplatt") then
-            cEnemyBlutPlatt:New(0.7*w + v.offsetX,center + v.offsetY)
+            cEnemyBlutPlatt:New(startx + v.offsetX,center + v.offsetY)
         elseif (v.enemy == "red") then
-            cEnemyRed:New(0.7*w + v.offsetX,center + v.offsetY)
-        elseif (v.enemy == "white") then
-            cEnemyWhite:New(0.7*w + v.offsetX,center + v.offsetY, rand_in_arr({"red", "green", "blue", "white"}))
+            cEnemyRed:New(startx + v.offsetX,center + v.offsetY)
+        elseif (v.enemy == "red"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "red")
+        elseif (v.enemy == "green"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "green")
+        elseif (v.enemy == "blue"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "blue")
+        elseif (v.enemy == "yellow"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "yellow")
         elseif (v.enemy == "boss") then
-            cEnemyBossBase:New(0.7*w + v.offsetX,center + v.offsetY)
+            cEnemyBossBase:New(startxboss + v.offsetX,center + v.offsetY)
         end
     end
 end
