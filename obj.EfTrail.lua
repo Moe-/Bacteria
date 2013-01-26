@@ -4,7 +4,7 @@ function cTrail:Init(sprite, x, y, direction, cr, cg, cb)
 	self.ps = cPartSys:New()
 	
 	self.partSystem = love.graphics.newParticleSystem(sprite, 100)
-	self.partSystem:setEmissionRate          (75)
+	self.partSystem:setEmissionRate          (10)
 	self.partSystem:setLifetime              (0.1)
 	self.partSystem:setParticleLife          (1)
 	self.partSystem:setPosition              (0, 0)
