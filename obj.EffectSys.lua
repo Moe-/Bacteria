@@ -72,8 +72,8 @@ function cEffectSys:CreateEffect(kind, x, y, direction, above)
 		if above then table.insert(self.ef_above, cTrail:New(self.sprite, x, y, direction, 0, 255, 0))
 		else table.insert(self.ef_below, cTrail:New(self.sprite, x, y, direction, 0, 255, 0)) end
 	elseif kind == "trail_white" then
-		if above then table.insert(self.ef_above, cTrail:New(self.sprite, x, y, direction, 255, 255, 255))
-		else table.insert(self.ef_below, cTrail:New(self.sprite, x, y, direction, 255, 255, 255)) end
+		if above then table.insert(self.ef_above, cTrail:New(self.sprite, x, y, direction, 255, 255, 0))
+		else table.insert(self.ef_below, cTrail:New(self.sprite, x, y, direction, 255, 255, 0)) end
 	elseif kind == "sparkle" then
 		if above then table.insert(self.ef_above, cSparkle:New(self.sprite, x, y, direction))
 		else table.insert(self.ef_below, cSparkle:New(self.sprite, x, y, direction)) end
