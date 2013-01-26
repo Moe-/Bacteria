@@ -15,6 +15,7 @@ function cEnemyWeapon:Init(x,y,wType)
 	end
 	self:Register()
 	self.time_per_frame = 0.1
+	self.radius = gPlayer.radius*1.5
 end
 
 function cEnemyWeapon:Draw() self:DrawWobble(0.2,0.1,gEnemyGfxScale) end
@@ -39,7 +40,7 @@ function cEnemyWeapon:Update(dt)
 		self.y = self.y + self.dy * dt
 	end
 
-	if(self:DistToObj(gPlayer) < 25) then
+	if(self:DistToObj(gPlayer) < self.radius) then
 		self:Destroy()
 		gPlayer:AddPoints(125)
 		gPlayer:UpdateWeapon(self.wType)

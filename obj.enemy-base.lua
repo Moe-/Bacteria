@@ -3,7 +3,12 @@ cEnemyBase = CreateClass(cBase)
 gEnemies = {}
 
 function Enemies_Update (dt) 
+	local w = love.graphics.getWidth()
+	local h = love.graphics.getHeight()
+	
 	for o,_ in pairs(gEnemies) do 
+		o.x = max(0,min(w,o.x))
+		o.y = max(0,min(h,o.y))
 		o:Update(dt)
 		o:CheckCollisionWithPlayer(dt)
 	end 
@@ -48,7 +53,7 @@ function cEnemyBase:Destroy()
 end
 	
 function cEnemyBase:Register()
-	self.radius = self.gfx and self.gfx.radius or 128
+	self.radius = self.gfx and self.gfx.radius and (self.gfx.radius * 0.5) or 128
 	self.nextCollisionTime = 0
 	gEnemies[self] = true
 end

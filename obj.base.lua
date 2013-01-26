@@ -19,6 +19,10 @@ function cBase:DrawWobble(ws,wr,scalefactor) -- scale,rotate
 		gfx = gfx[1+math.mod(floor(gMyTime / self.time_per_frame),#gfx)]
 	end
 	gfx:Draw(self.x,self.y,r,s,s)
+	
+	local d = self.radius or 25
+	love.graphics.circle("line",self.x,self.y,d,11)
+	
 end
 
 function cBase:Update(dt) end
@@ -59,6 +63,7 @@ function cBase:ShotTest(shot, stype)
 	if (self.enemy_kind ~= nil and self.enemy_kind == "white") and shot.colour == self.colour then 
 		damage = 5
 	end
-	if shot.sType == stype and shot:DistToObj(self) < 25 then self:Damage(damage) end
+	local d = self.radius or 25
+	if shot.sType == stype and shot:DistToObj(self) < d then self:Damage(damage) end
 end
 
