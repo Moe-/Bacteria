@@ -74,7 +74,6 @@ function cEnemyBase:CheckCollisionWithPlayer(dt)
 		local dy = self.y - gPlayer.y
 		local dx = self.x - gPlayer.x
 		
-		effects:CreateEffect("hit", self.x, self.y, math.atan(dy/dx)*180/PI, true)
 	end
 end
 
