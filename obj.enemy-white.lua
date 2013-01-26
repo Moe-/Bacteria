@@ -11,11 +11,11 @@ function cEnemyWhite:Init(x,y,colour)
 	self.energy = 100
 	self.colour = colour
 
-	if (colour == "blue") then self.gfx = gfx_weissbk_blau
-	elseif (colour == "green") then self.gfx = gfx_weissbk_gruen
-	elseif (colour == "red") then self.gfx = gfx_weissbk_rot
-	elseif (colour == "white") then self.gfx = gfx_weissbk_weis
-	elseif (colour == "yellow") then self.gfx = gfx_weissbk_weis
+	if (self.colour == "blue") then self.gfx = gfx_weissbk_blau
+	elseif (self.colour == "green") then self.gfx = gfx_weissbk_gruen
+	elseif (self.colour == "red") then self.gfx = gfx_weissbk_rot
+	elseif (self.colour == "white") then self.gfx = gfx_weissbk_weis
+	elseif (self.colour == "yellow") then self.gfx = gfx_weissbk_weis
 	end
 
 	self:Register()
@@ -25,19 +25,22 @@ function cEnemyWhite:Init(x,y,colour)
 end
 
 function cEnemyWhite:Draw() 
-	if gPlayer.weaponPower <= 0.1 then
-		if gPlayer.wType == "red" then
+	--if gPlayer.weaponPower <= 0.1 then
+		if gPlayer.wType == "red" and self.colour == "red" then
 			love.graphics.setColor(150 + 105 * math.sin(self.t * 2), 0, 150 + 105 * math.sin(self.t * 2), 50)
-		elseif gPlayer.wType == "green" then
+			self:DrawWobble(0.2,0.1,gEnemyGfxScale + 0.3) 
+		elseif gPlayer.wType == "green" and self.colour == "green" then
 			love.graphics.setColor(0, 150 + 105 * math.sin(self.t * 2), 0, 50)
-		elseif gPlayer.wType == "blue" then
+			self:DrawWobble(0.2,0.1,gEnemyGfxScale + 0.3) 
+		elseif gPlayer.wType == "blue" and self.colour == "blue" then
 			love.graphics.setColor(0, 0, 150 + 105 * math.sin(self.t * 2), 50)
-		elseif gPlayer.wType == "white" then
+			self:DrawWobble(0.2,0.1,gEnemyGfxScale + 0.3) 
+		elseif gPlayer.wType == "white" and self.colour == "yellow" then
 			love.graphics.setColor(150 + 105 * math.sin(self.t * 2), 150 + 105 * math.sin(self.t * 2), 150 + 105 * math.sin(self.t * 2), 50)
+			self:DrawWobble(0.2,0.1,gEnemyGfxScale + 0.3) 
 		end
-		self:DrawWobble(0.2,0.1,gEnemyGfxScale + 0.3) 
 		love.graphics.setColor(255, 255, 255, 255)
-	end
+	--end
 	self:DrawWobble(0.2,0.1,gEnemyGfxScale) 
 end
 
