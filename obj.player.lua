@@ -8,10 +8,13 @@ function cPlayer:Draw()
 	love.graphics.setColor(255, 255, 255, self.alpha)
 	self.gfx:Draw(self.x,self.y,r,s,s)
 	love.graphics.setColor(255, 255, 255, 255)
+	
+	if (SHOW_DEBUG_CIRCLE) then love.graphics.circle("line",self.x,self.y,self.radius,11) end
 end
 
 function cPlayer:Init(x,y) 
 	print("player init")
+	self.bIsPlayer = true
 	self.kind = "player"
 	self.x = x
 	self.y = y
@@ -20,8 +23,14 @@ function cPlayer:Init(x,y)
 	self.dy = 0
 	self.alpha = 255
 	self:UpdateWeapon("white")
-	self.radius = self.gfx.radius * 0.5
+	self.radius = self.gfx.radius * 0.35
 	self.points = 0
+	print("player init r=",self.radius)
+	
+	
+	self.weaponPower = 2.0
+	self.decaytime = 10
+	self.dwp = self.weaponPower / self.decaytime
 end
 
 function cPlayer:Update(dt)
@@ -32,7 +41,7 @@ function cPlayer:Update(dt)
 	end
 
 	if self.weaponPower > 0 then
-		self.weaponPower = max(0, self.weaponPower - 0.5 * dt) -- 30 seconds until weapon suxx
+		self.weaponPower = max(0, self.weaponPower - self.dwp * dt) -- 30 seconds until weapon suxx
 	end
 
  	if self.bCollidingWithTop then

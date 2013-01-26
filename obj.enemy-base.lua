@@ -3,9 +3,20 @@ cEnemyBase = CreateClass(cBase)
 gEnemies = {}
 
 function Enemies_Update (dt) 
+	local w = love.graphics.getWidth()
+	local h = love.graphics.getHeight()
+	
 	for o,_ in pairs(gEnemies) do 
+		local r = o.radius or 10
+		if (not o.bCanLeaveScreen) then 
+			o.x = max(r,min(w-r,o.x))
+			o.y = max(r,min(h-r,o.y))
+		end
 		o:Update(dt)
 		o:CheckCollisionWithPlayer(dt)
+		if (o.bDieLeftOfScreen and o.x < -r - 10) then 
+			o:Die()
+		end
 	end 
 end
 
@@ -20,9 +31,14 @@ end
 function Enemies_Draw () for o,_ in pairs(gEnemies) do o:Draw() end end
 
 
-function cEnemyBase:NotifyDamage()
+function cEnemyBase:NotifyDamage(bResist)
 	local dx, dy = 1, 0
-	effects:CreateEffect("hit", self.x, self.y, math.atan(dy/dx)*180/PI, true)
+	if (bResist) then 
+		print("resist hit!")
+		effects:CreateEffect("resist", self.x, self.y, math.atan(dy/dx)*180/PI, true)
+	else
+		effects:CreateEffect("hit", self.x, self.y, math.atan(dy/dx)*180/PI, true)
+	end
 end
 
 function cEnemyBase:Die()
@@ -48,7 +64,7 @@ function cEnemyBase:Destroy()
 end
 	
 function cEnemyBase:Register()
-	self.radius = self.gfx and self.gfx.radius or 128
+	self.radius = self.gfx and self.gfx.radius and (self.gfx.radius * 0.5) or 128
 	self.nextCollisionTime = 0
 	gEnemies[self] = true
 end
@@ -66,7 +82,6 @@ function cEnemyBase:CheckCollisionWithPlayer(dt)
 		local dy = self.y - gPlayer.y
 		local dx = self.x - gPlayer.x
 		
-		effects:CreateEffect("hit", self.x, self.y, math.atan(dy/dx)*180/PI, true)
 	end
 end
 

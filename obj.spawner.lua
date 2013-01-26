@@ -1,38 +1,75 @@
 cSpawner = CreateClass()
 love.filesystem.load("obj.formation.lua")()
+kBossWaveCount = 7
 
 function cSpawner:Init()
-
+	
+	gFinalBoss = false
+	gFormationsSpawnedTotal = 0
+	gFormationsSpawnedSinceBoss = 0
+	gBossIndex = 1
+	gBossArr = {cEnemyBoss01,cEnemyBoss02,cEnemyBossFinal}
+	
     self.formations = {}
     local e = 80
 
-    local formation = cFormation:New()
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
     formation:addEnemy("blutplatt", 0 * e, -2 * e)
     formation:addEnemy("blutplatt", 0 * e, -1 * e)
-    formation:addEnemy("red", 0 * e, 0 * e)
+    formation:addEnemy("blutkoerper", 0 * e, 0 * e)
     formation:addEnemy("blutplatt", 0 * e, 1 * e)
     formation:addEnemy("blutplatt", 0 * e, 2 * e)
 
-    table.insert(self.formations, formation)
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
-    local formation = cFormation:New()
+    formation.min_total_spawned = 2
+    formation:addEnemy("red" , 1 * e, -1 * e)
+    formation:addEnemy("blue", 0 * e, 0 * e)
+    formation:addEnemy("red" , 1 * e, 1 * e)
+	
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
-    formation:addEnemy("white", 0 * e, -2 * e)
-    formation:addEnemy("white", 0 * e, -1 * e)
-    formation:addEnemy("white", 0 * e, 0 * e)
-    formation:addEnemy("white", 0 * e, 1 * e)
-    formation:addEnemy("white", 0 * e, 2 * e)
-    formation:addEnemy("white", 0 * e, 3 * e)
+    formation.min_total_spawned = 5
+    formation:addEnemy("blue", 0 * e, 0 * e)
+    formation:addEnemy("blue", 1 * e, 0 * e)
+    formation:addEnemy("yellow", 0 * e, 1 * e)
+    formation:addEnemy("yellow", 1 * e, 1 * e)
+	
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
-    table.insert(self.formations, formation)
+    formation.min_total_spawned = 5
+    formation:addEnemy("blue", 0 * e, 0 * e)
+    formation:addEnemy("blue", 1 * e, 0 * e)
+    formation:addEnemy("green", 0 * e, 1 * e)
+    formation:addEnemy("green", 1 * e, 1 * e)
+	
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
-    local formation = cFormation:New()
+    formation.min_total_spawned = 5
+    formation:addEnemy("red", 0 * e, 0 * e)
+    formation:addEnemy("red", 0 * e, 1 * e)
+    formation:addEnemy("yellow", 1 * e, 0 * e)
+    formation:addEnemy("yellow", 1 * e, 1 * e)
+	
+    local formation = cFormation:New() table.insert(self.formations, formation)
 
+    formation.min_total_spawned = kBossWaveCount
+    formation:addEnemy("yellow", 2 * e,-1 * e)
+    formation:addEnemy("green", 1 * e,-1 * e)
+    formation:addEnemy("green", 0 * e, 0 * e)
+    formation:addEnemy("green", 1 * e, 1 * e)
+    formation:addEnemy("yellow", 2 * e, 1 * e)
+	
+	-- red,green,blue,yellow
+	
+    local formation = cFormation:New() table.insert(self.formations, formation)
+
+    formation.min_total_spawned = kBossWaveCount
+    formation.min_spawned_since_boss = 5
     formation:addEnemy("boss", 0 , 0)
     formation:addConstraint(cFormationConstraintNumberSpawns:New(formation, 1))
     formation:addConstraint(cFormationConstraintSpawnOnce:New(formation))
-    table.insert(self.formations, formation)
 
 end
 
@@ -66,26 +103,35 @@ function cSpawner:spawnFormation()
     local h = love.graphics.getHeight()
     local center = randf() * h
 
+	local startx = 1.1*w
+	local startxboss = 0.7*w
     for k,v in pairs(formation.enemies) do
         if (v.enemy == "blutplatt") then
-            cEnemyBlutPlatt:New(0.7*w + v.offsetX,center + v.offsetY)
-        elseif (v.enemy == "red") then
-            cEnemyRed:New(0.7*w + v.offsetX,center + v.offsetY)
-        elseif (v.enemy == "white") then
-            cEnemyWhite:New(0.7*w + v.offsetX,center + v.offsetY)
+            cEnemyBlutPlatt:New(startx + v.offsetX,center + v.offsetY)
+        elseif (v.enemy == "blutkoerper") then
+            cEnemyRed:New(startx + v.offsetX,center + v.offsetY)
+        elseif (v.enemy == "red"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "red")
+        elseif (v.enemy == "green"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "green")
+        elseif (v.enemy == "blue"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "blue")
+        elseif (v.enemy == "yellow"	) then cEnemyWhite:New(startx + v.offsetX,center + v.offsetY, "yellow")
         elseif (v.enemy == "boss") then
-            cEnemyBossBase:New(0.7*w + v.offsetX,center + v.offsetY)
+			local bossclass = gBossArr[gBossIndex] or gBossArr[#gBossArr]
+			gBossIndex = gBossIndex + 1
+			
+            bossclass:New(startxboss + v.offsetX,center + v.offsetY)
+			gFormationsSpawnedSinceBoss = 0 -- reset for next boss
         end
     end
 end
 
 function cSpawner:spawnWeapons()
+	if (self:BossOnScreen()) then return end
     local rand = math.random(1,100)
     if (rand == 1) then
         local w = love.graphics.getWidth()
         local h = love.graphics.getHeight()
 
-        cEnemyWeapon:New(0.9*w,randf()*h, rand_in_arr({"red", "green", "blue", "white"}))
+        cEnemyWeapon:New(1.1*w,randf()*h, rand_in_arr({"red", "green", "blue", "white"}))
     end
 end
 
@@ -100,12 +146,20 @@ function cSpawner:EnemiesOnScreen()
     return found
 end
 
+function cSpawner:BossOnScreen()
+    for o,_ in pairs(gEnemies) do
+        if (o.bIsBossPart) then return true end
+    end
+end
+
 
 function cSpawner:Update()
     self:spawnWeapons()
 
     if (self:EnemiesOnScreen() == false) then
         self:spawnFormation()
+		gFormationsSpawnedTotal = gFormationsSpawnedTotal + 1
+		gFormationsSpawnedSinceBoss = gFormationsSpawnedSinceBoss + 1
     end
 end
 

@@ -19,6 +19,9 @@ function cBase:DrawWobble(ws,wr,scalefactor) -- scale,rotate
 		gfx = gfx[1+math.mod(floor(gMyTime / self.time_per_frame),#gfx)]
 	end
 	gfx:Draw(self.x,self.y,r,s,s)
+	
+	local d = self.radius or 25
+	if (SHOW_DEBUG_CIRCLE) then love.graphics.circle("line",self.x,self.y,d,11) end
 end
 
 function cBase:Update(dt) end
@@ -33,17 +36,18 @@ function cBase:DistToObj(o) return self:DistToPos(o.x,o.y) end
 
 
 
-function cBase:Damage(dmg)
+function cBase:Damage(dmg,bResist)
 	if self.kind == "player" then
 		cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
-		cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
-		cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
+		effects:CreateEffect("hit", self.x, self.y, math.random(0, 2*PI), true)
+		--cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
+		--cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
 	end
 	
 	if (self.bInvulnerable) then return end
 	self.energy = self.energy - dmg
 	
-	if (self.energy <= 0) then self:Die() else self:NotifyDamage() end
+	if (self.energy <= 0) then self:Die() else self:NotifyDamage(bResist) end
 end
 
 function cBase:NotifyDamage()
@@ -56,9 +60,20 @@ end
 
 function cBase:ShotTest(shot, stype)
 	local damage = 20
-	if (self.enemy_kind ~= nil and self.enemy_kind == "white") then 
-		damage = 5 + 15 * gPlayer:GetWeaponPower()
+	if self.bIsPlayer then damage = 10 end 
+	local bResist = false
+	if (self.enemy_resist_colour == shot.colour) then -- player-shot hits enemy
+		damage = 2
+		bResist = true
 	end
-	if shot.sType == stype and shot:DistToObj(self) < 25 then self:Damage(damage) end
+	
+	local d = self.radius or 25
+	if shot.sType == stype and shot:DistToObj(self) < d then 
+		--~ if (not self.bIsPlayer) then print("shothit",damage,self.enemy_resist_colour,shot.colour) end
+		if (bResist) then 
+			shot.dirX = -0.5 * shot.dirX0 
+		end
+		self:Damage(damage,bResist) 
+	end
 end
 

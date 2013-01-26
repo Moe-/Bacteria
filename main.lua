@@ -8,6 +8,8 @@ gPlayerSpeed = 10
 cPlayerEnergyMax = 1000
 cTStateChange = 1.0
 
+--~ SHOW_DEBUG_CIRCLE = true
+
 --[[
 TODO liste code : 
 * wand kollision
@@ -26,6 +28,11 @@ TODO liste code :
 cam shake on player hit
 cam slimed (y-stretch)
 scroll speed + gegner extra speed = herzschlag.
+
+schleim sieht nicht aus wie auf cam.
+particel trails zu intensiv -> alpha : done
+boss 1 schiesst nicht ? ok. 
+
 ]]--
 
 gMyTime = love.timer.getTime( )
@@ -78,23 +85,28 @@ function love.load ()
 	gfx_blutplatt	= loadgfx("data/blutplatt.png")
 	gfx_dnabonus	= loadgfx("data/dnabonus.png")
 	--~ gfx_levelpart01	= loadgfx("data/levelpart01.png")
+	gfx_deco		= { loadgfx("data/bg1.png"),
+						loadgfx("data/bg2.png"),
+						loadgfx("data/egg.png")}
 	gfx_player_blau		= loadgfx("data/player_blau.png")
 	gfx_player_gruen		= loadgfx("data/player_gruen.png")
 	gfx_player_rot		= loadgfx("data/player_rot.png")
 	gfx_player_weis		= loadgfx("data/player_weis.png")
 	gfx_rotbk		= loadgfx("data/rotbk.png")
-	gfx_shotplayer	= loadgfx("data/shot-player.png")
+	gfx_shotplayer_blau	= loadgfx("data/shot-player_blau.png")
+	gfx_shotplayer_rot	= loadgfx("data/shot-player_rot.png")
+	gfx_shotplayer_gruen	= loadgfx("data/shot-player_gruen.png")
+	gfx_shotplayer_weis	= loadgfx("data/shot-player_weis.png")
 	gfx_shotweiss	= loadgfx("data/shot-weiss.png")
-	gfx_weissbk		= loadgfx("data/weissbk.png")
-	gfx_dnabonus_blau	= loadgfx("data/dnabonus_blau.png")
-	gfx_dnabonus_gruen	= loadgfx("data/dnabonus_gruen.png")
-	gfx_dnabonus_rot	= loadgfx("data/dnabonus_rot.png")
-	gfx_dnabonus_weis	= {
-		loadgfx("data/dnabonus_weis/dnabonus_weis_01.png"),
-		loadgfx("data/dnabonus_weis/dnabonus_weis_02.png"),
-		loadgfx("data/dnabonus_weis/dnabonus_weis_03.png"),
-		loadgfx("data/dnabonus_weis/dnabonus_weis_04.png"),bIsAnim = true
-	}
+	gfx_weissbk_blau		= loadgfx("data/bk_blau.png")
+	gfx_weissbk_rot		= loadgfx("data/bk_rot.png")
+	gfx_weissbk_gruen		= loadgfx("data/bk_gruen.png")
+	gfx_weissbk_weis		= loadgfx("data/bk_weis.png")
+	gfx_dnabonus_blau	= loadgfx("data/pickup_blue.png")
+	gfx_dnabonus_gruen	= loadgfx("data/pickup_green.png")
+	gfx_dnabonus_rot	= loadgfx("data/pickup_red.png")
+	gfx_dnabonus_weis	= loadgfx("data/pickup_yellow.png")
+	
 	gfx_boss_core	= loadgfx("data/boss-core.png")
 	gfx_boss_mid	= loadgfx("data/boss-mid.png")
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
@@ -112,6 +124,7 @@ function love.load ()
 	gfx_pill_blue			= loadgfx("data/pill_blue.png")
 	gfx_pill_green			= loadgfx("data/pill_green.png")
 	gfx_pill_red			= loadgfx("data/pill_red.png")
+	gfx_pill_white			= loadgfx("data/pill_white.png")
 	gfx_startscreen		= loadgfx("data/screen.png")
 	gfx_gameover			= loadgfx("data/gameover.png")
 	gfx_pause				= loadgfx("data/pause.png")
@@ -123,7 +136,9 @@ function love.load ()
 
     snd_shoot = love.audio.newSource("data/schuss.mp3", "static")
     snd_explosion = love.audio.newSource("data/explosion.mp3")
-
+	
+	
+	
 	love.graphics.setBackgroundColor( 40,0,0)
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight()
@@ -207,10 +222,10 @@ function draw_game ()
 --	gBoss:Draw()
 	effects:DrawBelow()
 	gPlayer:Draw()
-	effects:DrawAbove()
 
 	Shots_Draw()
 	Enemies_Draw()
+	effects:DrawAbove()
 	
 	--~ love.graphics.print("hello world",40,40)
 	
@@ -219,13 +234,13 @@ function draw_game ()
 	DrawStretches()
 	-- draw life line
 	for i = 0, gPlayer.energy, 20 do
-		local percent = i/cPlayerEnergyMax
 		local gfx
-		if percent < 0.1 then gfx = gfx_pill_red
-		elseif percent < 0.3 then gfx = gfx_pill_blue
-		else gfx = gfx_pill_green
+		if gPlayer.wType == "red" then gfx = gfx_pill_red
+		elseif gPlayer.wType == "blue" then gfx = gfx_pill_blue
+		elseif gPlayer.wType == "green" then gfx = gfx_pill_green
+		elseif gPlayer.wType == "white" then gfx = gfx_pill_white
 		end
-		gfx:Draw(50 + i/2, love.graphics.getHeight() - 4 * gfx.oy,0,1,1)
+		gfx:Draw(250 + i/2, gfx.oy,0,1,1)
 	end
 
 	-- draw score
@@ -260,33 +275,37 @@ function love.draw ()
 	end
 end
 
-function love.keypressed (keyname, unicode)
-    -- Escape geht immer
-    if (keyname == "escape") then love.event.quit( ) end
-    if gGameState == "game" then
+function love.keypressed (keyname)
+	if (keyname == "escape") then love.event.quit( ) end
+	if gGameState == "game" then
         if (keyname == "left"	or keyname == "a") then gPlayer:SetSpeedX(-gPlayerSpeed)
-        elseif (keyname == "right"	or keyname == "d") then gPlayer:SetSpeedX(gPlayerSpeed)
-        elseif (keyname == "up"		or keyname == "w") then gPlayer:SetSpeedY(-gPlayerSpeed)
-        elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(gPlayerSpeed)
-        elseif (keyname == "1") then gLevel.gfx_wall = gfx_wallA
-        elseif (keyname == "2") then gLevel.gfx_wall = gfx_wallB
-        elseif (keyname == "5") then TestBossSpawn()
-        elseif (keyname == "6") then TestBossSpawn(cEnemyBossFinal)
-        elseif (keyname == " ") then gShootNext = 0
-        else print("keypress",keyname)
+		elseif (keyname == "left"	or keyname == "a") then gPlayer:SetSpeedX(-gPlayerSpeed)
+		elseif (keyname == "right"	or keyname == "d") then gPlayer:SetSpeedX(gPlayerSpeed)
+		elseif (keyname == "up"		or keyname == "w") then gPlayer:SetSpeedY(-gPlayerSpeed)
+		elseif (keyname == "down"	or keyname == "s") then gPlayer:SetSpeedY(gPlayerSpeed)
+		elseif (keyname == "1") then gLevel.gfx_wall = gfx_wallA
+		elseif (keyname == "2") then gLevel.gfx_wall = gfx_wallB
+		elseif (keyname == "5") then TestBossSpawn(cEnemyBoss01)
+		elseif (keyname == "6") then TestBossSpawn(cEnemyBoss02)
+		elseif (keyname == "7") then TestBossSpawn(cEnemyBossFinal)
+		elseif (keyname == "f3") then gPlayer:UpdateWeapon("red")
+		elseif (keyname == "f4") then gPlayer:UpdateWeapon("green")
+		elseif (keyname == "f5") then gPlayer:UpdateWeapon("blue")
+		elseif (keyname == "f6") then gPlayer:UpdateWeapon("white")
+		elseif (keyname == "o") then SHOW_DEBUG_CIRCLE = not SHOW_DEBUG_CIRCLE 	elseif (keyname == " ") then gShootNext = 0
+	        elseif (keyname == " ") then gShootNext = 0
+		else print("keypress",keyname)
+		end
+	elseif gGameState == "gameover" and gHighscores:serverAvailable() then
+        	if (unicode > 31 and unicode < 127) then
+            	if (gInitials:len() < 3) then
+                	gInitials = gInitials .. string.char(unicode)
+            	end
+            	if (gInitials:len() >= 3) then
+                	gHighscores:sendScore(gInitials, gPlayer:GetPoints())
+            	end
         end
-    elseif gGameState == "gameover" and gHighscores:serverAvailable() then
-        if (unicode > 31 and unicode < 127) then
-            if (gInitials:len() < 3) then
-                gInitials = gInitials .. string.char(unicode)
-            end
-            if (gInitials:len() >= 3) then
-                gHighscores:sendScore(gInitials, gPlayer:GetPoints())
-            end
-        end
-    end
-
-
+   	 end
 end
 
 function TestBossSpawn(bossclass)

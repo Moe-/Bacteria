@@ -15,6 +15,8 @@ end
 
 function cFormation:maySpawn()
     local maySpawn = true
+	if (self.min_total_spawned and gFormationsSpawnedTotal < self.min_total_spawned) then return false end
+	if (self.min_spawned_since_boss and gFormationsSpawnedSinceBoss < self.min_spawned_since_boss) then return false end
     for k,v in pairs(self.constraints) do
         if (v:maySpawn() == false) then
             maySpawn = false

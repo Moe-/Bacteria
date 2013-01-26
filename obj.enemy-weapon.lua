@@ -15,6 +15,8 @@ function cEnemyWeapon:Init(x,y,wType)
 	end
 	self:Register()
 	self.time_per_frame = 0.1
+	self.radius = gPlayer.radius*1.5
+	self.bCanLeaveScreen = true
 end
 
 function cEnemyWeapon:Draw() self:DrawWobble(0.2,0.1,gEnemyGfxScale) end
@@ -39,11 +41,20 @@ function cEnemyWeapon:Update(dt)
 		self.y = self.y + self.dy * dt
 	end
 
-	if(self:DistToObj(gPlayer) < 25) then
+	if(self:DistToObj(gPlayer) < self.radius) then
 		self:Destroy()
 		gPlayer:AddPoints(125)
 		gPlayer:UpdateWeapon(self.wType)
-		effects:CreateEffect("powerup", gPlayer.x, gPlayer.y, 0, true)
+		
+		if self.wType == "blue" then
+			effects:CreateEffect("powerup_blue", gPlayer.x, gPlayer.y, 0, true)
+		elseif self.wType == "green" then
+			effects:CreateEffect("powerup_green", gPlayer.x, gPlayer.y, 0, true)
+		elseif self.wType == "red" then
+			effects:CreateEffect("powerup_red", gPlayer.x, gPlayer.y, 0, true)
+		elseif self.wType == "white" then
+			effects:CreateEffect("powerup_yellow", gPlayer.x, gPlayer.y, 0, true)		
+		end
 	end
 
 end
