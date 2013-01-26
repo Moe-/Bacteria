@@ -5,7 +5,7 @@ cLevel = CreateClass()
 
 kLevelBorderBackOffset = 20
 kLevelStepX = 110
-kLevelCollOff = 40
+kLevelCollOff = 0
 
 function cLevel:Init() 
 	self.walls = {}
@@ -115,16 +115,20 @@ function cWall:Init (x,y,ang,bTop)
 	self.ang = ang
 	self.bTop = bTop
 	self.gfx = rand_in_arr(gfx_border)
+	self.dy_per_x = sin(ang) / cos(ang)
 end
 
 function cWall:Destroy () gLevel.walls[self] = nil end
 
-function cWall:Collide (x,y,o)
-	if (o.x >= x and o.x <= x + kLevelStepX) then 
+function cWall:Collide (x,y,o,r)
+	local halfw = 0.5*kLevelStepX
+	local relx = o.x - x
+	if (relx >= -halfw and relx <= halfw) then 
+		local y2 = y + relx * self.dy_per_x
 		if (self.bTop) then 
-			o.y = max(o.y,y+kLevelCollOff)
+			o.y = max(o.y,y2+kLevelCollOff+r)
 		else 
-			o.y = min(o.y,y-kLevelCollOff)
+			o.y = min(o.y,y2-kLevelCollOff-r)
 		end
 	end
 end
@@ -133,7 +137,8 @@ function cWall:Update (dt)
 	local x = self.x-gLevel.scrollx
 	local y = self.y-gLevel.scrolly
 	--~ print("wall",x,y)
-	for o,_ in pairs(gEnemies) do self:Collide(x,y,o) end
+	for o,_ in pairs(gEnemies) do self:Collide(x,y,o,o.radius or 0) end
+	local o = gPlayer self:Collide(x,y,o,o.radius or 0)
 end
 
 
@@ -152,5 +157,9 @@ function cWall:Draw (xa,ya)
 	if (x < -100) then self:Destroy() end
 	self.gfx:Draw(x,y,self.ang)
 	love.graphics.circle( "line", x, y, 5, 11 )
+	local h = 0.5*kLevelStepX
+	local y2 = y + self.dy_per_x * h
+	love.graphics.circle( "line", x+h, y2, 3, 11 )
+	
 end
 

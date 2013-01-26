@@ -43,6 +43,7 @@ function cGfx:Init (img)
 	self.img = img
 	local w = img:getWidth()
 	local h = img:getHeight()
+	self.radius = 0.5*h
 	self.ox = w/2
 	self.oy = h/2
 end

@@ -19,6 +19,7 @@ function cPlayer:Init(x,y)
 	self.dy = 0
 	self.alpha = 255
 	self.gfx = gfx_player
+	self.radius = self.gfx.radius
 end
 
 function cPlayer:Update(dt)
