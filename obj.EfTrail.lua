@@ -22,7 +22,7 @@ function cTrail:Init(sprite, x, y, direction, cr, cg, cb)
 	self.partSystem:setRotation              (0)
 	self.partSystem:setSpin                  (0)
 	self.partSystem:setSpinVariation         (0)
-	self.partSystem:setColors                (cr, cg, cb, 240, cr, cg, cb, 10)
+	self.partSystem:setColors                (cr, cg, cb, 120, cr, cg, cb, 10)
 	self.partSystem:stop();
 	self.ps:AddEmitter(self.partSystem, 0)
 	
