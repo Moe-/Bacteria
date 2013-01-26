@@ -68,7 +68,7 @@ function cEnemyBossBase:Init(x,y)
 	local e = kBossUnit
 	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
 	
-	local core
+	local core = o
 	local o = self:MakeTentacle( 0,0, 4,-1, 0, core, gfx_boss_spike)
 	local o = self:MakeTentacle( 0,0, 4, 1, 0, core, gfx_boss_spike)
 	local o = self:MakeTentacle( 0,0, 4, 0,-1, core, gfx_boss_gun)
@@ -95,7 +95,7 @@ end
 
 function cEnemyBossBase:MakeTentacle(x,y,num,vx,vy,core,gfx_head)
 	local tentacle = cTentacle:New()
-	core.tentacles[tentacle] = true
+	if (core) then core.tentacles[tentacle] = true end
 	local e = kBossUnit
 	for i = 0,num do 
 		local gfx = (i == num) and gfx_head or gfx_boss_mid
