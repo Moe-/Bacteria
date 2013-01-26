@@ -62,6 +62,9 @@ end
 
 function cEnemyBossBase:Update(dt)
 	self.y = self.y0 + 50 * sin(0.35*gMyTime*PI)
+	
+	
+	
 end
 
 function cEnemyBossBase:Draw()
@@ -83,9 +86,19 @@ function cEnemyBossPartBase:Init	(x,y,gfx,boss)
 	if (self.gfx == gfx_boss_mid) then self.bInvulnerable = true end
 end
 
-function cEnemyBossPartBase:Update() 
-	self.x = self.boss.x + self.x0
-	self.y = self.boss.y + self.y0
+function cEnemyBossPartBase:Update()
+	local x = self.x0
+	local y = self.y0
+	
+	local ang_per_pixel = PI / 100
+	local ang_phase = gMyTime / 2 * PI
+	local bHorz = abs(x) > abs(y)
+	local d = max(abs(x),abs(y))
+	local waber_d = 20*min(1.0,d / 50)
+	iOff = waber_d * sin(d * ang_per_pixel + ang_phase)
+	
+	self.x = self.boss.x + x + (bHorz and 0 or iOff)
+	self.y = self.boss.y + y + (bHorz and iOff or 0)
 end
 
 function cEnemyBossPartBase:Die() 
