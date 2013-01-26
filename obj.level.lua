@@ -56,7 +56,6 @@ function cWall:Update (dt)
 	
 end
 
-
 function cWall:Draw (xa,ya)
 	self.gfx:Draw(self.x+xa,self.y+ya)
 end
