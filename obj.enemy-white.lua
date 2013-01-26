@@ -1,5 +1,7 @@
 cEnemyWhite = CreateClass(cEnemyBase)
 
+kShotInterval = 1.5
+
 function cEnemyWhite:Init(x,y,colour) 
 	self.enemy_kind = "white"
 	self.x = x
@@ -19,6 +21,7 @@ function cEnemyWhite:Init(x,y,colour)
 	self:Register()
 	
 	self.t = 0
+	self.next_shot_t = gMyTime + (0.8 + 0.4*randf()) * kShotInterval
 end
 
 function cEnemyWhite:Draw() 
@@ -43,7 +46,8 @@ function cEnemyWhite:Update (dt)
 	if self.t >= 1000 then self.t = 0 end
 	
 	local rnd = math.random()
-	if(rnd * dt < 0.0005) then
+	if (gMyTime > self.next_shot_t) then
+		self.next_shot_t = gMyTime + (0.8 + 0.4*randf()) * kShotInterval
 		local x = self.x
 		local y = self.y
 		local dirX = gPlayer.x - x
