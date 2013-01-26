@@ -15,7 +15,7 @@ love.filesystem.load("obj.enemy-white.lua")()
 love.filesystem.load("obj.enemy-red.lua")()
 love.filesystem.load("obj.enemy-boss.lua")()
 love.filesystem.load("obj.EffectSys.lua")()
-
+love.filesystem.load("obj.spawner.lua")()
 
 cGfx = CreateClass(cBase)
 function cGfx:Init (img)
@@ -65,11 +65,15 @@ function love.load ()
 
 	gShots = {}
 	gLevel = cLevel:New()
+
 	gBoss = cEnemyBossBase:New(0.6*w,0.5*h)
 	
 	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
 	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
 	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
+
+
+    gSpawner = cSpawner:New()
 end
 
 function love.update (dt)
@@ -77,7 +81,9 @@ function love.update (dt)
 	gLevel:Update(dt)
 	gPlayer:Update(dt)
 	effects:Update(dt)
-	local shotsDelete = {}
+    gSpawner:Update(dt)
+
+    local shotsDelete = {}
 	for i, v in pairs(gShots) do 
 		if v:Update(dt) == false then
 			table.insert(shotsDelete, i)
@@ -132,4 +138,3 @@ end
 function love.mousereleased(x, y, button)
 	if (button == "l") then gPlayer:Shoot(x, y) end
 end
-

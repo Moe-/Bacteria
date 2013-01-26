@@ -4,6 +4,7 @@ love.filesystem.load("obj.PartSys.lua")()
 love.filesystem.load("obj.EffectBasic.lua")()
 love.filesystem.load("obj.Explosion.lua")()
 love.filesystem.load("obj.BloodBorder.lua")()
+love.filesystem.load("obj.PowerUp.lua")()
 
 function cEffectSys:Init()
 	self.sprite = love.graphics.newImage("particle.png")
@@ -36,5 +37,7 @@ function cEffectSys:CreateEffect(kind, x, y)
 		table.insert(self.effects, cBloodBorder:New(self.sprite, x, y, true))
 	elseif kind == "blooddown" then
 		table.insert(self.effects, cBloodBorder:New(self.sprite, x, y, false))
+	elseif kind == "powerup" then
+		table.insert(self.effects, cPowerUp:New(self.sprite, x, y))
 	end
 end

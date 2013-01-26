@@ -20,7 +20,7 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == "l" then
-		ef:CreateEffect("bloodup", x, y)
+		ef:CreateEffect("powerup", x, y)
 	end
 end
 
