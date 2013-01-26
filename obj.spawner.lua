@@ -3,7 +3,8 @@ love.filesystem.load("obj.formation.lua")()
 kBossWaveCount = 7
 
 function cSpawner:Init()
-
+	
+	gFinalBoss = false
 	gFormationsSpawnedTotal = 0
 	gFormationsSpawnedSinceBoss = 0
 	gBossIndex = 1

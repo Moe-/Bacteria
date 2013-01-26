@@ -61,6 +61,7 @@ cEnemyBossFinal = CreateClass(cEnemyBossBase)
 
 function cEnemyBossFinal:Init(x,y) 
 	self:BossInitBase(x,y)
+	gFinalBoss = true
 	
 	local e = kBossUnit
 	local rx,ry = 2,2

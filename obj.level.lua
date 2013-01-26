@@ -1,5 +1,7 @@
 
 
+kLevelSpeed_Normal = 300
+kLevelSpeed_FinalBoss = 20
 
 cLevel = CreateClass()
 
@@ -11,7 +13,7 @@ kLevelDecoChancePerStep = 0.3
 function cLevel:Init() 
 	self.walls = {}
 	self.deco = {}
-	self.speed = 300
+	self.speed = kLevelSpeed_Normal
 	self.scrollx = 0
 	self.scrolly = 0
 	self.spawned_i = 0
@@ -70,6 +72,11 @@ function cLevel:SpawnWalls()
 end
 
 function cLevel:Update(dt)
+	if (gFinalBoss) then 
+		self.speed = kLevelSpeed_FinalBoss
+	else 
+		self.speed = kLevelSpeed_Normal
+	end
 	self.scrollx = self.scrollx + dt * self.speed
 	self:SpawnWalls()
 	for o,_ in pairs(self.walls) do o:Update(dt,self) end
