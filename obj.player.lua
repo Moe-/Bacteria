@@ -1,6 +1,7 @@
 cPlayer = CreateClass(cBase)
 
 function cPlayer:Draw() 
+	self.kind = "player"
 	local t = gMyTime
 	local s = 1.0 + 0.2 * sin(t*PI)
 	local r = PI * 0.1 * sin(t*0.9*PI)

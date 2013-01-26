@@ -6,7 +6,7 @@ function cStretch:Init(spr, x, y, rot, mins, maxs)
 	self.min = mins--0.1
 	self.max = maxs--1.5
 	self.growtime = 0.25
-	self.fadetime = 1
+	self.fadetime = 5
 	self.alpha = 160
 	self.sprite = spr
 	self.xpos = x

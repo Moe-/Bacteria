@@ -72,6 +72,8 @@ function love.load ()
 	
 	effects:CreateEffect("slowtrail", 500, 0, 0, false)
 	
+	slime = love.graphics.newImage("data/slime1.png")
+	
 	gfx_blutplatt	= loadgfx("data/blutplatt.png")
 	gfx_dnabonus	= loadgfx("data/dnabonus.png")
 	--~ gfx_levelpart01	= loadgfx("data/levelpart01.png")
@@ -142,7 +144,7 @@ function love.update (dt)
 	if gGameState ~= "game" then 
 		gStateChangeTime = gStateChangeTime - dt
 	else
-		UpdateStretches()
+		UpdateStretches(dt)
 		gMyTime = love.timer.getTime( )
 		gPlayer:Update(dt)
 		effects:Update(dt)
@@ -162,6 +164,7 @@ function love.update (dt)
 				gPlayer:Shoot(x, y)
 				gShootNext = 0.15
 			end
+
 		end
 
 		if (gPlayer:IsDead() == true) then
