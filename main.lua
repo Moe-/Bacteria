@@ -252,6 +252,14 @@ function draw_game ()
 	-- draw score
 	love.graphics.setFont(gFontNormal)
 	love.graphics.print(gPlayer:GetPoints(), 50, 50)
+	
+	-- draw controls :
+	local txt = "move: w-a-s-d   shoot:click left, or hold right"
+	txt = txt.."\n".."enemies of the same color will resist, collect colored mutagens to change your attack"
+	txt = txt.."\n".."in boss fights kill the tentacles protecting a core cells first"
+	local w = love.graphics.getWidth()
+	local h = love.graphics.getHeight()
+	love.graphics.print(txt, 10, h-20*3)
 end
 
 function draw_title_screen()
