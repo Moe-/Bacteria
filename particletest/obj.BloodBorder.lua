@@ -1,6 +1,6 @@
 cBloodBorder = CreateClass(cEffectBasic)
 
-function cBloodBorder:Init(x, y, up)
+function cBloodBorder:Init(sprite, x, y, up)
 	self.ps = cPartSys:New()
 	
 	self.partSystem = love.graphics.newParticleSystem(sprite, 100)

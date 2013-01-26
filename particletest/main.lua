@@ -3,21 +3,15 @@
 PI = math.pi
 
 love.filesystem.load("lib.oop.lua")()
-love.filesystem.load("obj.PartSys.lua")()
-love.filesystem.load("obj.EffectBasic.lua")()
-love.filesystem.load("obj.Explosion.lua")()
-love.filesystem.load("obj.BloodBorder.lua")()
+love.filesystem.load("obj.EffectSys.lua")()
 
 function love.load ()
-	sprite = love.graphics.newImage("particle.png")
-	effects = {}
+	ef = cEffectSys:New()
 	tr = 0
 end
 
 function love.draw ()
-	for k,v in ipairs(effects) do
-		v:Draw()
-	end
+	ef:Draw()
 end
 
 function love.keypressed (keyname)
@@ -27,27 +21,14 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == "l" then
-		e = cExplosion:New(x, y)
-		table.insert(effects, e)
 	end
 end
 
 function love.update(dt)
 	tr = tr + dt
 	if tr > 0.05 then
-		table.insert(effects, cBloodBorder:New(love.mouse.getX(), love.mouse.getY(), true))
 		tr = 0
+		ef:CreateEffect("bloodup", love.mouse.getX(), love.mouse.getY())
 	end
-		
-	for k,v in ipairs(effects) do
-		v:Update(dt)
-	end
-	
-	for k,v in ipairs(effects) do
-		if v:isDone() then
-			--print("effect",k,"isdone")
-			v:Free()
-			table.remove(effects, k)
-		end
-	end
+	ef:Update(dt)
 end
