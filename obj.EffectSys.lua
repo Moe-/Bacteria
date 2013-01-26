@@ -4,37 +4,62 @@ love.filesystem.load("obj.PartSys.lua")()
 love.filesystem.load("obj.EffectBasic.lua")()
 love.filesystem.load("obj.Explosion.lua")()
 love.filesystem.load("obj.BloodBorder.lua")()
+love.filesystem.load("obj.PowerUp.lua")()
 
 function cEffectSys:Init()
 	self.sprite = love.graphics.newImage("data/particle.png")
-	self.effects = {}
+	self.ef_below = {}
+	self.ef_above = {}
 end
 
-function cEffectSys:Draw()
-	for k,v in ipairs(self.effects) do
+function cEffectSys:DrawBelow()
+	for k,v in ipairs(self.ef_below) do
+		v:Draw()
+	end
+end
+
+function cEffectSys:DrawAbove()
+	for k,v in ipairs(self.ef_above) do
 		v:Draw()
 	end
 end
 
 function cEffectSys:Update(dt)
-	for k,v in ipairs(self.effects) do
+	for k,v in ipairs(self.ef_below) do
 		v:Update(dt)
 	end
 	
-	for k,v in ipairs(self.effects) do
+	for k,v in ipairs(self.ef_below) do
 		if v:isDone() then
 			v:Free()
-			table.remove(self.effects, k)
+			table.remove(self.ef_below, k)
+		end
+	end
+	
+	for k,v in ipairs(self.ef_above) do
+		v:Update(dt)
+	end
+	
+	for k,v in ipairs(self.ef_above) do
+		if v:isDone() then
+			v:Free()
+			table.remove(self.ef_above, k)
 		end
 	end
 end
 
-function cEffectSys:CreateEffect(kind, x, y)
+function cEffectSys:CreateEffect(kind, x, y, above)
 	if kind == "explosion" then
-		table.insert(self.effects, cExplosion:New(self.sprite, x, y))
+		if above then table.insert(self.ef_above, cExplosion:New(self.sprite, x, y))
+		else table.insert(self.ef_below, cExplosion:New(self.sprite, x, y)) end
 	elseif kind == "bloodup" then
-		table.insert(self.effects, cBloodBorder:New(self.sprite, x, y, true))
+		if above then table.insert(self.ef_above, cBloodBorder:New(self.sprite, x, y, true))
+		else table.insert(self.ef_below, cBloodBorder:New(self.sprite, x, y)) end
 	elseif kind == "blooddown" then
-		table.insert(self.effects, cBloodBorder:New(self.sprite, x, y, false))
+		if above then table.insert(self.ef_above, cBloodBorder:New(self.sprite, x, y, false))
+		else table.insert(self.ef_below, cBloodBorder:New(self.sprite, x, y)) end
+	elseif kind == "powerup" then
+		if above then table.insert(self.ef_above, cPowerUp:New(self.sprite, x, y))
+		else table.insert(self.ef_below, cPowerUp:New(self.sprite, x, y)) end
 	end
 end
