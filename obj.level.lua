@@ -3,7 +3,7 @@
 
 cLevel = CreateClass()
 
-kLevelBorderBackOffset = 0
+kLevelBorderBackOffset = 20
 
 function cLevel:Init() 
 	self.walls = {}
@@ -132,7 +132,7 @@ end
 function cWall:Draw (xa,ya)
 	local x,y = self.x+xa,self.y+ya
 	if (x < -100) then self:Destroy() end
-	self.gfx:Draw(x,y,self.ang+PI)
+	self.gfx:Draw(x,y,self.ang)
 	love.graphics.circle( "line", x, y, 5, 11 )
 end
 
