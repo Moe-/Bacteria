@@ -14,6 +14,7 @@ function cEnemyWeapon:Init(x,y,wType)
 	elseif (wType == "white") then self.gfx = gfx_dnabonus_weis
 	end
 	self:Register()
+	self.time_per_frame = 0.1
 end
 
 function cEnemyWeapon:Draw() self:DrawWobble(0.2,0.1,gEnemyGfxScale) end

@@ -14,7 +14,7 @@ function cPlayer:Init(x,y)
 	print("player init")
 	self.x = x
 	self.y = y
-	self.energy = 1000
+	self.energy = cPlayerEnergyMax
 	self.dx = 0
 	self.dy = 0
 	self.alpha = 255
@@ -57,7 +57,7 @@ function cPlayer:Shoot(cx, cy)
 	local dirY = cy - y
 	local norm = math.sqrt(dirX*dirX + dirY*dirY)
 	local lifetime = 5.0
-	table.insert(gShots, cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "player", self.wType))
+	cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "player", self.wType)
 end
 
 function cPlayer:IsDead()

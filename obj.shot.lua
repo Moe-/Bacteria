@@ -1,5 +1,26 @@
 cShot = CreateClass(cBase)
 
+-- ***** ***** ***** ***** ***** global shot functions
+
+function Shots_Update(dt) for o,_ in pairs(gShots) do o:Update(dt) end end
+
+function Shots_Draw() for o,_ in pairs(gShots) do o:Draw() end end
+
+function Shots_HitTest()  
+	for o,_ in pairs(gShots) do 
+		Enemies_ShotTest(o)
+		gPlayer:ShotTest(o, "white") 
+	end 
+end
+
+function Shots_BlockPlayerShotsAtPos(x,y,r)
+	 for o,_ in pairs(gShots) do 
+		if (o.bIsPlayerShot and o:DistToPos(x,y) < r) then o:Destroy() end
+	end
+end  
+
+-- ***** ***** ***** ***** ***** cShot
+
 function cShot:Init(x, y, dirX, dirY, lifetime, sType, colour)
 	self.x = x
 	self.y = y
@@ -9,16 +30,24 @@ function cShot:Init(x, y, dirX, dirY, lifetime, sType, colour)
 	self.sType = sType
 	self.colour = colour
 	if(sType == "player") then
+		self.bIsPlayerShot = true
 		self.gfx = gfx_shotplayer
 	else
 		self.gfx = gfx_shotweiss
     end
     love.audio.play(snd_shoot)
+	
+	-- register
+	gShots[self] = true
+end
+
+function cShot:Destroy()
+	gShots[self] = nil
 end
 
 function cShot:Update(dt)
 	self.lifetime = self.lifetime - dt
-	if (self.lifetime < 0) then return false end
+	if (self.lifetime < 0) then self:Destroy() return end
 	self.x = self.x + self.dirX * dt * 1000
 	self.y = self.y + self.dirY * dt * 1000
 	

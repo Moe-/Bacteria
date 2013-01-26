@@ -5,6 +5,7 @@ gEnemyGfxScale = 0.5
 gEnemyBossGfxScale = 0.7
 --~ gEnemyGfxScale = 1
 gPlayerSpeed = 10
+cPlayerEnergyMax = 1000
 
 --[[
 TODO liste code : 
@@ -76,7 +77,12 @@ function love.load ()
 	gfx_dnabonus_blau	= loadgfx("data/dnabonus_blau.png")
 	gfx_dnabonus_gruen	= loadgfx("data/dnabonus_gruen.png")
 	gfx_dnabonus_rot	= loadgfx("data/dnabonus_rot.png")
-	gfx_dnabonus_weis	= loadgfx("data/dnabonus_weis.png")
+	gfx_dnabonus_weis	= {
+		loadgfx("data/dnabonus_weis/dnabonus_weis_01.png"),
+		loadgfx("data/dnabonus_weis/dnabonus_weis_02.png"),
+		loadgfx("data/dnabonus_weis/dnabonus_weis_03.png"),
+		loadgfx("data/dnabonus_weis/dnabonus_weis_04.png"),bIsAnim = true
+	}
 	gfx_boss_core	= loadgfx("data/boss-core.png")
 	gfx_boss_mid	= loadgfx("data/boss-mid.png")
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
@@ -91,6 +97,9 @@ function love.load ()
 	gfx_background1	= loadgfx("data/background1.png")
 	gfx_background2	= loadgfx("data/background2.png")
 	gfx_egg			= loadgfx("data/egg.png")
+	gfx_pill_blue			= loadgfx("data/pill_blue.png")
+	gfx_pill_green			= loadgfx("data/pill_green.png")
+	gfx_pill_red			= loadgfx("data/pill_red.png")
 	
     snd_background = love.audio.newSource("data/background.mp3")
     snd_background:setLooping(true)
@@ -121,21 +130,9 @@ function love.update (dt)
 	effects:Update(dt)
     gSpawner:Update(dt)
 
-    local shotsDelete = {}
-	for i, v in pairs(gShots) do 
-		if v:Update(dt) == false then
-			table.insert(shotsDelete, i)
-		end
-	end
+	Shots_Update(dt)
+	Shots_HitTest()
 
-	for i, v in pairs(shotsDelete) do
-		table.remove(gShots, v)
-	end
-
-	for i, v in pairs(gShots) do 
-		Enemies_ShotTest(v)
-		gPlayer:ShotTest(v, "white") 
-	end
 --	gBoss:Update(dt)
 	Enemies_Update(dt)
 	gLevel:Update(dt)
@@ -160,7 +157,7 @@ function love.draw ()
 	gPlayer:Draw()
 	effects:DrawAbove()
 
-	for i, v in pairs(gShots) do v:Draw() end
+	Shots_Draw()
 	Enemies_Draw()
 	
 	--~ love.graphics.print("hello world",40,40)
@@ -171,6 +168,16 @@ function love.draw ()
 		love.graphics.print("DEAD",40,240)
 	end
 	
+	-- draw life line
+	for i = 0, gPlayer.energy, 20 do
+		local percent = i/cPlayerEnergyMax
+		local gfx
+		if percent < 0.1 then gfx = gfx_pill_red
+		elseif percent < 0.3 then gfx = gfx_pill_blue
+		else gfx = gfx_pill_green
+		end
+		gfx:Draw(50 + i/2, love.graphics.getHeight() - 4 * gfx.oy,0,1,1)
+	end
 end
 
 function love.keypressed (keyname)
@@ -182,15 +189,17 @@ function love.keypressed (keyname)
 	elseif (keyname == "1") then gLevel.gfx_wall = gfx_wallA
 	elseif (keyname == "2") then gLevel.gfx_wall = gfx_wallB
 	elseif (keyname == "5") then TestBossSpawn()
+	elseif (keyname == "6") then TestBossSpawn(cEnemyBossFinal)
 	elseif (keyname == " ") then gShootNext = 0
 	else print("keypress",keyname)
 	end
 end
 
-function TestBossSpawn()
+function TestBossSpawn(bossclass)
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight()
-	cEnemyBoss02:New(0.7*w,0.5*h)
+	bossclass = bossclass or cEnemyBoss02
+	bossclass:New(0.7*w,0.5*h)
 end
 
 function love.keyreleased (keyname)
