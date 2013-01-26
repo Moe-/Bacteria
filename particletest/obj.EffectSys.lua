@@ -7,6 +7,7 @@ love.filesystem.load("obj.BloodBorder.lua")()
 love.filesystem.load("obj.PowerUp.lua")()
 love.filesystem.load("obj.Trail.lua")()
 love.filesystem.load("obj.Sparkle.lua")()
+love.filesystem.load("obj.EfHit.lua")()
 
 function cEffectSys:Init()
 	self.sprite = love.graphics.newImage("particle.png")
@@ -66,5 +67,8 @@ function cEffectSys:CreateEffect(kind, x, y, direction, above)
 	elseif kind == "sparkle" then
 		if above then table.insert(self.ef_above, cSparkle:New(self.sprite, x, y, direction))
 		else table.insert(self.ef_below, cSparkle:New(self.sprite, x, y, direction)) end
+	elseif kind == "hit" then
+		if above then table.insert(self.ef_above, cHit:New(self.sprite, x, y, direction))
+		else table.insert(self.ef_below, cHit:New(self.sprite, x, y, direction)) end
 	end
 end
