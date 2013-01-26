@@ -91,10 +91,10 @@ function cEnemyBossPartBase:Update()
 	local y = self.y0
 	
 	local ang_per_pixel = PI / 100
-	local ang_phase = gMyTime / 2 * PI
+	local ang_phase = gMyTime / 1.5 * PI
 	local bHorz = abs(x) > abs(y)
 	local d = max(abs(x),abs(y))
-	local waber_d = 20*min(1.0,d / 50)
+	local waber_d = 20*min(1.0,d / 100)
 	iOff = waber_d * sin(d * ang_per_pixel + ang_phase)
 	
 	self.x = self.boss.x + x + (bHorz and 0 or iOff)
