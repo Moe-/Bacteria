@@ -38,7 +38,6 @@ love.filesystem.load("obj.enemy-boss.lua")()
 love.filesystem.load("obj.enemy-weapon.lua")()
 love.filesystem.load("obj.EffectSys.lua")()
 love.filesystem.load("obj.spawner.lua")()
-love.filesystem.load("obj.LevelRunner.lua")()
 
 cGfx = CreateClass(cBase)
 function cGfx:Init (img)
@@ -59,8 +58,6 @@ end
 function loadgfx (path) return cGfx:New(love.graphics.newImage(path)) end
 
 function love.load ()
-	currlvl = cLevelRunner:New(10, 2, 1337)
-
 	effects = cEffectSys:New()
 	
 	effects:CreateEffect("slowtrail", 500, 0, 0, false)
@@ -114,7 +111,6 @@ function love.load ()
 end
 
 function love.update (dt)
-	currlvl:Update(dt)
 	gMyTime = love.timer.getTime( )
 	gPlayer:Update(dt)
 	effects:Update(dt)
