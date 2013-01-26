@@ -6,6 +6,7 @@ gEnemyBossGfxScale = 0.7
 --~ gEnemyGfxScale = 1
 gPlayerSpeed = 10
 cPlayerEnergyMax = 1000
+cTStateChange = 1.0
 
 --[[
 TODO liste code : 
@@ -55,6 +56,9 @@ end
 function cGfx:DrawY0 (x,y,r,sx,sy)
 	love.graphics.draw(self.img,x,y,r,sx,sy,self.ox,0)
 end
+function cGfx:DrawX0Y0 (x,y,r,sx,sy)
+	love.graphics.draw(self.img,x,y,r,sx,sy,0,0)
+end
 
 function loadgfx (path) return cGfx:New(love.graphics.newImage(path)) end
 
@@ -100,6 +104,8 @@ function love.load ()
 	gfx_pill_blue			= loadgfx("data/pill_blue.png")
 	gfx_pill_green			= loadgfx("data/pill_green.png")
 	gfx_pill_red			= loadgfx("data/pill_red.png")
+	gfx_startscreen		= loadgfx("data/gameover.png")
+	gfx_gameover			= loadgfx("data/gameover.png")
 	
     snd_background = love.audio.newSource("data/background.mp3")
     snd_background:setLooping(true)
@@ -122,32 +128,44 @@ function love.load ()
     gFormationsHistory = {}
 
 	gShootNext = -1
+	gGameState = "startscreen"
+	gStateChangeTime = cTStateChange
 end
 
 function love.update (dt)
-	gMyTime = love.timer.getTime( )
-	gPlayer:Update(dt)
-	effects:Update(dt)
-    gSpawner:Update(dt)
+	if gGameState ~= "game" then 
+		gStateChangeTime = gStateChangeTime - dt
+	else
+		gMyTime = love.timer.getTime( )
+		gPlayer:Update(dt)
+		effects:Update(dt)
+		 gSpawner:Update(dt)
 
-	Shots_Update(dt)
-	Shots_HitTest()
+		Shots_Update(dt)
+		Shots_HitTest()
 
---	gBoss:Update(dt)
-	Enemies_Update(dt)
-	gLevel:Update(dt)
+	--	gBoss:Update(dt)
+		Enemies_Update(dt)
+		gLevel:Update(dt)
 
-	if(gShootNext > -1) then
-		gShootNext = gShootNext - dt
-		if (gShootNext < 0) then
-			local x, y = love.mouse.getPosition()
-			gPlayer:Shoot(x, y)
-			gShootNext = 0.15
+		if(gShootNext > -1) then
+			gShootNext = gShootNext - dt
+			if (gShootNext < 0) then
+				local x, y = love.mouse.getPosition()
+				gPlayer:Shoot(x, y)
+				gShootNext = 0.15
+			end
 		end
+
+		if (gPlayer:IsDead() == true) then
+			gGameState = "gameover"
+			gStateChangeTime = cTStateChange
+		end
+
 	end
 end
 
-function love.draw ()
+function draw_game ()
 	gMyTime = love.timer.getTime( )
 	
 	gLevel:DrawBack()
@@ -163,10 +181,6 @@ function love.draw ()
 	--~ love.graphics.print("hello world",40,40)
 	
 	gLevel:Draw()
-
-	if (gPlayer:IsDead() == true) then
-		love.graphics.print("DEAD",40,240)
-	end
 	
 	-- draw life line
 	for i = 0, gPlayer.energy, 20 do
@@ -182,6 +196,21 @@ function love.draw ()
 	-- draw score
 	--love.graphics.setFont(48)
 	love.graphics.print(gPlayer:GetPoints(), 50, 50)
+end
+
+function draw_start_screen()
+	gfx_gameover:DrawX0Y0(0, 0)
+end
+
+function draw_gameover_screen()
+	gfx_startscreen:DrawX0Y0(0, 0)
+end
+
+function love.draw ()
+	if gGameState == "startscreen" then draw_start_screen()
+	elseif gGameState == "gameover" then draw_gameover_screen()
+	elseif gGameState == "game" then draw_game() 
+	end
 end
 
 function love.keypressed (keyname)
@@ -207,25 +236,32 @@ function TestBossSpawn(bossclass)
 end
 
 function love.keyreleased (keyname)
-	if ((keyname == "left" or keyname == "a") and not (love.keyboard.isDown("right") or love.keyboard.isDown("d"))) 
-		or ((keyname == "right" or keyname == "d") and not (love.keyboard.isDown("left") or love.keyboard.isDown("a"))) then
-		gPlayer:SetSpeedX(0)
-	elseif (keyname == "left" or keyname == "a") and (love.keyboard.isDown("right") or love.keyboard.isDown("d")) then
-		gPlayer:SetSpeedX(gPlayerSpeed)
-	elseif (keyname == "right" or keyname == "d") and (love.keyboard.isDown("left") or love.keyboard.isDown("a")) then
-		gPlayer:SetSpeedX(-gPlayerSpeed)
+	if gGameState == "startscreen" and gStateChangeTime < 0 then 
+		gGameState = "game"
+		gStateChangeTime = cTStateChange
+	elseif gGameState == "gameover" and gStateChangeTime < 0  then 
+		gGameState = "startscreen"
+		gStateChangeTime = cTStateChange
+	elseif gGameState == "game" then
+		if ((keyname == "left" or keyname == "a") and not (love.keyboard.isDown("right") or love.keyboard.isDown("d"))) 
+			or ((keyname == "right" or keyname == "d") and not (love.keyboard.isDown("left") or love.keyboard.isDown("a"))) then
+			gPlayer:SetSpeedX(0)
+		elseif (keyname == "left" or keyname == "a") and (love.keyboard.isDown("right") or love.keyboard.isDown("d")) then
+			gPlayer:SetSpeedX(gPlayerSpeed)
+		elseif (keyname == "right" or keyname == "d") and (love.keyboard.isDown("left") or love.keyboard.isDown("a")) then
+			gPlayer:SetSpeedX(-gPlayerSpeed)
+		end
+	
+		if ((keyname == "up" or keyname == "w") and not (love.keyboard.isDown("down") or love.keyboard.isDown("s"))) 
+			or ((keyname == "down" or keyname == "s") and not (love.keyboard.isDown("up") or love.keyboard.isDown("w"))) then
+			gPlayer:SetSpeedY(0)
+		elseif (keyname == "up" or keyname == "w") and (love.keyboard.isDown("down") or love.keyboard.isDown("s")) then
+			gPlayer:SetSpeedY(gPlayerSpeed)
+		elseif (keyname == "down" or keyname == "s") and (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
+			gPlayer:SetSpeedY(-gPlayerSpeed)
+		 elseif (keyname == " ") then gShootNext = -1
+		 end
 	end
-	
-	if ((keyname == "up" or keyname == "w") and not (love.keyboard.isDown("down") or love.keyboard.isDown("s"))) 
-		or ((keyname == "down" or keyname == "s") and not (love.keyboard.isDown("up") or love.keyboard.isDown("w"))) then
-		gPlayer:SetSpeedY(0)
-	elseif (keyname == "up" or keyname == "w") and (love.keyboard.isDown("down") or love.keyboard.isDown("s")) then
-		gPlayer:SetSpeedY(gPlayerSpeed)
-	elseif (keyname == "down" or keyname == "s") and (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
-		gPlayer:SetSpeedY(-gPlayerSpeed)
-    elseif (keyname == " ") then gShootNext = -1
-    end
-	
 
 
 	--if (keyname == "left") or (keyname == "right") or (keyname == "a") or (keyname == "d") then gPlayer:SetSpeedX(0)
@@ -234,8 +270,16 @@ function love.keyreleased (keyname)
 end
 
 function love.mousereleased(x, y, button)
-	if (button == "l") then gPlayer:Shoot(x, y) end
-	if (button == "r") then gShootNext = -1 end
+	if gGameState == "startscreen" and gStateChangeTime < 0 then 
+		gGameState = "game"
+		gStateChangeTime = cTStateChange
+	elseif gGameState == "gameover" and gStateChangeTime < 0 then 
+		gGameState = "startscreen"
+		gStateChangeTime = cTStateChange
+	elseif gGameState == "game" then
+		if (button == "l") then gPlayer:Shoot(x, y) end
+		if (button == "r") then gShootNext = -1 end
+	end
 end
 
 function love.mousepressed(x, y, button)
