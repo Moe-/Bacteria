@@ -27,6 +27,28 @@ function cEnemyBoss02:Init(x,y)
 	self:UpdatePartsStatus()
 end
 
+cEnemyBossFinal = CreateClass(cEnemyBossBase)
+
+function cEnemyBossFinal:Init(x,y) 
+	self:BossInitBase(x,y)
+	
+	local e = kBossUnit
+	local o = self:MakePart( 0*e, 0*e, gfx_boss_core) self.cores[o] = true
+	local rx,ry = 2,3
+	for ix=-rx,rx do
+	for iy=-ry,ry do
+		if (ix ~= 0 or iy ~= 0) then local o = self:MakePart( ix*e, iy*e, gfx_boss_mid)  end
+	end
+	end
+	
+	local o = self:MakeTentacle(-rx,-ry, 4,-1, -0.5, gfx_boss_spike)		self.tentacles[o] = true
+	local o = self:MakeTentacle( rx,-ry, 4, 1, -0.5, gfx_boss_gun)		self.tentacles[o] = true
+	local o = self:MakeTentacle(-rx, ry, 4,-1,  0.5, gfx_boss_spike)		self.tentacles[o] = true
+	local o = self:MakeTentacle( rx, ry, 4, 1,  0.5, gfx_boss_gun)		self.tentacles[o] = true
+	
+	self:UpdatePartsStatus()
+end
+
 -- ***** ***** ***** ***** ***** boss variants
 
 function cEnemyBossBase:Init(x,y) 
