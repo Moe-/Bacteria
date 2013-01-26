@@ -250,11 +250,28 @@ function draw_pause_screen()
 	gfx_pause:DrawX0Y0(0, 0)
 end
 
+--~ gGameFinished = true
 function love.draw ()
 	if gGameState == "startscreen" then draw_start_screen()
 	elseif gGameState == "gameover" then draw_gameover_screen()
 	elseif gGameState == "game" then draw_game() 
 	elseif gGameState == "pause" then draw_pause_screen() 
+	end
+	
+	if (gGameFinished) then 
+		local txt = "!!! GAME OVER, YOU WON !!!"
+		local w = love.graphics.getWidth()
+		local h = love.graphics.getHeight()
+		
+		--~ local x = w/2 - w/8
+		local x = 40
+		local y = h/2
+		local s = 5
+		love.graphics.print( txt, x, y, 0, s, s)
+
+		--~ love.graphics.print()
+		--~ local limit = 400
+		--~ love.graphics.printf( txt, w/2, h/2, limit, "center" )
 	end
 end
 

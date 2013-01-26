@@ -9,6 +9,14 @@ kShotInterval_BossPart = 1.2
 
 kBossWallEvadeSpeed = 40
 
+
+-- ***** ***** ***** ***** ***** final boss kill
+
+function NotifyFinalBossKilled ()
+	-- this is called when final boss dies, show game over / won / highscore screen when boss is killed
+	gGameFinished = true
+end
+
 -- ***** ***** ***** ***** ***** boss variants
 
 cEnemyBoss01 = CreateClass(cEnemyBossBase)
@@ -62,6 +70,7 @@ cEnemyBossFinal = CreateClass(cEnemyBossBase)
 function cEnemyBossFinal:Init(x,y) 
 	self:BossInitBase(x,y)
 	gFinalBoss = true
+	self.bIsFinalBoss = true
 	
 	local e = kBossUnit
 	local rx,ry = 2,2
@@ -133,6 +142,9 @@ function cEnemyBossBase:UpdatePartsStatus()
 	if (not bCoresAlive) then 
 		for o,_ in pairs(self.parts) do o:Die() end
 		self:Die()
+		if (self.bIsFinalBoss) then 
+			NotifyFinalBossKilled()
+		end
 	end
 end
 
