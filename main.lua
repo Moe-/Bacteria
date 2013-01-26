@@ -73,6 +73,7 @@ function love.load ()
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
 	gfx_boss_spike	= loadgfx("data/boss-spike.png")
 	gfx_border01	= loadgfx("data/border01.png")
+	gfx_background1	= loadgfx("data/background1.png")
 	
     snd_background = love.audio.newSource("data/background.mp3")
     snd_background:setLooping(true)
@@ -128,6 +129,9 @@ end
 
 function love.draw ()
 	gMyTime = love.timer.getTime( )
+	
+	gLevel:DrawBack()
+	
 	gBoss:Draw()
 	effects:DrawBelow()
 	gPlayer:Draw()

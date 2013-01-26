@@ -19,6 +19,21 @@ function cLevel:Init()
 	self.tunnel_y = cValueSpline:New(h*0.5,h*0.3,10,5)
 	
 	self:SpawnWalls()
+	
+end
+
+
+function cLevel:DrawBack()
+	local gfx = gfx_background1
+	local w = love.graphics.getWidth()
+	local h = love.graphics.getHeight() 
+	local e = 256
+	local xoff = math.mod(self.scrollx*0.8,e)
+	for x = -xoff,w+e,e do
+	for y = 0,h+e,e do
+		gfx:Draw(x,y)
+	end
+	end
 end
 
 function cLevel:MakeWall(x,y,ang,bTop)
