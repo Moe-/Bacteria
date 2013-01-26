@@ -31,7 +31,11 @@ function cShot:Init(x, y, dirX, dirY, lifetime, sType, colour)
 	self.colour = colour
 	if(sType == "player") then
 		self.bIsPlayerShot = true
-		self.gfx = gfx_shotplayer
+		if (colour == "blue") then self.gfx = gfx_shotplayer_blau
+		elseif (colour == "green") then self.gfx = gfx_shotplayer_gruen
+		elseif (colour == "red") then self.gfx = gfx_shotplayer_rot
+		elseif (colour == "white") then self.gfx = gfx_shotplayer_weis
+		end
 	else
 		self.gfx = gfx_shotweiss
     end
