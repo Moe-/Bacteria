@@ -42,10 +42,22 @@ end
 function cEnemyBossBase:NotifyPartDie(o)
 	local bCoresInvul = false
 	self.parts[o] = nil
+	self.cores[o] = nil
 	for o,_ in pairs(self.parts) do 
 		if (o.gfx == gfx_boss_gun or o.gfx == gfx_boss_spike) then bCoresInvul = true end
 	end
-	for o,_ in pairs(self.cores) do o.bInvulnerable = bCoresInvul end
+	
+	-- set cores invul if guns/spikes alive
+	local bCoresAlive = false
+	for o,_ in pairs(self.cores) do bCoresAlive = true o.bInvulnerable = bCoresInvul end
+	
+	-- death if no cores left
+	if (not bCoresAlive) then 
+		for o,_ in pairs(self.parts) do 
+			o:Die()
+		end
+	end
+	
 end
 
 function cEnemyBossBase:Update(dt)
