@@ -31,9 +31,14 @@ end
 function Enemies_Draw () for o,_ in pairs(gEnemies) do o:Draw() end end
 
 
-function cEnemyBase:NotifyDamage()
+function cEnemyBase:NotifyDamage(bResist)
 	local dx, dy = 1, 0
-	effects:CreateEffect("hit", self.x, self.y, math.atan(dy/dx)*180/PI, true)
+	if (bResist) then 
+		print("resist hit!")
+		effects:CreateEffect("hit", self.x, self.y, math.atan(dy/dx)*180/PI, true)
+	else
+		effects:CreateEffect("hit", self.x, self.y, math.atan(dy/dx)*180/PI, true)
+	end
 end
 
 function cEnemyBase:Die()

@@ -36,7 +36,7 @@ function cBase:DistToObj(o) return self:DistToPos(o.x,o.y) end
 
 
 
-function cBase:Damage(dmg)
+function cBase:Damage(dmg,bResist)
 	if self.kind == "player" then
 		cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
 		effects:CreateEffect("hit", self.x, self.y, math.random(0, 2*PI), true)
@@ -47,7 +47,7 @@ function cBase:Damage(dmg)
 	if (self.bInvulnerable) then return end
 	self.energy = self.energy - dmg
 	
-	if (self.energy <= 0) then self:Die() else self:NotifyDamage() end
+	if (self.energy <= 0) then self:Die() else self:NotifyDamage(bResist) end
 end
 
 function cBase:NotifyDamage()
@@ -61,14 +61,16 @@ end
 function cBase:ShotTest(shot, stype)
 	local damage = 20
 	if self.bIsPlayer then damage = 10 end 
+	local bResist = false
 	if (self.enemy_resist_colour == shot.colour) then -- player-shot hits enemy
-		damage = 2.5
+		damage = 2
+		bResist = true
 	end
 	
 	local d = self.radius or 25
 	if shot.sType == stype and shot:DistToObj(self) < d then 
 		--~ if (not self.bIsPlayer) then print("shothit",damage,self.enemy_resist_colour,shot.colour) end
-		self:Damage(damage) 
+		self:Damage(damage,bResist) 
 	end
 end
 
