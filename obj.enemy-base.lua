@@ -35,7 +35,7 @@ function cEnemyBase:NotifyDamage(bResist)
 	local dx, dy = 1, 0
 	if (bResist) then 
 		print("resist hit!")
-		effects:CreateEffect("hit", self.x, self.y, math.atan(dy/dx)*180/PI, true)
+		effects:CreateEffect("resist", self.x, self.y, math.atan(dy/dx)*180/PI, true)
 	else
 		effects:CreateEffect("hit", self.x, self.y, math.atan(dy/dx)*180/PI, true)
 	end
