@@ -30,6 +30,15 @@ end
 
 function copyarr(arr) local res = {} for k,v in pairs(arr) do res[k] = v end return res end
 
+function count(arr)
+    local c = 0
+    for k,v in pairs(arr) do
+        c = c + 1
+    end
+    return c
+end
+
+
 
 -- ***** ***** ***** ***** ***** tausender
 

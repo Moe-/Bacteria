@@ -13,6 +13,8 @@ love.filesystem.load("obj.enemy-base.lua")()
 love.filesystem.load("obj.enemy-blutplatt.lua")()
 love.filesystem.load("obj.enemy-white.lua")()
 love.filesystem.load("obj.enemy-red.lua")()
+love.filesystem.load("obj.spawner.lua")()
+
 
 
 cGfx = CreateClass(cBase)
@@ -59,15 +61,18 @@ function love.load ()
 	gShots = {}
 	gLevel = cLevel:New()
 	
-	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
-	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
-	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
+--	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
+--	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
+--	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
+
+    gSpawner = cSpawner:New()
 end
 
 function love.update (dt)
 	gMyTime = love.timer.getTime( )
 	gLevel:Update(dt)
 	gPlayer:Update(dt)
+    gSpawner:Update(dt)
 	
 	local shotsDelete = {}
 	for i, v in pairs(gShots) do 
