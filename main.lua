@@ -5,6 +5,7 @@ gEnemyGfxScale = 0.5
 gEnemyBossGfxScale = 0.7
 --~ gEnemyGfxScale = 1
 gPlayerSpeed = 10
+cPlayerEnergyMax = 1000
 
 --[[
 TODO liste code : 
@@ -91,6 +92,9 @@ function love.load ()
 	gfx_background1	= loadgfx("data/background1.png")
 	gfx_background2	= loadgfx("data/background2.png")
 	gfx_egg			= loadgfx("data/egg.png")
+	gfx_pill_blue			= loadgfx("data/pill_blue.png")
+	gfx_pill_green			= loadgfx("data/pill_green.png")
+	gfx_pill_red			= loadgfx("data/pill_red.png")
 	
     snd_background = love.audio.newSource("data/background.mp3")
     snd_background:setLooping(true)
@@ -159,6 +163,16 @@ function love.draw ()
 		love.graphics.print("DEAD",40,240)
 	end
 	
+	-- draw life line
+	for i = 0, gPlayer.energy, 20 do
+		local percent = i/cPlayerEnergyMax
+		local gfx
+		if percent < 0.1 then gfx = gfx_pill_red
+		elseif percent < 0.3 then gfx = gfx_pill_blue
+		else gfx = gfx_pill_green
+		end
+		gfx:Draw(50 + i/2, love.graphics.getHeight() - 4 * gfx.oy,0,1,1)
+	end
 end
 
 function love.keypressed (keyname)
