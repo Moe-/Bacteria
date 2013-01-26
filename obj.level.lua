@@ -78,7 +78,11 @@ end
 function cLevel:DrawBack()
 	local e = 256
 	DrawPattern(gfx_background1,e,math.mod(self.scrollx*0.8,e))
+	
+	love.graphics.setColor(255, 255, 255, 255*0.5)
 	for o,_ in pairs(self.deco) do o:Draw(-self.scrollx*0.7,-self.scrolly) end
+	love.graphics.setColor(255, 255, 255, 255)
+	
 	DrawPattern(gfx_background2,e,math.mod(self.scrollx*0.6,e))
 end
 
