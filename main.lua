@@ -13,9 +13,9 @@ TODO liste code :
 * wand rand
 * boss teile schaden / sterben  
 * gegner formationen spawnen
-* waffe rot/grün/blau
+* waffe rot/grï¿½n/blau
 * waffen wechseln bei bonus gegner einsammeln
-* weisse blutkörperchen resistenz
+* weisse blutkï¿½rperchen resistenz
 * boss nach zeit x
 * final boss herz !
 * background tiled
@@ -97,12 +97,12 @@ function love.load ()
 	gShots = {}
 	gLevel = cLevel:New()
 
-	gBoss = cEnemyBossBase:New(0.6*w,0.5*h)
+--	gBoss = cEnemyBossBase:New(0.6*w,0.5*h)
 	
-	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
-	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
-	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
-	for i=1,5 do cEnemyWeapon:New(0.9*w,randf()*h, rand_in_arr({"red", "green", "blue", "white"})) end
+--	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
+--	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
+--	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
+--	for i=1,5 do cEnemyWeapon:New(0.9*w,randf()*h, rand_in_arr({"red", "green", "blue", "white"})) end
 	
     gSpawner = cSpawner:New()
 end
@@ -128,7 +128,7 @@ function love.update (dt)
 		Enemies_ShotTest(v)
 		gPlayer:ShotTest(v, "white") 
 	end
-	gBoss:Update(dt)
+--	gBoss:Update(dt)
 	Enemies_Update(dt)
 	gLevel:Update(dt)
 end
@@ -138,7 +138,7 @@ function love.draw ()
 	
 	gLevel:DrawBack()
 	
-	gBoss:Draw()
+--	gBoss:Draw()
 	effects:DrawBelow()
 	gPlayer:Draw()
 	effects:DrawAbove()
