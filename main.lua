@@ -35,6 +35,7 @@ love.filesystem.load("obj.enemy-blutplatt.lua")()
 love.filesystem.load("obj.enemy-white.lua")()
 love.filesystem.load("obj.enemy-red.lua")()
 love.filesystem.load("obj.enemy-boss.lua")()
+love.filesystem.load("obj.enemy-weapon.lua")()
 love.filesystem.load("obj.EffectSys.lua")()
 love.filesystem.load("obj.spawner.lua")()
 
@@ -68,6 +69,7 @@ function love.load ()
 	gfx_shotplayer	= loadgfx("data/shot-player.png")
 	gfx_shotweiss	= loadgfx("data/shot-weiss.png")
 	gfx_weissbk		= loadgfx("data/weissbk.png")
+	gfx_dnabonus	= loadgfx("data/dnabonus.png")
 	gfx_boss_core	= loadgfx("data/boss-core.png")
 	gfx_boss_mid	= loadgfx("data/boss-mid.png")
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
@@ -99,8 +101,8 @@ function love.load ()
 	for i=1,5 do cEnemyRed:New(0.7*w,randf()*h) end
 	for i=1,5 do cEnemyWhite:New(0.8*w,randf()*h) end
 	for i=1,5 do cEnemyBlutPlatt:New(0.9*w,randf()*h) end
-
-
+	for i=1,5 do cEnemyWeapon:New(0.9*w,randf()*h, rand_in_arr({"red", "green", "blue", "white"})) end
+	
     gSpawner = cSpawner:New()
 end
 

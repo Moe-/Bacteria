@@ -1,12 +1,13 @@
 cShot = CreateClass(cBase)
 
-function cShot:Init(x, y, dirX, dirY, lifetime, sType)
+function cShot:Init(x, y, dirX, dirY, lifetime, sType, colour)
 	self.x = x
 	self.y = y
 	self.dirX = dirX
 	self.dirY = dirY
 	self.lifetime = lifetime
 	self.sType = sType
+	self.colour = colour
 	if(sType == "player") then
 		self.gfx = gfx_shotplayer
 	else
@@ -20,7 +21,6 @@ function cShot:Update(dt)
 	if (self.lifetime < 0) then return false end
 	self.x = self.x + self.dirX * dt * 1000
 	self.y = self.y + self.dirY * dt * 1000
-	
 	
 	effects:CreateEffect("trail", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
 	

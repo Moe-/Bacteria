@@ -19,6 +19,7 @@ function cPlayer:Init(x,y)
 	self.dy = 0
 	self.alpha = 255
 	self.gfx = gfx_player
+	self:UpdateWeapon("white")
 end
 
 function cPlayer:Update(dt)
@@ -26,6 +27,10 @@ function cPlayer:Update(dt)
 	self.y = self.y + self.dy
 	if (self:IsDead() == true) and self.alpha > 0 then
 		self.alpha = self.alpha - 5
+	end
+
+	if self.weaponPower > 0 then
+		self.weaponPower = self.weaponPower - dt * 15 -- 30 seconds until weapon suxx
 	end
 end
 
@@ -44,7 +49,7 @@ function cPlayer:Shoot(cx, cy)
 	local dirY = cy - y
 	local norm = math.sqrt(dirX*dirX + dirY*dirY)
 	local lifetime = 5.0
-	table.insert(gShots, cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "player"))
+	table.insert(gShots, cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "player", self.wType))
 end
 
 function cPlayer:IsDead()
@@ -52,4 +57,14 @@ function cPlayer:IsDead()
 	return false
 end
 
+function cPlayer:UpdateWeapon(wType)
+	if (self.wType ~= wType) then
+		self.weaponPower = 2.0
+		self.wType = wType
+	end
+end
+
+function cPlayer:GetWeaponPower()
+	return self.weaponPower
+end
 
