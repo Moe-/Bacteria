@@ -9,10 +9,11 @@ function cPlayer:Draw()
 	love.graphics.setColor(255, 255, 255, self.alpha)
 	self.gfx:Draw(self.x,self.y,r,s,s)
 	love.graphics.setColor(255, 255, 255, 255)
+	
+	love.graphics.circle("line",self.x,self.y,self.radius,11)
 end
 
 function cPlayer:Init(x,y) 
-	print("player init")
 	self.x = x
 	self.y = y
 	self.energy = cPlayerEnergyMax
@@ -20,8 +21,9 @@ function cPlayer:Init(x,y)
 	self.dy = 0
 	self.alpha = 255
 	self:UpdateWeapon("white")
-	self.radius = self.gfx.radius * 0.5
+	self.radius = self.gfx.radius * 0.35
 	self.points = 0
+	print("player init r=",self.radius)
 end
 
 function cPlayer:Update(dt)

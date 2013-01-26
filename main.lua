@@ -122,7 +122,9 @@ function love.load ()
 
     snd_shoot = love.audio.newSource("data/schuss.mp3", "static")
     snd_explosion = love.audio.newSource("data/explosion.mp3")
-
+	
+	
+	
 	love.graphics.setBackgroundColor( 40,0,0)
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight()
