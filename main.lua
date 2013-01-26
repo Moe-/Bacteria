@@ -120,6 +120,7 @@ function love.load ()
 	gfx_pill_blue			= loadgfx("data/pill_blue.png")
 	gfx_pill_green			= loadgfx("data/pill_green.png")
 	gfx_pill_red			= loadgfx("data/pill_red.png")
+	gfx_pill_white			= loadgfx("data/pill_white.png")
 	gfx_startscreen		= loadgfx("data/screen.png")
 	gfx_gameover			= loadgfx("data/gameover.png")
 	gfx_pause				= loadgfx("data/pause.png")
@@ -220,11 +221,11 @@ function draw_game ()
 	DrawStretches()
 	-- draw life line
 	for i = 0, gPlayer.energy, 20 do
-		local percent = i/cPlayerEnergyMax
 		local gfx
-		if percent < 0.1 then gfx = gfx_pill_red
-		elseif percent < 0.3 then gfx = gfx_pill_blue
-		else gfx = gfx_pill_green
+		if gPlayer.wType == "red" then gfx = gfx_pill_red
+		elseif gPlayer.wType == "blue" then gfx = gfx_pill_blue
+		elseif gPlayer.wType == "green" then gfx = gfx_pill_green
+		elseif gPlayer.wType == "white" then gfx = gfx_pill_white
 		end
 		gfx:Draw(50 + i/2, love.graphics.getHeight() - 4 * gfx.oy,0,1,1)
 	end
