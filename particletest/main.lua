@@ -7,10 +7,14 @@ love.filesystem.load("obj.EffectSys.lua")()
 
 function love.load ()
 	ef = cEffectSys:New()
+	
+	gfx_player = love.graphics.newImage("player.png")
 end
 
 function love.draw ()
-	ef:Draw()
+	ef:DrawBelow()
+	love.graphics.draw(gfx_player, love.mouse.getX() - 128,love.mouse.getY() - 128)
+	ef:DrawAbove()
 end
 
 function love.keypressed (keyname)
@@ -20,7 +24,7 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == "l" then
-		ef:CreateEffect("powerup", x, y)
+		ef:CreateEffect("powerup", x, y, true)
 	end
 end
 
