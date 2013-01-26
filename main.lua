@@ -44,6 +44,9 @@ end
 function cGfx:Draw (x,y,r,sx,sy)
 	love.graphics.draw(self.img,x,y,r,sx,sy,self.ox,self.oy)
 end
+function cGfx:DrawY0 (x,y,r,sx,sy)
+	love.graphics.draw(self.img,x,y,r,sx,sy,self.ox,0)
+end
 
 function loadgfx (path) return cGfx:New(love.graphics.newImage(path)) end
 
@@ -65,6 +68,7 @@ function love.load ()
 	gfx_boss_mid	= loadgfx("data/boss-mid.png")
 	gfx_boss_gun	= loadgfx("data/boss-gun.png")
 	gfx_boss_spike	= loadgfx("data/boss-spike.png")
+	gfx_border01	= loadgfx("data/border01.png")
 	
     snd_background = love.audio.newSource("data/background.mp3")
     snd_background:setLooping(true)
@@ -120,7 +124,6 @@ end
 
 function love.draw ()
 	gMyTime = love.timer.getTime( )
-	gLevel:Draw()
 	gBoss:Draw()
 	effects:Draw()
 	gPlayer:Draw()
@@ -128,11 +131,14 @@ function love.draw ()
 	for i, v in pairs(gShots) do v:Draw() end
 	Enemies_Draw()
 	
-	love.graphics.print("hello world",40,40)
+	--~ love.graphics.print("hello world",40,40)
+	
+	gLevel:Draw()
 
 	if (gPlayer:IsDead() == true) then
 		love.graphics.print("DEAD",40,240)
 	end
+	
 end
 
 function love.keypressed (keyname)

@@ -10,7 +10,7 @@ function cLevel:Init()
 	self.scrollx = 0
 	self.scrolly = 0
 	self.spawned_i = 0
-	self.stepx = 115
+	self.stepx = 110
 	
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight() 
@@ -21,8 +21,8 @@ function cLevel:Init()
 	self:SpawnWalls()
 end
 
-function cLevel:MakeWall(x,y)
-	local o = cWall:New(x,y)
+function cLevel:MakeWall(x,y,bTop)
+	local o = cWall:New(x,y,bTop)
 	self.walls[o] = true
 end
 
@@ -36,8 +36,8 @@ function cLevel:SpawnWalls()
 		local x = i * stepx
 		local h = self.tunnel_h:Get(i)
 		local y = self.tunnel_y:Get(i)
-		self:MakeWall(x,y-0.5*h)
-		self:MakeWall(x,y+0.5*h)
+		self:MakeWall(x,y-0.5*h,true)
+		self:MakeWall(x,y+0.5*h,false)
 		self.spawned_i = self.spawned_i + 1
 	end
 end
@@ -50,6 +50,7 @@ end
 
 function cLevel:Draw()
 	-- scroll 
+	for o,_ in pairs(self.walls) do o:DrawPre(-self.scrollx,-self.scrolly) end
 	for o,_ in pairs(self.walls) do o:Draw(-self.scrollx,-self.scrolly) end
 end
 
@@ -85,16 +86,27 @@ end
 
 cWall = CreateClass(cBase)
 
-function cWall:Init (x,y)
+function cWall:Init (x,y,bTop)
 	self.x = x
 	self.y = y
+	self.bTop = bTop
 	self.gfx = gfx_levelpart01
 end
 
 function cWall:Update (dt)
 end
 
+function cWall:DrawPre (xa,ya)
+	local gfx = gfx_border01
+	if (not self.bTop) then 
+		gfx:DrawY0(self.x+xa,self.y+ya)
+	else
+		gfx:DrawY0(self.x+xa,self.y+ya,PI)
+	end
+end
+
 function cWall:Draw (xa,ya)
 	self.gfx:Draw(self.x+xa,self.y+ya)
+	
 end
 
