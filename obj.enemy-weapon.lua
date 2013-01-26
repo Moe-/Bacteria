@@ -45,7 +45,16 @@ function cEnemyWeapon:Update(dt)
 		self:Destroy()
 		gPlayer:AddPoints(125)
 		gPlayer:UpdateWeapon(self.wType)
-		effects:CreateEffect("powerup", gPlayer.x, gPlayer.y, 0, true)
+		
+		if self.wType == "blue" then
+			effects:CreateEffect("powerup_blue", gPlayer.x, gPlayer.y, 0, true)
+		elseif self.wType == "green" then
+			effects:CreateEffect("powerup_green", gPlayer.x, gPlayer.y, 0, true)
+		elseif self.wType == "red" then
+			effects:CreateEffect("powerup_red", gPlayer.x, gPlayer.y, 0, true)
+		elseif self.wType == "white" then
+			effects:CreateEffect("powerup_yellow", gPlayer.x, gPlayer.y, 0, true)		
+		end
 	end
 
 end
