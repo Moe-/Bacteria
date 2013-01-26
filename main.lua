@@ -44,6 +44,7 @@ function cGfx:Init (img)
 	self.img = img
 	local w = img:getWidth()
 	local h = img:getHeight()
+	self.radius = 0.5*h
 	self.ox = w/2
 	self.oy = h/2
 end
@@ -108,7 +109,6 @@ end
 
 function love.update (dt)
 	gMyTime = love.timer.getTime( )
-	gLevel:Update(dt)
 	gPlayer:Update(dt)
 	effects:Update(dt)
     gSpawner:Update(dt)
@@ -128,8 +128,9 @@ function love.update (dt)
 		Enemies_ShotTest(v)
 		gPlayer:ShotTest(v, "white") 
 	end
-	Enemies_Update(dt)
 	gBoss:Update(dt)
+	Enemies_Update(dt)
+	gLevel:Update(dt)
 end
 
 function love.draw ()

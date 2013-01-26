@@ -22,7 +22,11 @@ function cShot:Update(dt)
 	self.x = self.x + self.dirX * dt * 1000
 	self.y = self.y + self.dirY * dt * 1000
 	
-	effects:CreateEffect("trail", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+	if self.sType == "player" then
+		effects:CreateEffect("trail_blue", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+	else
+		effects:CreateEffect("trail_white", self.x, self.y, math.atan(self.dirY/self.dirX)*180/PI, false)
+	end
 	
 	return true
 end

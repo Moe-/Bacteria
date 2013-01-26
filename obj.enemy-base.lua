@@ -30,6 +30,7 @@ function cEnemyBase:Destroy()
 end
 	
 function cEnemyBase:Register()
+	self.radius = self.gfx and self.gfx.radius or 128
 	gEnemies[self] = true
 end
 

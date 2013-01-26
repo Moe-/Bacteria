@@ -20,6 +20,7 @@ function cPlayer:Init(x,y)
 	self.alpha = 255
 	self.gfx = gfx_player
 	self:UpdateWeapon("white")
+	self.radius = self.gfx.radius
 end
 
 function cPlayer:Update(dt)
@@ -31,6 +32,14 @@ function cPlayer:Update(dt)
 
 	if self.weaponPower > 0 then
 		self.weaponPower = self.weaponPower - dt * 15 -- 30 seconds until weapon suxx
+	end
+
+ 	if self.bCollidingWithTop then
+ 		self.bCollidingWithTop = false
+ 		effects:CreateEffect("bloodborder", self.x, self.y - 100, 90, false)
+ 	elseif self.bCollidingWithBottom then
+ 		self.bCollidingWithBottom = false
+ 		effects:CreateEffect("bloodborder", self.x, self.y + 100, 270, false)
 	end
 end
 
