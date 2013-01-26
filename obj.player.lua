@@ -31,7 +31,7 @@ function cPlayer:Update(dt)
 	end
 
 	if self.weaponPower > 0 then
-		self.weaponPower = self.weaponPower - dt * 15 -- 30 seconds until weapon suxx
+		self.weaponPower = max(0, self.weaponPower - 0.5 * dt) -- 30 seconds until weapon suxx
 	end
 
  	if self.bCollidingWithTop then

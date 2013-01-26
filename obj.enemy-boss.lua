@@ -31,6 +31,8 @@ function cEnemyBossBase:Init(x,y)
 	local o = self:MakePart( 1*e, 0*e, gfx_boss_mid)
 	local o = self:MakePart( 2*e, 0*e, gfx_boss_mid)
 	local o = self:MakePart( 3*e, 0*e, gfx_boss_spike)
+	
+	self:UpdatePartsStatus()
 end
 
 function cEnemyBossBase:MakePart(x,y,gfx)
@@ -40,15 +42,20 @@ function cEnemyBossBase:MakePart(x,y,gfx)
 end
 
 function cEnemyBossBase:NotifyPartDie(o)
-	local bCoresInvul = false
 	self.parts[o] = nil
 	self.cores[o] = nil
+	self:UpdatePartsStatus()
+end
+
+function cEnemyBossBase:UpdatePartsStatus()
+	local bCoresInvul = false
 	for o,_ in pairs(self.parts) do 
 		if (o.gfx == gfx_boss_gun or o.gfx == gfx_boss_spike) then bCoresInvul = true end
 	end
 	
 	-- set cores invul if guns/spikes alive
 	local bCoresAlive = false
+	print("boss:bCoresInvul",bCoresInvul)
 	for o,_ in pairs(self.cores) do bCoresAlive = true o.bInvulnerable = bCoresInvul end
 	
 	-- death if no cores left
@@ -56,14 +63,27 @@ function cEnemyBossBase:NotifyPartDie(o)
 		for o,_ in pairs(self.parts) do 
 			o:Die()
 		end
+		self:Die()
 	end
-	
 end
 
 function cEnemyBossBase:Update(dt)
 	self.y = self.y0 + 50 * sin(0.35*gMyTime*PI)
 	
-	
+	for o,_ in pairs(self.parts) do
+		if (o.gfx == gfx_boss_gun) then
+			local rnd = math.random()
+			if(rnd * dt < 0.0025) then
+				local x = o.x
+				local y = o.y
+				local dirX = gPlayer.x - x
+				local dirY = gPlayer.y - y + math.random(-250, 250)
+				local norm = math.sqrt(dirX*dirX + dirY*dirY)
+				local lifetime = 5.0
+				table.insert(gShots, cShot:New(x, y, dirX/norm, dirY/norm, lifetime, "white", "blue"))
+			end
+		end
+	end
 	
 end
 
@@ -107,4 +127,19 @@ function cEnemyBossPartBase:Die()
 end
 
 function cEnemyBossPartBase:Draw() self:DrawWobble(0.1,0.1,gEnemyBossGfxScale) end
+
+-- ***** ***** ***** ***** ***** *****
+
+cEnemyEgg = CreateClass(cEnemyBase)
+
+function cEnemyEgg:Init(x,y) 
+	self.enemy_kind = "egg"
+	self.x = x
+	self.y = y
+	self.energy = 100
+	self.gfx = gfx_egg
+	self:Register()
+end
+
+function cEnemyEgg:Draw() self:DrawWobble(0.1,0.1,gEnemyGfxScale) end
 

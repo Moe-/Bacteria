@@ -43,7 +43,23 @@ function count(arr)
     return c
 end
 
-
+function clamp(a, b, c)
+	local min, max
+	if (b >= c) then
+		max = b
+		min = c
+	else
+		max = c
+		min = b
+	end
+	if (a < min) then
+		return min
+	elseif (a > max) then
+		return max
+	else
+		return a
+	end		
+end
 
 -- ***** ***** ***** ***** ***** tausender
 
