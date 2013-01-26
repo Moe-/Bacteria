@@ -55,7 +55,7 @@ function cEnemyBossBase:UpdatePartsStatus()
 	
 	-- set cores invul if guns/spikes alive
 	local bCoresAlive = false
-	print("boss:bCoresInvul",bCoresInvul)
+	--~ print("boss:bCoresInvul",bCoresInvul)
 	for o,_ in pairs(self.cores) do bCoresAlive = true o.bInvulnerable = bCoresInvul end
 	
 	-- death if no cores left
