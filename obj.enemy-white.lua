@@ -47,7 +47,7 @@ function cEnemyWhite:Update (dt)
 
 	self.dx = clamp(self.dx + math.random(-20, 20), -100, 100)
 	self.dy = clamp(self.dy + math.random(-20, 20), -100, 100)
-	self.x = self.x + dt * self.dx
+	self.x = min(self.x + dt * self.dx, love.graphics.getWidth())
 	self.y = self.y + dt * self.dy
 end
 

@@ -19,7 +19,7 @@ end
 function cEnemyWeapon:Draw() self:DrawWobble(0.2,0.1,gEnemyGfxScale) end
 
 function cEnemyWeapon:Update(dt)
-	self.dx = clamp(self.dx + math.random(-20, 20), 300, 600)
+	self.dx = clamp(self.dx + math.random(-50, 50), 300, 800)
 	self.x = self.x - self.dx * dt
 	if self.x < 0 then
 		self:Destroy()
