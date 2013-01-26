@@ -14,7 +14,7 @@ function cPlayer:Init(x,y)
 	print("player init")
 	self.x = x
 	self.y = y
-	self.energy = 1000
+	self.energy = cPlayerEnergyMax
 	self.dx = 0
 	self.dy = 0
 	self.alpha = 255
