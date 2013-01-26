@@ -136,8 +136,20 @@ function love.load ()
     gFormationsHistory = {}
 
 	gShootNext = -1
-	gGameState = "startscreen"
-	gStateChangeTime = cTStateChange
+    gGameState = "startscreen"
+    gStateChangeTime = cTStateChange
+
+    testSocket()
+end
+
+function testSocket()
+    local socket = require "socket"
+    local address, port = "localhost", 9999
+
+    local udp = socket.udp()
+    udp:setpeername(address, port)
+    udp:send("sendScore(\"Rene\",1000)")
+
 end
 
 function love.update (dt)

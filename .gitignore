@@ -2,3 +2,4 @@ Thumbs.db
 *.lua~
 .gitignore~
 *.iml
+highscoreserver/database.db
