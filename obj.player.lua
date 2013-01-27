@@ -25,6 +25,7 @@ function cPlayer:Init(x,y)
 	self:UpdateWeapon("white")
 	self.radius = self.gfx.radius * 0.35
 	self.points = 0
+	self.playDeadSound = true
 	--~ print("player init r=",self.radius)
 	
 	
@@ -72,7 +73,13 @@ function cPlayer:Shoot(cx, cy)
 end
 
 function cPlayer:IsDead()
-	if (self.energy <= 0) then return true end
+	if (self.energy <= 0) then
+		if (self.playDeadSound == true) then
+			love.audio.play(snd_explosion)
+			self.playDeadSound = false
+		end
+		return true 
+	end
 	return false
 end
 
