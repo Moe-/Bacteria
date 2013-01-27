@@ -355,6 +355,15 @@ function draw_pause_screen()
 	gfx_pause:DrawX0Y0(0, 0)
 end
 
+function draw_victory_screen()
+	gfx_victory:DrawX0Y0(0, 0)
+	effTitle:Draw()
+    if (gHighscores:serverAvailable() == true) then
+        love.graphics.setFont(gFontTitle)
+        love.graphics.print("Enter initials: " .. gInitials, 10,20)
+    end
+end
+
 --~ gGameFinished = true
 function love.draw ()
 	if gGameState == "titlescreen" then draw_title_screen()
@@ -363,23 +372,13 @@ function love.draw ()
 	elseif gGameState == "game" then draw_game() 
 	elseif gGameState == "pause" then draw_pause_screen()
     elseif gGameState == "highscores" then gHighscores:draw()
+	elseif gGameState == "victory" then draw_victory_screen()
 	end
 	
 	if (gGameFinished) then 
-		--~ local txt = "!!! GAME OVER, YOU WON !!!"
-		local w = love.graphics.getWidth()
-		local h = love.graphics.getHeight()
-		
-		--~ local x = w/2 - w/8
-		--~ local x = 40
-		--~ local y = h/2
-		--~ local s = 5
-		--~ love.graphics.print( txt, x, y, 0, s, s)
-		gfx_victory:Draw(w/2,h/2)
-
-		--~ love.graphics.print()
-		--~ local limit = 400
-		--~ love.graphics.printf( txt, w/2, h/2, limit, "center" )
+		gGameState = "victory"
+		gStateChangeTime = cTStateChange
+		gGameFinished = false
 	end
 end
 
@@ -404,7 +403,7 @@ function love.keypressed (keyname, unicode)
 	        elseif (keyname == " ") then gShootNext = 0
 		else print("keypress",keyname)
 		end
-	elseif gGameState == "gameover" and gHighscores:serverAvailable() then
+	elseif (gGameState == "gameover" or gGameState == "victory") and gHighscores:serverAvailable() then
         	if (unicode > 31 and unicode < 127) then
             	if (gInitials:len() < 3) then
                 	gInitials = gInitials .. string.char(unicode)
@@ -432,7 +431,7 @@ function love.keyreleased (keyname)
 		gGameState = "game"
 		gStateChangeTime = cTStateChange
 		resetgame()
-	elseif gGameState == "gameover" and gStateChangeTime < 0  then
+	elseif (gGameState == "gameover" or gGameState == "victory") and gStateChangeTime < 0  then
         if gInitials:len() >= 3 then
             gInitials = ""
             gHighscores = cHighscores:New()
@@ -488,7 +487,7 @@ function love.mousereleased(x, y, button)
 		gGameState = "game"
 		gStateChangeTime = cTStateChange
 		resetgame()
-	elseif gGameState == "gameover" and gStateChangeTime < 0 then 
+	elseif (gGameState == "gameover" or gGameState == "victory") and gStateChangeTime < 0 then 
 		gGameState = "startscreen"
 		gStateChangeTime = cTStateChange
 	elseif gGameState == "pause" and gStateChangeTime < 0 then 
