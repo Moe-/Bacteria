@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILENAMEBASE=Bacteria-v0.4
+FILENAMEBASE=Bacteria-v0.5
 
 FINDCMD="find . -false" # warning: quoted paths are escaped in a weird way by bash, breaking the find commandline
 FINDCMD="$FINDCMD -o -wholename ./.git -prune"
@@ -24,7 +24,7 @@ mkdir -p ${FILENAMEBASE}/
 mv ${FILENAMEBASE}.exe ${FILENAMEBASE}/
 cp love/* ${FILENAMEBASE}/
 rm ${FILENAMEBASE}/love.exe
-cp ../README.txt ${FILENAMEBASE}/
+cp ../README.txt ../license.txt ${FILENAMEBASE}/
 rm -rf ${FILENAMEBASE}.zip
 zip ${FILENAMEBASE}.zip ${FILENAMEBASE}/*
 rm -rf ${FILENAMEBASE}/
