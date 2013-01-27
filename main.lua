@@ -140,8 +140,31 @@ function love.load ()
 	 love.audio.play(snd_background)
 
     snd_shoot = love.audio.newSource("data/schuss.mp3", "static")
+	 snd_shoot2 = love.audio.newSource("data/schuss2.wav")
+	 snd_shoot3 = love.audio.newSource("data/schuss3.wav")
+	 snd_shoot4 = love.audio.newSource("data/schuss4.wav")
+	 snd_shoot5 = love.audio.newSource("data/schuss5.wav")
+	 snd_shoot6 = love.audio.newSource("data/schuss5.wav")
+
+	 snd_powerup = love.audio.newSource("data/powerup.wav")
+	 snd_powerup2 = love.audio.newSource("data/powerup2.wav")
+	 snd_powerup3 = love.audio.newSource("data/powerup3.wav")
+    snd_powerup4 = love.audio.newSource("data/powerup4.wav")
+
+	snd_collision = love.audio.newSource("data/collision.wav")
+
     snd_explosion = love.audio.newSource("data/explosion.mp3")
+	snd_explosion2 = love.audio.newSource("data/explosion2.wav")
+	snd_explosion3 = love.audio.newSource("data/explosion3.wav")
+	snd_explosion4 = love.audio.newSource("data/explosion4.wav")
+	snd_explosion5 = love.audio.newSource("data/explosion5.wav")
+	snd_explosion6 = love.audio.newSource("data/explosion6.wav")
+	snd_explosion7 = love.audio.newSource("data/explosion7.wav")
+
     snd_youlose = love.audio.newSource("data/youlose.mp3")
+
+	snd_hit = love.audio.newSource("data/hit.wav")
+	snd_hit2 = love.audio.newSource("data/hit2.wav")
 	
 	effTitle = cBloodTitle:New(love.graphics.newImage("data/particle.png"), 0, 0, 270)
 	
@@ -169,7 +192,10 @@ function love.load ()
 
 end
 
-
+function play_sound(sound)
+	love.audio.rewind(sound)
+	love.audio.play(sound)
+end
 
 function love.update (dt)
 	effTitle:Update(dt)

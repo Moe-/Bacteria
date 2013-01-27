@@ -74,6 +74,13 @@ function cBase:ShotTest(shot, stype)
 			shot.dirX = -0.5 * shot.dirX0 
 		end
 		self:Damage(damage,bResist) 
+		if self.energy > 0 then
+			if self.isPlayer then
+				play_sound(snd_hit)
+			else
+				play_sound(snd_hit2)
+			end
+		end
 	end
 end
 

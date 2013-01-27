@@ -22,16 +22,17 @@ function cPlayer:Init(x,y)
 	self.dx = 0
 	self.dy = 0
 	self.alpha = 255
+	self.playSounds = false
 	self:UpdateWeapon("white")
 	self.radius = self.gfx.radius * 0.35
 	self.points = 0
-	self.playDeadSound = true
 	--~ print("player init r=",self.radius)
 	
 	
 	self.weaponPower = 2.0
 	self.decaytime = 10
 	self.dwp = self.weaponPower / self.decaytime
+	self.playSounds = true
 end
 
 function cPlayer:Update(dt)
@@ -74,9 +75,9 @@ end
 
 function cPlayer:IsDead()
 	if (self.energy <= 0) then
-		if (self.playDeadSound == true) then
+		if (self.playSounds == true) then
 			love.audio.play(snd_explosion)
-			self.playDeadSound = false
+			self.playSounds = false
 		end
 		return true 
 	end
@@ -88,10 +89,18 @@ function cPlayer:UpdateWeapon(wType)
 		self.weaponPower = 2.0
 		self.wType = wType
 		
-		if (wType == "red") then self.gfx = gfx_player_rot
-		elseif (wType == "green") then self.gfx = gfx_player_gruen
-		elseif (wType == "blue") then self.gfx = gfx_player_blau
-		elseif (wType == "white") then self.gfx = gfx_player_weis
+		if (wType == "red") then 
+			self.gfx = gfx_player_rot
+			if (self.playSounds == true) then play_sound(snd_powerup) end
+		elseif (wType == "green") then 
+			self.gfx = gfx_player_gruen
+			if (self.playSounds == true) then play_sound(snd_powerup2) end
+		elseif (wType == "blue") then 
+			self.gfx = gfx_player_blau
+			if (self.playSounds == true) then play_sound(snd_powerup3) end
+		elseif (wType == "white") then 
+			self.gfx = gfx_player_weis
+			if (self.playSounds == true) then play_sound(snd_powerup4) end
 		end
 	end
 end

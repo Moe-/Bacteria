@@ -45,16 +45,31 @@ function cEnemyBase:Die()
 	effects:CreateEffect("explosion", self.x, self.y, 0, false)
 
 	if self.enemy_kind ~= nil then
-		if self.enemy_kind == "bossbase" then gPlayer:AddPoints(10000)
-		elseif self.enemy_kind == "blutplatt" then gPlayer:AddPoints(125)
-		elseif self.enemy_kind == "egg" then gPlayer:AddPoints(15)
-		elseif self.enemy_kind == "red" then gPlayer:AddPoints(150)
-		elseif self.enemy_kind == "weapon" then gPlayer:AddPoints(50)
-		elseif self.enemy_kind == "white" then gPlayer:AddPoints(225)
-		elseif self.enemy_kind == "base" then gPlayer:AddPoints(123)
-		else gPlayer:AddPoints(11)
+		if self.enemy_kind == "bossbase" then 
+			gPlayer:AddPoints(10000)
+			play_sound(snd_explosion)
+		elseif self.enemy_kind == "blutplatt" then 
+			gPlayer:AddPoints(125)
+			play_sound(snd_explosion2)
+		elseif self.enemy_kind == "egg" then 
+			gPlayer:AddPoints(15)
+			play_sound(snd_explosion3)
+		elseif self.enemy_kind == "red" then 
+			gPlayer:AddPoints(150)
+			play_sound(snd_explosion4)
+		elseif self.enemy_kind == "weapon" then 
+			gPlayer:AddPoints(50)
+			play_sound(snd_explosion5)
+		elseif self.enemy_kind == "white" then 
+			gPlayer:AddPoints(225)
+			play_sound(snd_explosion6)
+		elseif self.enemy_kind == "base" then 
+			gPlayer:AddPoints(123)
+			play_sound(snd_explosion7)
+		else 
+			gPlayer:AddPoints(11)
+			play_sound(snd_explosion7)
 		end
-		love.audio.play(snd_explosion)
 	end
 	
 	self:Destroy()
@@ -82,7 +97,9 @@ function cEnemyBase:CheckCollisionWithPlayer(dt)
 		
 		local dy = self.y - gPlayer.y
 		local dx = self.x - gPlayer.x
-		
+		if gPlayer:IsDead() == false then
+			play_sound(snd_collision)
+		end
 	end
 end
 

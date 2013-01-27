@@ -43,7 +43,20 @@ function cShot:Init(x, y, dirX, dirY, lifetime, sType, colour)
 		self.gfx = gfx_shotweiss
     end
 	self.colour = colour
-    love.audio.play(snd_shoot)
+
+	if(sType == "player") then
+		if (colour == "blue") then play_sound(snd_shoot3)
+		elseif (colour == "green") then play_sound(snd_shoot4)
+		elseif (colour == "red") then play_sound(snd_shoot5)
+		else play_sound(snd_shoot6)
+		end
+	else
+		if (colour == "blue") then
+    		play_sound(snd_shoot)
+		else
+			play_sound(snd_shoot2)
+		end
+	end
 	
 	-- register
 	gShots[self] = true
