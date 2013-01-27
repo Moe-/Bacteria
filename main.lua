@@ -8,6 +8,12 @@ gPlayerSpeed = 10
 cPlayerEnergyMax = 1000
 cTStateChange = 1.0
 
+CAMSHAKE_PAIN = 10
+CAMSHAKE_FADE = 0.95
+gCamShakeCur = 0
+gCamShakeAddX = 0
+gCamShakeAddY = 0
+
 -- music gen : http://www.inudge.net/
 -- sound gen : http://www.drpetter.se/project_sfxr.html
 
@@ -36,9 +42,18 @@ schleim sieht nicht aus wie auf cam.
 particel trails zu intensiv -> alpha : done
 boss 1 schiesst nicht ? ok. 
 
+---- sonntag
+sound+music ?
+gameover-win screen ?
+final boss herz-artigeres aussehen ?
+variables scroll speed ?
+
+
+
 ]]--
 
 gMyTime = love.timer.getTime( )
+
 	
 love.filesystem.load("lib.oop.lua")()
 love.filesystem.load("lib.util.lua")()
@@ -111,6 +126,7 @@ function love.load ()
 	gfx_dnabonus_gruen	= loadgfx("data/pickup_green.png")
 	gfx_dnabonus_rot	= loadgfx("data/pickup_red.png")
 	gfx_dnabonus_weis	= loadgfx("data/pickup_yellow.png")
+	gfx_victory			= loadgfx("data/victory.png")
 	
 	gfx_boss_core	= loadgfx("data/boss-core.png")
 	gfx_boss_mid	= loadgfx("data/boss-mid.png")
@@ -197,7 +213,17 @@ function play_sound(sound)
 	love.audio.play(sound)
 end
 
+function CamShakeStart (v)
+	gCamShakeCur = v or CAMSHAKE_PAIN
+end
+
 function love.update (dt)
+
+	local d = gCamShakeCur
+	gCamShakeCur = gCamShakeCur * CAMSHAKE_FADE
+	gCamShakeAddX = rand_in_range(-d,d)
+	gCamShakeAddY = rand_in_range(-d,d)
+	
 	effTitle:Update(dt)
 	if gGameState ~= "game" then 
 		gStateChangeTime = gStateChangeTime - dt
@@ -237,6 +263,7 @@ function love.update (dt)
 end
 
 function resetgame()
+	gGameFinished = false
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight()
 	gPlayer = cPlayer:New(w/2,h/2)
@@ -333,15 +360,16 @@ function love.draw ()
 	end
 	
 	if (gGameFinished) then 
-		local txt = "!!! GAME OVER, YOU WON !!!"
+		--~ local txt = "!!! GAME OVER, YOU WON !!!"
 		local w = love.graphics.getWidth()
 		local h = love.graphics.getHeight()
 		
 		--~ local x = w/2 - w/8
-		local x = 40
-		local y = h/2
-		local s = 5
-		love.graphics.print( txt, x, y, 0, s, s)
+		--~ local x = 40
+		--~ local y = h/2
+		--~ local s = 5
+		--~ love.graphics.print( txt, x, y, 0, s, s)
+		gfx_victory:Draw(w/2,h/2)
 
 		--~ love.graphics.print()
 		--~ local limit = 400

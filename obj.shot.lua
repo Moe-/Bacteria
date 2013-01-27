@@ -100,6 +100,6 @@ function cShot:Update(dt)
 end
 
 function cShot:Draw()
-	love.graphics.draw(self.gfx.img,self.x,self.y,0,1,1,self.gfx.ox,self.gfx.oy)
+	love.graphics.draw(self.gfx.img,self.x+gCamShakeAddX,self.y+gCamShakeAddY,0,1,1,self.gfx.ox,self.gfx.oy)
 end
 

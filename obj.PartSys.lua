@@ -22,7 +22,7 @@ end
 
 function cPartSys:Draw(x, y)
 	for k,v in ipairs(self.ps) do
-		love.graphics.draw(v, x, y)
+		love.graphics.draw(v, x+gCamShakeAddX, y+gCamShakeAddY)
 	end
 end
 

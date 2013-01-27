@@ -18,7 +18,7 @@ function cBase:DrawWobble(ws,wr,scalefactor) -- scale,rotate
 	if (gfx.bIsAnim) then
 		gfx = gfx[1+math.mod(floor(gMyTime / self.time_per_frame),#gfx)]
 	end
-	gfx:Draw(self.x,self.y,r,s,s)
+	gfx:Draw(self.x+gCamShakeAddX,self.y+gCamShakeAddY,r,s,s)
 	
 	local d = self.radius or 25
 	if (SHOW_DEBUG_CIRCLE) then love.graphics.circle("line",self.x,self.y,d,11) end
@@ -37,7 +37,9 @@ function cBase:DistToObj(o) return self:DistToPos(o.x,o.y) end
 
 
 function cBase:Damage(dmg,bResist)
+	if (gGameFinished) then return end
 	if self.kind == "player" then
+		CamShakeStart(CAMSHAKE_PAIN)
 		cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
 		effects:CreateEffect("hit", self.x, self.y, math.random(0, 2*PI), true)
 		--cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))
