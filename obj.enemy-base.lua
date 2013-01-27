@@ -54,6 +54,7 @@ function cEnemyBase:Die()
 		elseif self.enemy_kind == "base" then gPlayer:AddPoints(123)
 		else gPlayer:AddPoints(11)
 		end
+		love.audio.play(snd_explosion)
 	end
 	
 	self:Destroy()

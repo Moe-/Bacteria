@@ -152,6 +152,7 @@ function love.load ()
     snd_background = love.audio.newSource("data/background.mp3")
     snd_background:setLooping(true)
     snd_background:setVolume(0.5)
+	 love.audio.play(snd_background)
 
     snd_shoot = love.audio.newSource("data/schuss.mp3", "static")
     snd_explosion = love.audio.newSource("data/explosion.mp3")
