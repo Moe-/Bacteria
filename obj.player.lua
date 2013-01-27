@@ -6,7 +6,7 @@ function cPlayer:Draw()
 	local r = PI * 0.1 * sin(t*0.9*PI)
 
 	love.graphics.setColor(255, 255, 255, self.alpha)
-	self.gfx:Draw(self.x,self.y,r,s,s)
+	self.gfx:Draw(self.x+gCamShakeAddX,self.y+gCamShakeAddY,r,s,s)
 	love.graphics.setColor(255, 255, 255, 255)
 	
 	if (SHOW_DEBUG_CIRCLE) then love.graphics.circle("line",self.x,self.y,self.radius,11) end

@@ -35,7 +35,7 @@ function DrawPattern (gfx,e,xoff)
 	local h = love.graphics.getHeight() 
 	for x = -xoff,w+e,e do
 	for y = 0,h+e,e do
-		gfx:Draw(x,y)
+		gfx:Draw(x+gCamShakeAddX,y+gCamShakeAddY)
 	end
 	end
 end
@@ -88,7 +88,7 @@ function cLevel:DrawBack()
 	DrawPattern(gfx_background1,e,math.mod(self.scrollx*0.8,e))
 	
 	love.graphics.setColor(255, 255, 255, 255*0.5)
-	for o,_ in pairs(self.deco) do o:Draw(-self.scrollx*0.7,-self.scrolly) end
+	for o,_ in pairs(self.deco) do o:Draw(-self.scrollx*0.7+gCamShakeAddX,-self.scrolly+gCamShakeAddY) end
 	love.graphics.setColor(255, 255, 255, 255)
 	
 	DrawPattern(gfx_background2,e,math.mod(self.scrollx*0.6,e))
@@ -96,8 +96,8 @@ end
 
 function cLevel:Draw()
 	-- scroll 
-	for o,_ in pairs(self.walls) do o:DrawPre(-self.scrollx,-self.scrolly) end
-	for o,_ in pairs(self.walls) do o:Draw(-self.scrollx,-self.scrolly) end
+	for o,_ in pairs(self.walls) do o:DrawPre(-self.scrollx+gCamShakeAddX,-self.scrolly+gCamShakeAddY) end
+	for o,_ in pairs(self.walls) do o:Draw(-self.scrollx+gCamShakeAddX,-self.scrolly+gCamShakeAddY) end
 	--~ print("num walls",table_count(self.walls))
 end
 
@@ -208,7 +208,7 @@ end
 function cWall:Draw (xa,ya)
 	local x,y = self.x+xa,self.y+ya
 	if (x < -100) then self:Destroy() end
-	self.gfx:Draw(x,y,self.ang)
+	self.gfx:Draw(x+gCamShakeAddX,y+gCamShakeAddY,self.ang)
 	--~ love.graphics.circle( "line", x, y, 5, 11 )
 	--~ local h = 0.5*kLevelStepX
 	--~ local y2 = y + self.dy_per_x * h

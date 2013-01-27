@@ -8,7 +8,7 @@ function cEffectBasic:Init(sprite, x, y, direction)
 end
 
 function cEffectBasic:Draw()
-	self.ps:Draw(self.posx, self.posy)
+	self.ps:Draw(self.posx+gCamShakeAddX, self.posy+gCamShakeAddY)
 end
 
 function cEffectBasic:Update(dt)

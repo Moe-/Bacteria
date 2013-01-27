@@ -8,6 +8,12 @@ gPlayerSpeed = 10
 cPlayerEnergyMax = 1000
 cTStateChange = 1.0
 
+CAMSHAKE_PAIN = 10
+CAMSHAKE_FADE = 0.95
+gCamShakeCur = 0
+gCamShakeAddX = 0
+gCamShakeAddY = 0
+
 -- music gen : http://www.inudge.net/
 -- sound gen : http://www.drpetter.se/project_sfxr.html
 
@@ -47,6 +53,7 @@ variables scroll speed ?
 ]]--
 
 gMyTime = love.timer.getTime( )
+
 	
 love.filesystem.load("lib.oop.lua")()
 love.filesystem.load("lib.util.lua")()
@@ -176,9 +183,18 @@ function love.load ()
 
 end
 
+function CamShakeStart (v)
+	gCamShakeCur = v or CAMSHAKE_PAIN
+end
 
 
 function love.update (dt)
+
+	local d = gCamShakeCur
+	gCamShakeCur = gCamShakeCur * CAMSHAKE_FADE
+	gCamShakeAddX = rand_in_range(-d,d)
+	gCamShakeAddY = rand_in_range(-d,d)
+	
 	effTitle:Update(dt)
 	if gGameState ~= "game" then 
 		gStateChangeTime = gStateChangeTime - dt
