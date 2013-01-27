@@ -72,10 +72,11 @@ function cLevel:SpawnWalls()
 end
 
 function cLevel:Update(dt)
+	local speedvar = 1.5 + 0.7 * sin(gMyTime/1.5*PI)
 	if (gFinalBoss) then 
-		self.speed = kLevelSpeed_FinalBoss
+		self.speed = speedvar * kLevelSpeed_FinalBoss
 	else 
-		self.speed = kLevelSpeed_Normal
+		self.speed = speedvar * kLevelSpeed_Normal
 	end
 	self.scrollx = self.scrollx + dt * self.speed
 	self:SpawnWalls()

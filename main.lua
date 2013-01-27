@@ -36,6 +36,14 @@ schleim sieht nicht aus wie auf cam.
 particel trails zu intensiv -> alpha : done
 boss 1 schiesst nicht ? ok. 
 
+---- sonntag
+sound+music ?
+gameover-win screen ?
+final boss herz-artigeres aussehen ?
+variables scroll speed ?
+
+
+
 ]]--
 
 gMyTime = love.timer.getTime( )
