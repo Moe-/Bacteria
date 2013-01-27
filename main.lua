@@ -162,6 +162,8 @@ function love.load ()
 	 snd_shoot5 = love.audio.newSource("data/schuss5.wav")
 	 snd_shoot6 = love.audio.newSource("data/schuss5.wav")
 
+	snd_shoot4:setVolume(0.5)
+
 	 snd_powerup = love.audio.newSource("data/powerup.wav")
 	 snd_powerup2 = love.audio.newSource("data/powerup2.wav")
 	 snd_powerup3 = love.audio.newSource("data/powerup3.wav")
@@ -178,6 +180,10 @@ function love.load ()
 	snd_explosion7 = love.audio.newSource("data/explosion7.wav")
 
     snd_youlose = love.audio.newSource("data/youlose.mp3")
+
+	snd_bossfight = love.audio.newSource("data/bossfight.ogg")
+	snd_bossfight:setLooping(true)
+   snd_bossfight:setVolume(0.75)
 
 	snd_hit = love.audio.newSource("data/hit.wav")
 	snd_hit2 = love.audio.newSource("data/hit2.wav")

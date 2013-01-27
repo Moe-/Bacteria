@@ -115,6 +115,9 @@ function cEnemyBossBase:BossInitBase(x,y)
 	self.parts = {}
 	self.cores = {}
 	self.tentacles = {}
+
+	love.audio.stop(snd_background)
+   love.audio.play(snd_bossfight)
 end
 
 function cEnemyBossBase:MakeTentacle(x,y,num,vx,vy,core,gfx_head)
@@ -142,6 +145,8 @@ function cEnemyBossBase:UpdatePartsStatus()
 	if (not bCoresAlive) then 
 		for o,_ in pairs(self.parts) do o:Die() end
 		self:Die()
+   	love.audio.stop(snd_bossfight)
+		love.audio.play(snd_background)
 		if (self.bIsFinalBoss) then 
 			NotifyFinalBossKilled()
 		end
