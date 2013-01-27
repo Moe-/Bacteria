@@ -37,6 +37,7 @@ function cBase:DistToObj(o) return self:DistToPos(o.x,o.y) end
 
 
 function cBase:Damage(dmg,bResist)
+	if (gGameFinished) then return end
 	if self.kind == "player" then
 		CamShakeStart(CAMSHAKE_PAIN)
 		cStretch:New(slime, math.random(0, 1024), math.random(0, 768), math.random(0, 2 * PI), math.random(0.01, 0.4), math.random(1.4, 2.0))

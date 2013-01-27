@@ -81,6 +81,7 @@ function cSpawner:spawnFormation()
     local formation = nil
     local index = 0
 	
+	
 	print("gFormationsSpawnedTotal",gFormationsSpawnedTotal)
 	print("gFormationsSpawnedSinceBoss",gFormationsSpawnedSinceBoss)
     repeat
@@ -159,6 +160,7 @@ end
 
 
 function cSpawner:Update()
+	if (gGameFinished) then return end
     self:spawnWeapons()
 
     if (self:EnemiesOnScreen() == false) then

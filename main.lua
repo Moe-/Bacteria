@@ -126,6 +126,7 @@ function love.load ()
 	gfx_dnabonus_gruen	= loadgfx("data/pickup_green.png")
 	gfx_dnabonus_rot	= loadgfx("data/pickup_red.png")
 	gfx_dnabonus_weis	= loadgfx("data/pickup_yellow.png")
+	gfx_victory			= loadgfx("data/victory.png")
 	
 	gfx_boss_core	= loadgfx("data/boss-core.png")
 	gfx_boss_mid	= loadgfx("data/boss-mid.png")
@@ -235,6 +236,7 @@ function love.update (dt)
 end
 
 function resetgame()
+	gGameFinished = false
 	local w = love.graphics.getWidth()
 	local h = love.graphics.getHeight()
 	gPlayer = cPlayer:New(w/2,h/2)
@@ -331,15 +333,16 @@ function love.draw ()
 	end
 	
 	if (gGameFinished) then 
-		local txt = "!!! GAME OVER, YOU WON !!!"
+		--~ local txt = "!!! GAME OVER, YOU WON !!!"
 		local w = love.graphics.getWidth()
 		local h = love.graphics.getHeight()
 		
 		--~ local x = w/2 - w/8
-		local x = 40
-		local y = h/2
-		local s = 5
-		love.graphics.print( txt, x, y, 0, s, s)
+		--~ local x = 40
+		--~ local y = h/2
+		--~ local s = 5
+		--~ love.graphics.print( txt, x, y, 0, s, s)
+		gfx_victory:Draw(w/2,h/2)
 
 		--~ love.graphics.print()
 		--~ local limit = 400
